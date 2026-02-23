@@ -146,8 +146,7 @@
         <ul id="menu">
             <li><a href="#">Home</a></li>
             <li><a href="#">Profil</a></li>
-            <li><a href="#">Fasilitas</a></li>
-            <li><a href="#">Prestasi</a></li>
+            <li><a href="#">Galeri</a></li>
             <li><a href="#">Eskul</a></li>
         </ul>
     </nav>
@@ -170,7 +169,8 @@
                 <ul>
                     <li><a href="#">Home</a></li>
                     <li><a href="#">Profil</a></li>
-                    <li><a href="#">Galeri</a></li>
+                    <li><a href="#">Fasilitas</a></li>
+                    <li><a href="#">Prestasi</a></li>
                     <li><a href="#">Eskul</a></li>
                 </ul>
             </div>
