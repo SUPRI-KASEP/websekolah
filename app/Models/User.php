@@ -31,4 +31,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    /**
+     * Always encrypt the password when it is set.
+     */
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
 }
