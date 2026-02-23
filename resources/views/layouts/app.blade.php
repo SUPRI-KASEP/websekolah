@@ -144,10 +144,10 @@
         <div class="logo">Nama Sekolah</div>
         <div class="menu-toggle" onclick="toggleMenu()">☰</div>
         <ul id="menu">
-            <li><a href="#">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li><a href="{{ route ('profil.sambutan') }}">Profil</a></li>
-            <li><a href="#">Fasilitas</a></li>
-            <li><a href="#">Prestasi</a></li>
+            <li><a href="{{ route('fasilitas.index') }}">Fasilitas</a></li>
+            <li><a href="{{ route('prestasi.index') }}">Prestasi</a></li>
             <li><a href="#">Eskul</a></li>
         </ul>
     </nav>
@@ -168,9 +168,10 @@
             <div class="footer-column">
                 <h3>Menu</h3>
                 <ul>
-                    <li><a href="#">Home</a></li>
+                    <li><a href="/">Home</a></li>
                     <li><a href="{{ route('profil.sambutan') }}">Profil</a></li>
-                    <li><a href="#">Galeri</a></li>
+                    <li><a href="{{ route('fasilitas.index') }}">Fasilitas</a></li>
+                    <li><a href="{{ route('prestasi.index') }}">Prestasi</a></li>
                     <li><a href="#">Eskul</a></li>
                 </ul>
             </div>
