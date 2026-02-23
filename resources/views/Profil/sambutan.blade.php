@@ -4,9 +4,6 @@
 
 <div class="container py-4">
     <!-- Header -->
-    
-    
-    
     <h2 class="fw-bold mb-2">Sambutan Kepala Sekolah</h2>
     <p class="fst-italic text-secondary mb-4">"Membangun Generasi Cerdas dan Berkarakter"</p>
     
@@ -16,12 +13,14 @@
     <div class="row">
         <!-- Kolom Kiri: Foto dan Info -->
         <div class="col-md-4 mb-4">
-            <img src="{{ asset('assets/udin.png') }}" 
-                 alt="Kepala Sekolah" 
-                 class="img-fluid mb-3"
-                 style="width: 100%; max-width: 250px;">
+            <!-- Container untuk gambar dengan rasio 9:16 -->
+            <div style="width: 100%; max-width: 250px; aspect-ratio: 9/12; overflow: hidden; border: 1px solid #dee2e6; padding: 5px; background: #f8f9fa; border-radius: 20px;">
+                <img src="{{ asset('assets/udin.png') }}" 
+                     alt="Kepala Sekolah" 
+                     style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
             
-            <h4 class="fw-bold mb-1">Drs. Budi Santoso</h4>
+            <h4 class="fw-bold mb-1 mt-3">Drs. Budi Santoso</h4>
             <p class="mb-2">Kepala Sekolah</p>
             <p class="mb-1">📞 NIP. 19651231 198603 1 045</p>
             <p class="mb-3">📧 kepsek@sdncontoh.sch.id</p>
@@ -152,14 +151,6 @@ p {
 
 .fst-italic {
     font-style: italic;
-}
-
-.img-fluid {
-    max-width: 100%;
-    height: auto;
-    border: 1px solid #dee2e6;
-    padding: 5px;
-    background: #f8f9fa;
 }
 
 .row {
