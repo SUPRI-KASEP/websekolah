@@ -6,6 +6,8 @@
     <title>@yield('title', 'Website Sekolah')</title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         * {
@@ -351,7 +353,7 @@
             background-color: #f4f6f9;
         }
 
-        /* ================= FOOTER ================= */
+        /* ================= FOOTER ================= */ 
         .footer {
             background-color: white;
             color: #666;
@@ -398,9 +400,123 @@
         .sidebar::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.3);
         }
+
+        /* ================= DARK MODE ================= */
+        body.dark-mode {
+            background-color: #1a1a1a;
+        }
+
+        body.dark-mode .main-content {
+            background-color: #1a1a1a;
+        }
+
+        body.dark-mode .top-navbar {
+            background-color: #2d2d2d;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .menu-toggle,
+        body.dark-mode .search-box i,
+        body.dark-mode .icon-btn {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .search-box {
+            background-color: #2d2d2d;
+        }
+
+        body.dark-mode .search-box input {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .search-box input::placeholder {
+            color: #888;
+        }
+
+        body.dark-mode .content {
+            background-color: #1a1a1a;
+        }
+
+        body.dark-mode .footer {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .card {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .table {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .table-hover tbody tr:hover {
+            background-color: #3d3d3d;
+        }
+
+        body.dark-mode .modal-content {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .modal-header {
+            border-bottom-color: #444;
+        }
+
+        body.dark-mode .modal-footer {
+            border-top-color: #444;
+        }
+
+        body.dark-mode .form-control,
+        body.dark-mode .form-select {
+            background-color: #3d3d3d;
+            border-color: #555;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .form-control:focus,
+        body.dark-mode .form-select:focus {
+            background-color: #3d3d3d;
+            border-color: #1abc9c;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .form-label {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .btn-close {
+            filter: invert(1);
+        }
+
+        body.dark-mode h2,
+        body.dark-mode h1,
+        body.dark-mode h3,
+        body.dark-mode h4,
+        body.dark-mode h5,
+        body.dark-mode h6 {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .alert-success {
+            background-color: #1e3a2f;
+            border-color: #2ecc71;
+            color: #2ecc71;
+        }
+
+        body.dark-mode .alert-danger {
+            background-color: #3a1e1e;
+            border-color: #e74c3c;
+            color: #e74c3c;
+        }
+
+        body.dark-mode .badge.bg-primary {
+            background-color: #0d6efd !important;
+        }
     </style>
 </head>
-<body>
+<body class="" id="body">
 
     {{-- SIDEBAR --}}
     <div class="sidebar" id="sidebar">
@@ -430,71 +546,20 @@
                 </a>
             </li>
 
-            <!-- Profil Sekolah with Submenu -->
-            <li class="nav-item has-submenu">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-school"></i>
-                    <span class="menu-text">Profil Sekolah</span>
-                    <i class="fas fa-chevron-right dropdown-arrow"></i>
-                </a>
-                <ul class="submenu">
-                    <li>
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-info-circle"></i>
-                            <span class="menu-text">Info Umum</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-history"></i>
-                            <span class="menu-text">Sejarah</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-eye"></i>
-                            <span class="menu-text">Visi & Misi</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            <!-- Galeri -->
+            <!-- Profil -->
             <li class="nav-item">
                 <a href="#" class="nav-link">
-                    <i class="fas fa-images"></i>
-                    <span class="menu-text">Galeri</span>
-                    <span class="badge">12</span>
+                    <i class="fas fa-school"></i>
+                    <span class="menu-text">Profil</span>
                 </a>
             </li>
 
-            <!-- Ekstrakurikuler with Submenu -->
-            <li class="nav-item has-submenu">
-                <a href="#" class="nav-link">
+            <!-- Eskul -->
+            <li class="nav-item">
+                <a href="{{ route('admin.eskul') }}" class="nav-link">
                     <i class="fas fa-futbol"></i>
-                    <span class="menu-text">Ekstrakurikuler</span>
-                    <i class="fas fa-chevron-right dropdown-arrow"></i>
+                    <span class="menu-text">Eskul</span>
                 </a>
-                <ul class="submenu">
-                    <li>
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-basketball-ball"></i>
-                            <span class="menu-text">Olahraga</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-music"></i>
-                            <span class="menu-text">Seni & Musik</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-flask"></i>
-                            <span class="menu-text">Sains Club</span>
-                        </a>
-                    </li>
-                </ul>
             </li>
 
             <!-- Fasilitas -->
@@ -510,59 +575,14 @@
                 <a href="#" class="nav-link">
                     <i class="fas fa-trophy"></i>
                     <span class="menu-text">Prestasi</span>
-                    <span class="badge">7</span>
                 </a>
             </li>
 
-            <!-- Data Master with Submenu -->
-            <li class="nav-item has-submenu">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-database"></i>
-                    <span class="menu-text">Data Master</span>
-                    <i class="fas fa-chevron-right dropdown-arrow"></i>
-                </a>
-                <ul class="submenu">
-                    <li>
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-users"></i>
-                            <span class="menu-text">Siswa</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-chalkboard-teacher"></i>
-                            <span class="menu-text">Guru</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-user-tie"></i>
-                            <span class="menu-text">Staff</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-book"></i>
-                            <span class="menu-text">Mata Pelajaran</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            <!-- Jadwal -->
+            <!-- User -->
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span class="menu-text">Jadwal</span>
-                </a>
-            </li>
-
-            <!-- Pengumuman -->
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-bullhorn"></i>
-                    <span class="menu-text">Pengumuman</span>
-                    <span class="badge">2</span>
+                <a href="{{ route('admin.user') }}" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span class="menu-text">User</span>
                 </a>
             </li>
 
@@ -696,7 +716,30 @@
         }
 
         function toggleTheme() {
-            alert('Fitur dark mode akan segera hadir!');
+            const body = document.body;
+            const themeIcon = document.querySelector('.icon-btn[onclick="toggleTheme()"] i');
+            
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('darkMode', 'false');
+            }
+        }
+
+        // Check saved dark mode state
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            const themeIcon = document.querySelector('.icon-btn[onclick="toggleTheme()"] i');
+            if (themeIcon) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
         }
 
         // Search functionality
@@ -722,5 +765,7 @@
         }
     </script>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
