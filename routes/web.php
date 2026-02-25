@@ -31,6 +31,18 @@ Route::middleware(['auth.admin:admin'])->group(function () {
     Route::post('/admin/eskul', [AdminController::class, 'eskulStore'])->name('admin.eskul.store');
     Route::put('/admin/eskul/{id}', [AdminController::class, 'eskulUpdate'])->name('admin.eskul.update');
     Route::delete('/admin/eskul/{id}', [AdminController::class, 'eskulDestroy'])->name('admin.eskul.destroy');
+
+    // Fasilitas Management Routes
+    Route::get('/admin/fasilitas', [AdminController::class, 'fasilitasIndex'])->name('admin.fasilitas');
+    Route::post('/admin/fasilitas', [AdminController::class, 'fasilitasStore'])->name('admin.fasilitas.store');
+    Route::put('/admin/fasilitas/{id}', [AdminController::class, 'fasilitasUpdate'])->name('admin.fasilitas.update');
+    Route::delete('/admin/fasilitas/{id}', [AdminController::class, 'fasilitasDestroy'])->name('admin.fasilitas.destroy');
+
+    // Prestasi Management Routes
+    Route::get('/admin/prestasi', [AdminController::class, 'prestasiIndex'])->name('admin.prestasi');
+    Route::post('/admin/prestasi', [AdminController::class, 'prestasiStore'])->name('admin.prestasi.store');
+    Route::put('/admin/prestasi/{id}', [AdminController::class, 'prestasiUpdate'])->name('admin.prestasi.update');
+    Route::delete('/admin/prestasi/{id}', [AdminController::class, 'prestasiDestroy'])->name('admin.prestasi.destroy');
 });
 
 Route::get('/sambutan', [ProfilController::class, 'sambutan'])->name('profil.sambutan');

@@ -564,7 +564,7 @@
 
             <!-- Fasilitas -->
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('admin.fasilitas') }}" class="nav-link">
                     <i class="fas fa-building"></i>
                     <span class="menu-text">Fasilitas</span>
                 </a>
@@ -572,7 +572,7 @@
 
             <!-- Prestasi -->
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('admin.prestasi') }}" class="nav-link">
                     <i class="fas fa-trophy"></i>
                     <span class="menu-text">Prestasi</span>
                 </a>
