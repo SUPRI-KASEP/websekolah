@@ -26,7 +26,10 @@
             align-items: center;
             background-color: #2c3e50;
             padding: 10px 20px;
-            position: relative;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .navbar .logo {
@@ -35,50 +38,111 @@
             font-weight: bold;
         }
 
-        .navbar ul {
+        /* HANYA UL UTAMA YANG FLEX */
+        .navbar > ul {
             list-style: none;
             display: flex;
         }
 
-        .navbar ul li {
+        .navbar > ul > li {
+            position: relative;
             margin-left: 20px;
         }
 
-        .navbar ul li a {
+        .navbar a {
             text-decoration: none;
             color: white;
+            padding: 10px 0;
+            display: inline-block;
             transition: 0.3s;
         }
 
-        .navbar ul li a:hover {
+        .navbar a:hover {
             color: #1abc9c;
         }
 
         .menu-toggle {
             display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
         }
 
-        /* Responsive */
+        /* ================= DROPDOWN ================= */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #34495e;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            min-width: 200px;
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .dropdown-menu li {
+            display: block;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 12px 15px;
+            color: white;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #1abc9c;
+            color: white;
+        }
+
+        /* Hover Desktop */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* ================= RESPONSIVE ================= */
         @media (max-width: 768px) {
-            .navbar ul {
+
+            .navbar > ul {
                 flex-direction: column;
                 background: #34495e;
                 position: absolute;
                 top: 60px;
                 right: 0;
-                width: 200px;
+                width: 220px;
                 display: none;
+                padding: 10px 0;
             }
 
-            .navbar ul.active {
+            .navbar > ul.active {
                 display: flex;
+            }
+
+            .navbar > ul > li {
+                margin: 0;
+                padding: 0 20px;
             }
 
             .menu-toggle {
                 display: block;
-                cursor: pointer;
-                color: white;
-                font-size: 24px;
+            }
+
+            /* Dropdown Mobile */
+            .dropdown-menu {
+                position: static;
+                background-color: #3b536b;
+            }
+
+            .dropdown:hover .dropdown-menu {
+                display: none;
+            }
+
+            .dropdown.active .dropdown-menu {
+                display: block;
             }
         }
 
@@ -143,9 +207,19 @@
     <nav class="navbar">
         <div class="logo">Nama Sekolah</div>
         <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
         <ul id="menu">
             <li><a href="/">Home</a></li>
-            <li><a href="{{ route ('profil.sambutan') }}">Profil</a></li>
+
+            <li class="dropdown">
+                <a href="#" onclick="toggleDropdown(event)">Profil</a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ route('profil.sambutan') }}">Sambutan Kepala Sekolah</a></li>
+                    <li><a href="{{ route('profil.vm') }}">Visi & Misi</a></li>
+                    <li><a href="#">Struktur Organisasi</a></li>
+                </ul>
+            </li>
+
             <li><a href="{{ route('fasilitas.index') }}">Fasilitas</a></li>
             <li><a href="{{ route('prestasi.index') }}">Prestasi</a></li>
             <li><a href="#">Eskul</a></li>
@@ -160,19 +234,20 @@
     {{-- FOOTER --}}
     <footer class="footer">
         <div class="footer-container">
+
             <div class="footer-column">
-                <h3>Nama Sekolah</h3>
+                <h3>SMK-Ucup</h3>
                 <p>Website resmi sekolah.</p>
             </div>
 
             <div class="footer-column">
                 <h3>Menu</h3>
                 <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="{{ route('profil.sambutan') }}">Profil</a></li>
-                    <li><a href="{{ route('fasilitas.index') }}">Fasilitas</a></li>
-                    <li><a href="{{ route('prestasi.index') }}">Prestasi</a></li>
-                    <li><a href="#">Eskul</a></li>
+                    <li>Home</li>
+                    <li>Profil</li>
+                    <li>Fasilitas</li>
+                    <li>Prestasi</li>
+                    <li>Eskul</li>
                 </ul>
             </div>
 
@@ -181,6 +256,7 @@
                 <p>Email: sekolah@email.com</p>
                 <p>Telp: 0812-3456-7890</p>
             </div>
+
         </div>
 
         <div class="footer-bottom">
@@ -191,6 +267,13 @@
     <script>
         function toggleMenu() {
             document.getElementById('menu').classList.toggle('active');
+        }
+
+        function toggleDropdown(event) {
+            if (window.innerWidth <= 768) {
+                event.preventDefault();
+                event.target.parentElement.classList.toggle('active');
+            }
         }
     </script>
 
