@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('profils', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_menu');
+            $table->string('judul');
+            $table->text('konten')->nullable();
+            $table->string('gambar')->nullable();
+            $table->integer('urutan')->default(0);
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

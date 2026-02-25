@@ -49,6 +49,10 @@ Route::get('/sambutan', [ProfilController::class, 'sambutan'])->name('profil.sam
 
 Route::get('/visi-misi', [ProfilController::class, 'vm'])->name('profil.vm');
 
+Route::get('/profil', [ProfilController::class, 'dashboard'])->name('profil.dashboard');
+
+Route::get('/profil/{slug}', [ProfilController::class, 'menu'])->name('profil.menu');
+
 Route::get('/fasilitas', [FasilitasController::class, 'index'])->name('fasilitas.index');
 
 Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');

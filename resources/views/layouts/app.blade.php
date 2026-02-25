@@ -214,9 +214,10 @@
             <li class="dropdown">
                 <a href="#" onclick="toggleDropdown(event)">Profil</a>
                 <ul class="dropdown-menu">
-                    <li><a href="{{ route('profil.sambutan') }}">Sambutan Kepala Sekolah</a></li>
-                    <li><a href="{{ route('profil.vm') }}">Visi & Misi</a></li>
-                    <li><a href="#">Struktur Organisasi</a></li>
+                    <li><a href="{{ route('profil.menu', 'sambutan') }}">Sambutan Kepala Sekolah</a></li>
+                    <li><a href="{{ route('profil.menu', 'visi-misi') }}">Visi & Misi</a></li>
+                    <li><a href="{{ route('profil.menu', 'struktur-organisasi') }}">Struktur Organisasi</a></li>
+                    <li><a href="{{ route('profil.menu', 'sejarah') }}">Sejarah</a></li>
                 </ul>
             </li>
 
@@ -243,11 +244,11 @@
             <div class="footer-column">
                 <h3>Menu</h3>
                 <ul>
-                    <li>Home</li>
-                    <li>Profil</li>
-                    <li>Fasilitas</li>
-                    <li>Prestasi</li>
-                    <li>Eskul</li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="{{ route('profil.dashboard') }}">Profil</a></li>
+                    <li><a href="{{ route('fasilitas.index') }}">Fasilitas</a></li>
+                    <li><a href="{{ route('prestasi.index') }}">Prestasi</a></li>
+                    <li><a href="#">Eskul</a></li>
                 </ul>
             </div>
 

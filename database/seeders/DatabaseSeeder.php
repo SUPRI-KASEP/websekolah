@@ -23,5 +23,9 @@ class DatabaseSeeder extends Seeder
             'password' => 'admin321',
             'role' => 'admin',
         ]);
+
+        $this->call([
+            ProfilSeeder::class,
+        ]);
     }
 }
