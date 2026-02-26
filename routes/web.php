@@ -43,6 +43,12 @@ Route::middleware(['auth.admin:admin'])->group(function () {
     Route::post('/admin/prestasi', [AdminController::class, 'prestasiStore'])->name('admin.prestasi.store');
     Route::put('/admin/prestasi/{id}', [AdminController::class, 'prestasiUpdate'])->name('admin.prestasi.update');
     Route::delete('/admin/prestasi/{id}', [AdminController::class, 'prestasiDestroy'])->name('admin.prestasi.destroy');
+
+    // Profil Management Routes
+    Route::get('/admin/profil', [AdminController::class, 'profilIndex'])->name('admin.profil');
+    Route::post('/admin/profil', [AdminController::class, 'profilStore'])->name('admin.profil.store');
+    Route::put('/admin/profil/{id}', [AdminController::class, 'profilUpdate'])->name('admin.profil.update');
+    Route::delete('/admin/profil/{id}', [AdminController::class, 'profilDestroy'])->name('admin.profil.destroy');
 });
 
 Route::get('/sambutan', [ProfilController::class, 'sambutan'])->name('profil.sambutan');

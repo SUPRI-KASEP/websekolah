@@ -4,7 +4,7 @@
 
 <div class="container py-4">
     <!-- Header -->
-    <h2 class="fw-bold mb-2">Sambutan Kepala Sekolah</h2>
+    <h2 class="fw-bold mb-2">{{ $profil->judul ?? 'Sambutan Kepala Sekolah' }}</h2>
     <p class="fst-italic text-secondary mb-4">"Membangun Generasi Cerdas dan Berkarakter"</p>
     
     <hr class="mb-4">
@@ -15,47 +15,44 @@
         <div class="col-md-4 mb-4">
             <!-- Container untuk gambar dengan rasio 9:16 -->
             <div style="width: 100%; max-width: 250px; aspect-ratio: 9/12; overflow: hidden; border: 1px solid #dee2e6; padding: 5px; background: #f8f9fa; border-radius: 20px;">
-                <img src="{{ asset('assets/udin.png') }}" 
-                     alt="Kepala Sekolah" 
-                     style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                @if($profil && $profil->gambar)
+                    <img src="{{ asset('assets/' . $profil->gambar) }}" 
+                         alt="Kepala Sekolah" 
+                         style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                @else
+                    <img src="{{ asset('assets/udin.png') }}" 
+                         alt="Kepala Sekolah" 
+                         style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                @endif
             </div>
             
-            <h4 class="fw-bold mb-1 mt-3">Drs. Budi Santoso</h4>
-            <p class="mb-2">Kepala Sekolah</p>
-            <p class="mb-1">📞 NIP. 19651231 198603 1 045</p>
-            <p class="mb-3">📧 kepsek@sdncontoh.sch.id</p>
+            @if($profil && $profil->konten)
+                <div class="mt-3">
+                    {!! nl2br(e($profil->konten)) !!}
+                </div>
+            @else
+                <h4 class="fw-bold mb-1 mt-3">Drs. Budi Santoso</h4>
+                <p class="mb-2">Kepala Sekolah</p>
+                <p class="mb-1">📞 NIP. 19651231 198603 1 045</p>
+                <p class="mb-3">📧 kepsek@sdncontoh.sch.id</p>
+            @endif
         </div>
         
         <!-- Kolom Kanan: Teks Sambutan -->
         <div class="col-md-8">
             <p class="mb-3">Assalamu'alaikum Warahmatullahi Wabarakatuh,</p>
             
-            <p class="mb-3">Puji syukur kita panjatkan ke hadirat Tuhan Yang Maha Esa, karena atas rahmat dan karunia-Nya, kita semua masih diberikan kesehatan dan kesempatan untuk terus berkarya dalam dunia pendidikan.</p>
-            
-            <p class="mb-3 fst-italic">"Selamat datang di website resmi SD Negeri Contoh Sekolah. Website ini kami hadirkan sebagai media informasi dan komunikasi antara sekolah, siswa, orang tua, dan masyarakat luas."</p>
-            
-            <p class="mb-3">Kami berharap dengan adanya website ini, informasi mengenai kegiatan dan perkembangan sekolah dapat diakses dengan mudah dan transparan. Kami berkomitmen untuk terus meningkatkan kualitas pendidikan dan pelayanan kepada siswa.</p>
-            
-            <p class="mb-3">Dengan dukungan tenaga pendidik yang kompeten dan fasilitas yang memadai, kami optimis dapat mencetak generasi yang cerdas, berkarakter, dan siap menghadapi tantangan masa depan.</p>
-        </div>
-    </div>
-
-    <!-- List Informasi -->
-    <div class="row mt-3">
-        <div class="col-md-4">
-            <p class="mb-2"><strong>• 30+ Tenaga Pendidik</strong></p>
-        </div>
-        <div class="col-md-4">
-            <p class="mb-2"><strong>• 500+ Siswa Aktif</strong></p>
-        </div>
-        <div class="col-md-4">
-            <p class="mb-2"><strong>• 15 Ruang Kelas</strong></p>
-        </div>
-    </div>
-    
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <p class="mb-2"><strong>• Akreditasi A</strong></p>
+            @if($profil && $profil->konten)
+                {!! nl2br(e($profil->konten)) !!}
+            @else
+                <p class="mb-3">Puji syukur kita panjatkan ke hadirat Tuhan Yang Maha Esa, karena atas rahmat dan karunia-Nya, kita semua masih diberikan kesehatan dan kesempatan untuk terus berkarya dalam dunia pendidikan.</p>
+                
+                <p class="mb-3 fst-italic">"Selamat datang di website resmi SD Negeri Contoh Sekolah. Website ini kami hadirkan sebagai media informasi dan komunikasi antara sekolah, siswa, orang tua, dan masyarakat luas."</p>
+                
+                <p class="mb-3">Kami berharap dengan adanya website ini, informasi mengenai kegiatan dan perkembangan sekolah dapat diakses dengan mudah dan transparan. Kami berkomitmen untuk terus meningkatkan kualitas pendidikan dan pelayanan kepada siswa.</p>
+                
+                <p class="mb-3">Dengan dukungan tenaga pendidik yang kompeten dan fasilitas yang memadai, kami optimis dapat mencetak generasi yang cerdas, berkarakter, dan siap menghadapi tantangan masa depan.</p>
+            @endif
         </div>
     </div>
 
@@ -72,34 +69,45 @@
 
     <hr class="mb-5">
 
-    <!-- Sejarah Sekolah -->
-    <h2 class="fw-bold mb-2">Sejarah Sekolah</h2>
-    <p class="fst-italic text-secondary mb-4">Perjalanan panjang SD Negeri Contoh Sekolah</p>
-
-    <!-- Timeline Sejarah -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <p class="fw-bold mb-1">1985</p>
-            <p class="text-secondary">Berdirinya sekolah</p>
-        </div>
-        <div class="col-md-3">
-            <p class="fw-bold mb-1">1995</p>
-            <p class="text-secondary">Renovasi gedung</p>
-        </div>
-        <div class="col-md-3">
-            <p class="fw-bold mb-1">2010</p>
-            <p class="text-secondary">Akreditasi A</p>
-        </div>
-        <div class="col-md-3">
-            <p class="fw-bold mb-1">2024</p>
-            <p class="text-secondary">Sekolah unggulan</p>
-        </div>
-    </div>
-
-    <!-- Teks Sejarah -->
-    <p class="mb-3">SD Negeri Contoh Sekolah, yang terletak di Jalan Pendidikan No. 123, Kota Contoh, Jawa Barat, merupakan sekolah negeri yang berdiri sejak tahun 1985. Dengan akreditasi A berdasarkan SK No. 123/BAN-SM/SK/2010, SD Negeri Contoh Sekolah berkomitmen untuk menyediakan pendidikan berkualitas tinggi bagi para siswanya.</p>
+    <!-- Sejarah Schools (also from database if available) -->
+    @php
+        $sejarah = \App\Models\profil::where('nama_menu', 'sejarah')->where('status', true)->first();
+    @endphp
     
-    <p class="mb-5">Sekolah ini berada di bawah naungan Kementerian Pendidikan dan Kebudayaan dan memiliki sistem penyelenggaraan pendidikan yang terus berkembang mengikuti kemajuan zaman. Dengan berbagai program unggulan dan dukungan tenaga pendidik yang profesional, SD Negeri Contoh Sekolah terus berupaya mencetak lulusan yang cerdas, berkarakter, dan mampu bersaing di masa depan.</p>
+    @if($sejarah)
+        <h2 class="fw-bold mb-2">{{ $sejarah->judul }}</h2>
+        <p class="fst-italic text-secondary mb-4">Perjalanan panjang sekolah</p>
+        
+        <p class="mb-5">{!! nl2br(e($sejarah->konten)) !!}
+    @else
+        <h2 class="fw-bold mb-2">Sejarah Sekolah</h2>
+        <p class="fst-italic text-secondary mb-4">Perjalanan panjang SD Negeri Contoh Sekolah</p>
+
+        <!-- Timeline Sejarah -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <p class="fw-bold mb-1">1985</p>
+                <p class="text-secondary">Berdirinya sekolah</p>
+            </div>
+            <div class="col-md-3">
+                <p class="fw-bold mb-1">1995</p>
+                <p class="text-secondary">Renovasi gedung</p>
+            </div>
+            <div class="col-md-3">
+                <p class="fw-bold mb-1">2010</p>
+                <p class="text-secondary">Akreditasi A</p>
+            </div>
+            <div class="col-md-3">
+                <p class="fw-bold mb-1">2024</p>
+                <p class="text-secondary">Sekolah unggulan</p>
+            </div>
+        </div>
+
+        <!-- Teks Sejarah -->
+        <p class="mb-3">SD Negeri Contoh Sekolah, yang terletak di Jalan Pendidikan No. 123, Kota Contoh, Jawa Barat, merupakan sekolah negeri yang berdiri sejak tahun 1985. Dengan akreditasi A berdasarkan SK No. 123/BAN-SM/SK/2010, SD Negeri Contoh Sekolah berkomitmen untuk menyediakan pendidikan berkualitas tinggi bagi para siswanya.</p>
+        
+        <p class="mb-5">Sekolah ini berada di bawah naungan Kementerian Pendidikan dan Kebudayaan dan memiliki sistem penyelenggaraan pendidikan yang terus berkembang mengikuti kemajuan zaman. Dengan berbagai program unggulan dan dukungan tenaga pendidik yang profesional, SD Negeri Contoh Sekolah terus berupaya mencetak lulusan yang cerdas, berkarakter, dan mampu bersaing di masa depan.</p>
+    @endif
 
     <!-- Footer -->
     <hr class="mb-3">

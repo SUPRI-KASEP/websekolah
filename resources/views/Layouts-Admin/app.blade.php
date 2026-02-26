@@ -548,7 +548,7 @@
 
             <!-- Profil -->
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('admin.profil') }}" class="nav-link">
                     <i class="fas fa-school"></i>
                     <span class="menu-text">Profil</span>
                 </a>

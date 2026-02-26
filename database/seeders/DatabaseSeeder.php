@@ -24,8 +24,5 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        $this->call([
-            ProfilSeeder::class,
-        ]);
     }
 }

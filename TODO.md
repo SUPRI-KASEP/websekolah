@@ -1,27 +1,24 @@
-# TODO - Login ke Halaman Admin Dashboard dengan Middleware
+# TODO - Fitur Profil Dinamis
 
-## Progres Checklist
+## Progress Implementation
 
-- [ ] 1. Update AuthController.php - Tambahkan method login() dan logout()
-- [ ] 2. Update AdminController.php - Tambahkan method dashboard()
-- [ ] 3. Update AuthAdmin Middleware - Tambahkan logika проверки admin
-- [ ] 4. Update web.php - Tambahkan route untuk login, logout, dan admin dashboard
+- [x] 1. Create Migration for visi-misi columns
+- [x] 2. Update Model - Add isi_visi and isi_misi to fillable
+- [x] 3. Update AdminController - Add profilIndex, profilStore, profilUpdate, profilDestroy methods with visi-misi support
+- [x] 4. Create Admin Profil Manage View
+- [x] 5. Update Routes - Add CRUD routes for profil management
+- [x] 6. Update Home Page - Fetch data dynamically from database
+- [x] 7. Update Profil Views (vm.blade.php) - Use isi_visi and isi_misi fields
+- [x] 8. Create Migration for sejarah fields (tahun_berdiri, jumlah_siswa, lulusan_sukes)
+- [x] 9. Update Admin View - Add sejarah stats fields (Tahun Berdiri, Jumlah Siswa, Lulusan Sukses)
+- [x] 10. Update Sejarah page (sejarah.blade.php) - Use dynamic stats
+- [x] 11. Update Home page - Use dynamic sejarah stats
 
-## Detail Langkah:
+## Notes
+- Migration already exists: 2026_02_23_031320_create_profils_table.php
+- Model already exists: app/Models/profil.php
+- Routes already exist for frontend profil display
 
-### 1. AuthController.php
-- Method `login(Request $request)` - proses login dengan validasi credentials
-- Method `logout(Request $request)` - logout dan redirect
-
-### 2. AdminController.php
-- Method `dashboard()` - tampilkan halaman admin dashboard
-
-### 3. AuthAdmin Middleware
-- Cek apakah user sudah login
-- Cek apakah user memiliki role 'admin'
-- Redirect ke login jika tidak terautentikasi
-
-### 4. routes/web.php
-- POST /login - proses login
-- POST /logout - logout
-- GET /admin/dashboard - halaman admin dengan middleware AuthAdmin
+## Next Steps (Run these commands)
+- Run migration: `php artisan migrate`
+- Test the application

@@ -1,5 +1,22 @@
 @extends('layouts.app')
 @section('title', 'Home')
+
+<?php
+use App\Models\profil;
+use Illuminate\Support\Str;
+
+$sambutan = profil::where('nama_menu', 'sambutan')->where('status', true)->first();
+$visimisi = profil::where('nama_menu', 'visi-misi')->where('status', true)->first();
+$sejarah = profil::where('nama_menu', 'sejarah')->where('status', true)->first();
+
+// Calculate dynamic stats for sejarah
+$tahunBerdiri = $sejarah && $sejarah->tahun_berdiri ? $sejarah->tahun_berdiri : 2000;
+$jumlahSiswa = $sejarah && $sejarah->jumlah_siswa ? $sejarah->jumlah_siswa : 500;
+$lulusanSukses = $sejarah && $sejarah->lulusan_sukes ? $sejarah->lulusan_sukes : 1000;
+$tahunSekarang = date('Y');
+$lamaBeroperasi = $tahunSekarang - $tahunBerdiri;
+?>
+
 @section('content')
 
 {{-- ============================================
@@ -29,15 +46,19 @@
         <div class="row align-items-center">
             <div class="col-md-5">
                 <div class="profil-image">
-                    <img src="{{ asset('assets/udin.png') }}" alt="Kepala Sekolah">
+                    @if($sambutan && $sambutan->gambar)
+                        <img src="{{ asset('assets/' . $sambutan->gambar) }}" alt="{{ $sambutan->judul }}">
+                    @else
+                        <img src="{{ asset('assets/udin.png') }}" alt="Kepala Sekolah">
+                    @endif
                 </div>
             </div>
             <div class="col-md-7">
                 <div class="profil-content">
                     <span class="section-tag">Profil Sekolah</span>
-                    <h2 class="section-title">Sambutan Kepala Sekolah</h2>
-                    <p class="section-desc">Assalamu'alaikum Warahmatullahi Wabarakatuh, Puji syukur kita panjatkan ke hadirat Tuhan Yang Maha Esa, karena atas rahmat dan karunia-Nya, kita semua masih diberikan kesehatan dan kesempatan untuk terus berkarya dalam dunia pendidikan.</p>
-                    <a href="{{ route('profil.menu', 'sambutan') }}" class="btn-link">Baca Selengkapnya <span class="arrow">→</span></a>
+                    <h2 class="section-title">@if($sambutan && $sambutan->judul) {{ $sambutan->judul }} @else Sambutan Kepala Sekolah @endif</h2>
+                    <p class="section-desc">@if($sambutan && $sambutan->konten) {!! Str::limit(nl2br(e($sambutan->konten)), 300) !!} @else Assalamu'alaikum Warahmatullahi Wabarakatuh, Puji syukur kita panjatkan ke hadirat Tuhan Yang Maha Esa, karena atas rahmat dan karunia-Nya, kita semua masih diberikan kesehatan dan kesempatan untuk terus berkarya dalam dunia pendidikan. @endif</p>
+                    <a href="{{ route('profil.menu', 'sambutan') }}" class="btn-link">Selengkapnya <span class="arrow">→</span></a>
                 </div>
             </div>
         </div>
@@ -59,24 +80,28 @@
             <div class="vm-card vm-visi">
                 <div class="vm-icon">👁️</div>
                 <h3>VISI</h3>
-                <p>"Menjadi sekolah menengah kejuruan yang menghasilkan lulusannya cerdas, kompeten, dan berkarakter Islami, serta mampu bersaing di tingkat nasional maupun internasional."</p>
+                <p>@if($visimisi && $visimisi->isi_visi) {!! nl2br(e($visimisi->isi_visi)) !!} @elseif($visimisi && $visimisi->konten) {!! nl2br(e($visimisi->konten)) !!} @else "Menjadi sekolah menengah kejuruan yang menghasilkan lulusannya cerdas, kompeten, dan berkarakter Islami, serta mampu bersaing di tingkat nasional maupun internasional." @endif</p>
             </div>
             
             <div class="vm-card vm-misi">
                 <div class="vm-icon">🎯</div>
                 <h3>MISI</h3>
-                <ul class="misi-list">
-                    <li><span class="misi-number">01</span>Penyedia pendidikan berkualitas relevan dengan kebutuhan dunia kerja</li>
-                    <li><span class="misi-number">02</span>Mengembangkan kompetensi keahlian sesuai standar industri</li>
-                    <li><span class="misi-number">03</span>Membentuk karakter Islami yang kuat</li>
-                    <li><span class="misi-number">04</span>Meningkatkan prestasi akademik dan non-akademik</li>
-                    <li><span class="misi-number">05</span>Membangun kerja sama dengan dunia industri</li>
-                </ul>
+                @if($visimisi && $visimisi->isi_misi)
+                    {!! nl2br(e($visimisi->isi_misi)) !!}
+                @else
+                    <ul class="misi-list">
+                        <li><span class="misi-number">01</span>Penyedia pendidikan berkualitas relevan dengan kebutuhan dunia kerja</li>
+                        <li><span class="misi-number">02</span>Mengembangkan kompetensi keahlian sesuai standar industri</li>
+                        <li><span class="misi-number">03</span>Membentuk karakter Islami yang kuat</li>
+                        <li><span class="misi-number">04</span>Meningkatkan prestasi akademik dan non-akademik</li>
+                        <li><span class="misi-number">05</span>Membangun kerja sama dengan dunia industri</li>
+                    </ul>
+                @endif
             </div>
         </div>
         
         <div class="text-center mt-4">
-            <a href="{{ route('profil.menu', 'visi-misi') }}" class="btn btn-primary">Lihat Selengkapnya</a>
+            <a href="{{ route('profil.menu', 'visi-misi') }}" class="btn btn-primary">Selengkapnya</a>
         </div>
     </div>
 </section>
@@ -89,23 +114,23 @@
         <div class="row align-items-center">
             <div class="col-md-7">
                 <span class="section-tag section-tag-light">Perjalanan Kami</span>
-                <h2 class="section-title">Sejarah Sekolah</h2>
-                <p class="section-desc">SMK Ucup didirikan pada tahun 2000 dengan visi untuk menciptakan sumber daya manusia yang kompeten dan berkarakter. Perjalanan panjang kami penuh dengan pencapaian dan pembelajaran berharga.</p>
+                <h2 class="section-title">@if($sejarah && $sejarah->judul) {{ $sejarah->judul }} @else Sejarah Sekolah @endif</h2>
+                <p class="section-desc">@if($sejarah && $sejarah->konten) {!! Str::limit(nl2br(e($sejarah->konten)), 250) !!} @else SMK Ucup didirikan pada tahun 2000 dengan visi untuk menciptakan sumber daya manusia yang kompeten dan berkarakter. Perjalanan panjang kami penuh dengan pencapaian dan pembelajaran berharga. @endif</p>
                 <p class="section-desc">Dengan dukungan tenaga pendidik profesional dan fasilitas modern, kami terus berinovasi untuk menghadirkan pendidikan berkualitas yang relevan dengan perkembangan zaman.</p>
-                <a href="{{ route('profil.menu', 'sejarah') }}" class="btn-link btn-link-light">Baca Selengkapnya <span class="arrow">→</span></a>
+                <a href="{{ route('profil.menu', 'sejarah') }}" class="btn-link btn-link-light">Selengkapnya <span class="arrow">→</span></a>
             </div>
             <div class="col-md-5">
                 <div class="sejarah-stats">
                     <div class="stat-box">
-                        <span class="stat-number">2000</span>
+                        <span class="stat-number">{{ $tahunBerdiri }}</span>
                         <span class="stat-label">Tahun Berdiri</span>
                     </div>
                     <div class="stat-box">
-                        <span class="stat-number">26+</span>
+                        <span class="stat-number">{{ $lamaBeroperasi }}+</span>
                         <span class="stat-label">Tahun Berpengalaman</span>
                     </div>
                     <div class="stat-box">
-                        <span class="stat-number">5000+</span>
+                        <span class="stat-number">{{ number_format($lulusanSukses) }}+</span>
                         <span class="stat-label">Lulusan Sukses</span>
                     </div>
                 </div>
@@ -660,7 +685,7 @@ h1, h2, h3, h4, h5, h6 {
 .sejarah-preview {
     padding: 100px 20px;
     background: var(--primary-gradient);
-    color: white;
+    color: white; 
 }
 
 .sejarah-preview .section-title {

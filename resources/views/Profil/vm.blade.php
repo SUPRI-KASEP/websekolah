@@ -19,7 +19,13 @@
         <div class="section-content">
             <div class="visi-box">
                 <p class="visi-text">
-                    "Menjadi sekolah menengah kejuruan yang menghasilkan lulusannya cerdas, kompeten, dan berkarakter Islami, serta mampu bersaing di tingkat nasional maupun internasional."
+                    @if($profil && $profil->isi_visi)
+                        {!! nl2br(e($profil->isi_visi)) !!}
+                    @elseif($profil && $profil->konten)
+                        {!! nl2br(e($profil->konten)) !!}
+                    @else
+                        "Menjadi sekolah menengah kejuruan yang menghasilkan lulusannya cerdas, kompeten, dan berkarakter Islami, serta mampu bersaing di tingkat nasional maupun internasional."
+                    @endif
                 </p>
             </div>
         </div>
@@ -33,36 +39,40 @@
             </h3>
         </div>
         <div class="section-content">
-            <ul class="misi-list">
-                <li class="misi-item">
-                    <span class="misi-number">1</span>
-                    <span class="misi-text">Menyediakan pendidikan berkualitas yang relevan dengan kebutuhan dunia kerja.</span>
-                </li>
-                <li class="misi-item">
-                    <span class="misi-number">2</span>
-                    <span class="misi-text">Mengembangkan kompetensi keahlian sesuai standar industri.</span>
-                </li>
-                <li class="misi-item">
-                    <span class="misi-number">3</span>
-                    <span class="misi-text">Membentuk karakter Islami yang kuat pada setiap peserta didik.</span>
-                </li>
-                <li class="misi-item">
-                    <span class="misi-number">4</span>
-                    <span class="misi-text">Meningkatkan prestasi akademik dan non-akademik secara berkelanjutan.</span>
-                </li>
-                <li class="misi-item">
-                    <span class="misi-number">5</span>
-                    <span class="misi-text">Membangun kerja sama dengan dunia industri dan dunia kerja (DUDI).</span>
-                </li>
-                <li class="misi-item">
-                    <span class="misi-number">6</span>
-                    <span class="misi-text">Mengembangkan sumber daya manusia yang profesional dan berakhlakul karimah.</span>
-                </li>
-                <li class="misi-item">
-                    <span class="misi-number">7</span>
-                    <span class="misi-text">Menerapkan teknologi informasi dan komunikasi dalam proses pembelajaran.</span>
-                </li>
-            </ul>
+            @if($profil && $profil->isi_misi)
+                {!! nl2br(e($profil->isi_misi)) !!}
+            @else
+                <ul class="misi-list">
+                    <li class="misi-item">
+                        <span class="misi-number">1</span>
+                        <span class="misi-text">Menyediakan pendidikan berkualitas yang relevan dengan kebutuhan dunia kerja.</span>
+                    </li>
+                    <li class="misi-item">
+                        <span class="misi-number">2</span>
+                        <span class="misi-text">Mengembangkan kompetensi keahlian sesuai standar industri.</span>
+                    </li>
+                    <li class="misi-item">
+                        <span class="misi-number">3</span>
+                        <span class="misi-text">Membentuk karakter Islami yang kuat pada setiap peserta didik.</span>
+                    </li>
+                    <li class="misi-item">
+                        <span class="misi-number">4</span>
+                        <span class="misi-text">Meningkatkan prestasi akademik dan non-akademik secara berkelanjutan.</span>
+                    </li>
+                    <li class="misi-item">
+                        <span class="misi-number">5</span>
+                        <span class="misi-text">Membangun kerja sama dengan dunia industri dan dunia kerja (DUDI).</span>
+                    </li>
+                    <li class="misi-item">
+                        <span class="misi-number">6</span>
+                        <span class="misi-text">Mengembangkan sumber daya manusia yang profesional dan berakhlakul karimah.</span>
+                    </li>
+                    <li class="misi-item">
+                        <span class="misi-number">7</span>
+                        <span class="misi-text">Menerapkan teknologi informasi dan komunikasi dalam proses pembelajaran.</span>
+                    </li>
+                </ul>
+            @endif
         </div>
     </div>
 
@@ -146,7 +156,7 @@
                 <p class="motto-text">"BERIMAN, BERILMU, BERAKHLAK"</p>
             </div>
             <p class="mt-3 text-center text-secondary">
-                Bermakna: Seluruh civitas akademika школы berkomitmen untuk meningkatkan keimanan, ilmu pengetahuan, dan akhlakul karimah dalam setiap aspek kehidupan.
+                Bermakna: Seluruh civitas akademika berkomitmen untuk meningkatkan keimanan, ilmu pengetahuan, dan akhlakul karimah dalam setiap aspek kehidupan.
             </p>
         </div>
     </div>

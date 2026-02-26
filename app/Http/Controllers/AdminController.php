@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Eskul;
 use App\Models\Fasilitas;
 use App\Models\Prestasi;
+use App\Models\profil;
 
 class AdminController extends Controller
 {
@@ -377,5 +378,143 @@ class AdminController extends Controller
         $prestasi->delete();
 
         return redirect()->route('admin.prestasi')->with('success', 'Prestasi berhasil dihapus!');
+    }
+
+    // ==================== PROFIL MANAGEMENT ====================
+    
+    /**
+     * Display a listing of the profil.
+     */
+    public function profilIndex()
+    {
+        $profils = profil::orderBy('urutan')->get();
+        return view('admin.profil.manage', compact('profils'));
+    }
+
+    /**
+     * Store a newly created profil in storage.
+     */
+    public function profilStore(Request $request)
+    {
+        $request->validate([
+            'nama_menu' => 'required|string|max:255|unique:profils,nama_menu',
+            'judul' => 'required|string|max:255',
+            'konten' => 'nullable',
+            'isi_visi' => 'nullable',
+            'isi_misi' => 'nullable',
+            'tahun_berdiri' => 'nullable|integer|min:1900|max:2100',
+            'jumlah_siswa' => 'nullable|integer|min:0',
+            'lulusan_sukes' => 'nullable|integer|min:0',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'urutan' => 'nullable|integer',
+            'status' => 'nullable',
+        ]);
+
+        $data = [
+            'nama_menu' => $request->nama_menu,
+            'judul' => $request->judul,
+            'konten' => $request->konten,
+            'isi_visi' => $request->isi_visi,
+            'isi_misi' => $request->isi_misi,
+            'tahun_berdiri' => $request->tahun_berdiri,
+            'jumlah_siswa' => $request->jumlah_siswa,
+            'lulusan_sukes' => $request->lulusan_sukes,
+            'urutan' => $request->urutan ?? 0,
+            'status' => $request->has('status'), // True if checkbox is checked, false otherwise
+        ];
+
+        // Handle image upload - only for welcome message (sambutan)
+        if ($request->nama_menu === 'sambutan' && $request->hasFile('gambar')) {
+            $image = $request->file('gambar');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets'), $imageName);
+            $data['gambar'] = $imageName;
+        } else {
+            $data['gambar'] = null;
+        }
+
+        profil::create($data);
+
+        return redirect()->route('admin.profil')->with('success', 'Profil berhasil ditambahkan!');
+    }
+
+    /**
+     * Update the specified profil in storage.
+     */
+    public function profilUpdate(Request $request, $id)
+    {
+        $profil = profil::findOrFail($id);
+
+        $request->validate([
+            'nama_menu' => 'required|string|max:255|unique:profils,nama_menu,' . $id,
+            'judul' => 'required|string|max:255',
+            'konten' => 'nullable',
+            'isi_visi' => 'nullable',
+            'isi_misi' => 'nullable',
+            'tahun_berdiri' => 'nullable|integer|min:1900|max:2100',
+            'jumlah_siswa' => 'nullable|integer|min:0',
+            'lulusan_sukes' => 'nullable|integer|min:0',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'urutan' => 'nullable|integer',
+            'status' => 'nullable',
+        ]);
+
+        $data = [
+            'nama_menu' => $request->nama_menu,
+            'judul' => $request->judul,
+            'konten' => $request->konten,
+            'isi_visi' => $request->isi_visi,
+            'isi_misi' => $request->isi_misi,
+            'tahun_berdiri' => $request->tahun_berdiri,
+            'jumlah_siswa' => $request->jumlah_siswa,
+            'lulusan_sukes' => $request->lulusan_sukes,
+            'urutan' => $request->urutan ?? 0,
+            'status' => $request->has('status'), // True if checkbox is checked, false otherwise
+        ];
+
+        // Handle image upload - only for welcome message
+        if ($request->nama_menu === 'sambutan') {
+            if ($request->hasFile('gambar')) {
+                // Delete old image if exists
+                if ($profil->gambar && file_exists(public_path('assets/' . $profil->gambar))) {
+                    unlink(public_path('assets/' . $profil->gambar));
+                }
+                
+                $image = $request->file('gambar');
+                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('assets'), $imageName);
+                $data['gambar'] = $imageName;
+            } else {
+                // Keep old image if no new image uploaded
+                $data['gambar'] = $profil->gambar;
+            }
+        } else {
+            // For non-welcome menus, remove image if exists
+            if ($profil->gambar && file_exists(public_path('assets/' . $profil->gambar))) {
+                unlink(public_path('assets/' . $profil->gambar));
+            }
+            $data['gambar'] = null;
+        }
+
+        $profil->update($data);
+
+        return redirect()->route('admin.profil')->with('success', 'Profil berhasil diperbarui!');
+    }
+
+    /**
+     * Remove the specified profil from storage.
+     */
+    public function profilDestroy($id)
+    {
+        $profil = profil::findOrFail($id);
+        
+        // Delete image if exists
+        if ($profil->gambar && file_exists(public_path('assets/' . $profil->gambar))) {
+            unlink(public_path('assets/' . $profil->gambar));
+        }
+
+        $profil->delete();
+
+        return redirect()->route('admin.profil')->with('success', 'Profil berhasil dihapus!');
     }
 }
