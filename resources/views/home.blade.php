@@ -1,30 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Home')
 
-<?php
-use App\Models\profil;
-use App\Models\Fasilitas;
-use App\Models\Prestasi;
-use App\Models\Eskul;
-use Illuminate\Support\Str;
-
-$sambutan = profil::where('nama_menu', 'sambutan')->where('status', true)->first();
-$visimisi = profil::where('nama_menu', 'visi-misi')->where('status', true)->first();
-$sejarah = profil::where('nama_menu', 'sejarah')->where('status', true)->first();
-
-// Calculate dynamic stats for sejarah
-$tahunBerdiri = $sejarah && $sejarah->tahun_berdiri ? $sejarah->tahun_berdiri : 2000;
-$jumlahSiswa = $sejarah && $sejarah->jumlah_siswa ? $sejarah->jumlah_siswa : 500;
-$lulusanSukses = $sejarah && $sejarah->lulusan_sukes ? $sejarah->lulusan_sukes : 1000;
-$tahunSekarang = date('Y');
-$lamaBeroperasi = $tahunSekarang - $tahunBerdiri;
-
-// Get dynamic data for home page
-$fasilitas = Fasilitas::where('status', true)->orderBy('id', 'asc')->limit(6)->get();
-$prestasis = Prestasi::where('status', true)->orderBy('id', 'desc')->limit(4)->get();
-$eskuls = Eskul::where('status', true)->orderBy('id', 'asc')->limit(6)->get();
-?>
-
 @section('content')
 
 {{-- ============================================
@@ -236,44 +212,39 @@ $eskuls = Eskul::where('status', true)->orderBy('id', 'asc')->limit(6)->get();
         </div>
         
         <div class="produksi-grid">
-            @forelse($prestasis as $item)
+            @forelse($prestasis as $index => $item)
             <div class="produksi-card">
-                <div class="produksi-badge">
-                    @if($item->foto)
-                        <img src="{{ asset('assets/' . $item->foto) }}" alt="{{ $item->nama_prestasi }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
-                    @else
-                        🏆
-                    @endif
+                <div class="produksi-image-wrapper">
+                    <div class="produksi-badge">
+                        @if($item->foto)
+                            <img src="{{ asset('assets/' . $item->foto) }}" 
+                                 alt="{{ $item->nama_prestasi }}" 
+                                 class="produksi-img">
+                        @else
+                            🏆
+                        @endif
+                    </div>
                 </div>
-                <h4>{{ $item->nama_prestasi }}</h4>
-                <p>{!! nl2br(e($item->isi)) !!}</p>
+                <h4 class="produksi-card-title">{{ $item->nama_prestasi }}</h4>
+                <p class="produksi-card-text">
+                    {!! nl2br(e(Str::limit($item->isi, 100))) !!}
+                </p>
+                <div class="produksi-card-footer">
+                    <a href="" class="btn btn-primary text-white">selengkapnya</a>
+                </div>
             </div>
-            @empty
-            <div class="produksi-card">
-                <div class="produksi-badge">🏆</div>
-                <h4>Juara 1 Desain Grafis</h4>
-                <p>Kompetisi Tingkat Provinsi Jawa Barat - 2024</p>
+        @empty
+            <div class="col-12">
+                <div class="empty-state-card">
+                    <div class="empty-icon">🏆</div>
+                    <p>Belum ada data prestasi yang ditambahkan.</p>
+                </div>
             </div>
-            <div class="produksi-card">
-                <div class="produksi-badge">🥈</div>
-                <h4>Juara 2 Coding</h4>
-                <p>Kompetisi Tingkat Kabupaten - 2024</p>
-            </div>
-            <div class="produksi-card">
-                <div class="produksi-badge">⚽</div>
-                <h4>Juara 1 Futsal</h4>
-                <p>Turnamen Tingkat Kecamatan - 2023</p>
-            </div>
-            <div class="produksi-card">
-                <div class="produksi-badge">📊</div>
-                <h4>Best Student Award</h4>
-                <p>Penghargaan dari Dinas Pendidikan - 2023</p>
-            </div>
-            @endforelse
+        @endforelse
         </div>
         
         <div class="text-center mt-4">
-            <a href="" class="btn btn-outline-white">Lihat Semua Prestasi</a>
+            <a href="{{ route('prestasi.index') }}" class="btn btn-outline-white">Lihat Semua Prestasi</a>
         </div>
     </div>
 </section>
@@ -843,11 +814,26 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.6;
 }
 
-/* Prestasi Preview */
+/* Prestasi Preview - Elegant Design */
 .produksi-preview {
     padding: 100px 20px;
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.produksi-preview::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .produksi-preview .section-title {
@@ -859,41 +845,137 @@ h1, h2, h3, h4, h5, h6 {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     margin-top: 50px;
+    position: relative;
+    z-index: 1;
 }
 
 .produksi-card {
-    background: rgba(255, 255, 255, 0.08);
-    padding: 40px 30px;
-    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 45px 30px 35px;
+    border-radius: 24px;
     text-align: center;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.produksi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #b8962e, #d4af37, #f4e4bc);
+    opacity: 0;
+    transition: opacity 0.4s ease;
 }
 
 .produksi-card:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-10px);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-12px);
+    border-color: rgba(212, 175, 55, 0.3);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+}
+
+.produksi-card:hover::before {
+    opacity: 1;
+}
+
+.produksi-image-wrapper {
+    margin-bottom: 25px;
 }
 
 .produksi-badge {
-    font-size: 50px;
-    margin-bottom: 20px;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d4af37 0%, #b8962e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+    transition: all 0.4s ease;
+    border: 4px solid rgba(255, 255, 255, 0.2);
 }
 
-.produksi-card h4 {
-    font-size: 1.2rem;
+.produksi-card:hover .produksi-badge {
+    transform: scale(1.1);
+    box-shadow: 0 12px 40px rgba(212, 175, 55, 0.5);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.produksi-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.produksi-card-title {
+    font-size: 1.25rem;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
     color: white;
+    line-height: 1.3;
 }
 
-.produksi-card p {
-    font-size: 0.95rem;
-    opacity: 0.85;
-    margin: 0;
-    line-height: 1.6;
+.produksi-card-text {
+    font-size: 0.9rem;
+    opacity: 0.75;
+    margin: 0 0 20px;
+    line-height: 1.7;
+}
+
+.produksi-card-footer {
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.produksi-cta {
+    color: #d4af37;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.produksi-cta .arrow {
+    transition: transform 0.3s ease;
+}
+
+.produksi-card:hover .produksi-cta {
+    color: #f4e4bc;
+}
+
+.produksi-card:hover .produksi-cta .arrow {
+    transform: translateX(5px);
+}
+
+.empty-state-card {
+    text-align: center;
+    padding: 60px 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    grid-column: 1 / -1;
+}
+
+.empty-state-card .empty-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.empty-state-card p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
 }
 
 /* Eskul Preview */

@@ -307,11 +307,13 @@ class AdminController extends Controller
             'nama_prestasi' => 'required|string|max:255',
             'isi' => 'required',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'nullable',
         ]);
 
         $data = [
             'nama_prestasi' => $request->nama_prestasi,
             'isi' => $request->isi,
+            'status' => $request->has('status') ? true : false,
         ];
 
         // Handle image upload
@@ -338,11 +340,13 @@ class AdminController extends Controller
             'nama_prestasi' => 'required|string|max:255',
             'isi' => 'required',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'nullable',
         ]);
 
         $data = [
             'nama_prestasi' => $request->nama_prestasi,
             'isi' => $request->isi,
+            'status' => $request->has('status') ? true : false,
         ];
 
         // Handle image upload

@@ -7,9 +7,7 @@ use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\ProfilController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
 // Route Login
 Route::get('/login', [AuthController::class, 'index'])->name('login');
