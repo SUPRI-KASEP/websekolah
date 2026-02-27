@@ -173,6 +173,11 @@
 
         .footer-column h3 {
             margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        .footer-column p {
+            color: #bdc3c7;
         }
 
         .footer-column ul {
@@ -235,10 +240,9 @@
     {{-- FOOTER --}}
     <footer class="footer">
         <div class="footer-container">
-
+            
             <div class="footer-column">
-                <h3>SMK-Ucup</h3>
-                <p>Website resmi sekolah.</p>
+                <h3>SMK-SLB</h3>
             </div>
 
             <div class="footer-column">

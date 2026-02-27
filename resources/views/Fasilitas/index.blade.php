@@ -253,10 +253,10 @@
   }
 
   .card-icon-wrap {
-    width: 56px;
-    height: 56px;
+    width: 100%;
+    height: 180px;
     border-radius: 14px;
-    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    background: var(--cream);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -266,15 +266,10 @@
     flex-shrink: 0;
   }
 
-  .card-icon-wrap::after {
-    content: '';
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    width: 30px;
-    height: 30px;
-    background: rgba(201,169,110,0.2);
-    border-radius: 50%;
+  .card-icon-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .card-icon {
@@ -308,36 +303,6 @@
     line-height: 1.65;
     flex: 1;
     margin-bottom: 20px;
-  }
-
-  .card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-top: auto;
-    padding-top: 18px;
-    border-top: 1px solid #F0EBE3;
-  }
-
-  .card-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 5px 12px;
-    border-radius: 50px;
-    background: var(--cream);
-    border: 1px solid #E8E0D4;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--navy-mid);
-    letter-spacing: 0.3px;
-  }
-
-  .card-tag::before {
-    content: '·';
-    color: var(--gold);
-    font-size: 14px;
-    line-height: 1;
   }
 
   /* ── ANIMATIONS ── */
@@ -378,20 +343,8 @@
   {{-- STATS BAR --}}
   <div class="stats-bar">
     <div class="stat-item" style="animation-delay:0.1s">
-      <div class="stat-number">15<sup>+</sup></div>
-      <div class="stat-label">Ruang Kelas</div>
-    </div>
-    <div class="stat-item" style="animation-delay:0.2s">
-      <div class="stat-number">3</div>
-      <div class="stat-label">Laboratorium</div>
-    </div>
-    <div class="stat-item" style="animation-delay:0.3s">
-      <div class="stat-number">2</div>
-      <div class="stat-label">Lapangan</div>
-    </div>
-    <div class="stat-item" style="animation-delay:0.4s">
-      <div class="stat-number">4</div>
-      <div class="stat-label">Fasilitas Umum</div>
+      <div class="stat-number">{{ $fasilitas->count() }}<sup>+</sup></div>
+      <div class="stat-label">Total Fasilitas</div>
     </div>
   </div>
 
@@ -404,110 +357,26 @@
     </div>
 
     <div class="cards-grid">
-
-      {{-- Card 1: Lab Komputer --}}
+      @forelse($fasilitas as $index => $item)
       <div class="facility-card">
         <div class="card-accent"></div>
         <div class="card-body">
           <div class="card-icon-wrap">
-            <span class="card-icon">💻</span>
+            @if($item->gambar)
+              <img src="{{ asset('assets/' . $item->gambar) }}" alt="{{ $item->nama_fasilitas }}">
+            @endif
           </div>
-          <div class="card-count">15 Unit</div>
-          <h3 class="card-title">Laboratorium Komputer</h3>
-          <p class="card-desc">Dilengkapi perangkat komputer modern dan akses internet untuk mendukung pembelajaran teknologi secara efektif.</p>
-          <div class="card-tags">
-            <span class="card-tag">WiFi 24/7</span>
-            <span class="card-tag">AC Central</span>
-          </div>
+          <div class="card-count">Fasilitas</div>
+          <h3 class="card-title">{{ $item->nama_fasilitas }}</h3>
+          <p class="card-desc">{{ $item->deskripsi }}</p>
         </div>
       </div>
-
-      {{-- Card 2: Perpustakaan --}}
-      <div class="facility-card">
-        <div class="card-accent"></div>
-        <div class="card-body">
-          <div class="card-icon-wrap">
-            <span class="card-icon">📚</span>
-          </div>
-          <div class="card-count">3000+ Buku</div>
-          <h3 class="card-title">Perpustakaan</h3>
-          <p class="card-desc">Menyediakan berbagai koleksi buku pelajaran dan literatur untuk meningkatkan minat baca siswa.</p>
-          <div class="card-tags">
-            <span class="card-tag">Referensi Digital</span>
-          </div>
-        </div>
+      @empty
+      <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+        <p style="color: #6B7A8D; font-size: 14px;">Belum ada data fasilitas.</p>
       </div>
-
-      {{-- Card 3: Lapangan --}}
-      <div class="facility-card">
-        <div class="card-accent"></div>
-        <div class="card-body">
-          <div class="card-icon-wrap">
-            <span class="card-icon">🏃</span>
-          </div>
-          <div class="card-count">Multi-fungsi</div>
-          <h3 class="card-title">Lapangan Olahraga</h3>
-          <p class="card-desc">Fasilitas olahraga yang luas untuk kegiatan fisik, upacara, dan berbagai event sekolah.</p>
-          <div class="card-tags">
-            <span class="card-tag">Basket</span>
-            <span class="card-tag">Futsal</span>
-          </div>
-        </div>
-      </div>
-
-      {{-- Card 4: Ruang Kelas --}}
-      <div class="facility-card">
-        <div class="card-accent"></div>
-        <div class="card-body">
-          <div class="card-icon-wrap">
-            <span class="card-icon">🏫</span>
-          </div>
-          <div class="card-count">15 Kelas</div>
-          <h3 class="card-title">Ruang Kelas Nyaman</h3>
-          <p class="card-desc">Ruang kelas bersih dan nyaman dilengkapi fasilitas pendukung pembelajaran yang modern.</p>
-          <div class="card-tags">
-            <span class="card-tag">Proyektor</span>
-            <span class="card-tag">AC</span>
-          </div>
-        </div>
-      </div>
-
-      {{-- Card 5: Lab IPA --}}
-      <div class="facility-card">
-        <div class="card-accent"></div>
-        <div class="card-body">
-          <div class="card-icon-wrap">
-            <span class="card-icon">🔬</span>
-          </div>
-          <div class="card-count">Lab IPA</div>
-          <h3 class="card-title">Laboratorium IPA</h3>
-          <p class="card-desc">Mendukung pembelajaran sains dengan peralatan praktikum yang lengkap dan standar.</p>
-          <div class="card-tags">
-            <span class="card-tag">Mikroskop</span>
-            <span class="card-tag">Alat Lab</span>
-          </div>
-        </div>
-      </div>
-
-      {{-- Card 6: Mushola --}}
-      <div class="facility-card">
-        <div class="card-accent"></div>
-        <div class="card-body">
-          <div class="card-icon-wrap">
-            <span class="card-icon">🕌</span>
-          </div>
-          <div class="card-count">Ibadah</div>
-          <h3 class="card-title">Mushola</h3>
-          <p class="card-desc">Tempat ibadah yang nyaman untuk mendukung kegiatan spiritual siswa dan guru sehari-hari.</p>
-          <div class="card-tags">
-            <span class="card-tag">Wudhu</span>
-            <span class="card-tag">AC</span>
-          </div>
-        </div>
-      </div>
-
+      @endforelse
     </div>
   </div>
 </div>
-
 @endsection
