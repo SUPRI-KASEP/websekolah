@@ -352,7 +352,7 @@ $eskuls = Eskul::where('status', true)->orderBy('id', 'asc')->limit(6)->get();
 <section class="cta-section">
     <div class="container text-center">
         <h2>Siap Bergabung dengan Kami?</h2>
-        <p>Wujudkan masa depan cerah Anda bersama SMK Ucup</p>
+        <p>Wujudkan masa depan cerah Anda bersama SMK SLB</p>
         <div class="cta-buttons">
             <a href="#" class="btn btn-white">Hubungi Kami</a>
             <a href="#" class="btn btn-white-outline">Daftar Online</a>
