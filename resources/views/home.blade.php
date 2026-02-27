@@ -3,6 +3,9 @@
 
 <?php
 use App\Models\profil;
+use App\Models\Fasilitas;
+use App\Models\Prestasi;
+use App\Models\Eskul;
 use Illuminate\Support\Str;
 
 $sambutan = profil::where('nama_menu', 'sambutan')->where('status', true)->first();
@@ -15,6 +18,11 @@ $jumlahSiswa = $sejarah && $sejarah->jumlah_siswa ? $sejarah->jumlah_siswa : 500
 $lulusanSukses = $sejarah && $sejarah->lulusan_sukes ? $sejarah->lulusan_sukes : 1000;
 $tahunSekarang = date('Y');
 $lamaBeroperasi = $tahunSekarang - $tahunBerdiri;
+
+// Get dynamic data for home page
+$fasilitas = Fasilitas::where('status', true)->orderBy('id', 'asc')->limit(6)->get();
+$prestasis = Prestasi::where('status', true)->orderBy('id', 'desc')->limit(4)->get();
+$eskuls = Eskul::where('status', true)->orderBy('id', 'asc')->limit(6)->get();
 ?>
 
 @section('content')
@@ -24,7 +32,7 @@ $lamaBeroperasi = $tahunSekarang - $tahunBerdiri;
 ============================================ --}}
 <section class="hero-section">
     <div class="hero-content">
-        <h1 class="hero-title">Selamat Datang di <span class="text-gold">SMK Ucup</span></h1>
+        <h1 class="hero-title">Selamat Datang di <span class="text-gold">SMK SLB</span></h1>
         <p class="hero-subtitle">Membangun Generasi Cerdas, Kompeten, dan Berkarakter Islami</p>
         <div class="hero-buttons">
             <a href="{{ route('profil.menu', 'visi-misi') }}" class="btn btn-primary">Visi & Misi</a>
@@ -152,6 +160,19 @@ $lamaBeroperasi = $tahunSekarang - $tahunBerdiri;
         </div>
         
         <div class="fasilitas-grid">
+            @forelse($fasilitas as $item)
+            <div class="fasilitas-item">
+                <div class="fasilitas-icon-box">
+                    @if($item->gambar)
+                        <img src="{{ asset('assets/' . $item->gambar) }}" alt="{{ $item->nama_fasilitas }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 10px;">
+                    @else
+                        <span class="fasilitas-icon">🏫</span>
+                    @endif
+                </div>
+                <h4>{{ $item->nama_fasilitas }}</h4>
+                <p>{{ $item->deskripsi }}</p>
+            </div>
+            @empty
             <div class="fasilitas-item">
                 <div class="fasilitas-icon-box">
                     <span class="fasilitas-icon">💻</span>
@@ -194,6 +215,7 @@ $lamaBeroperasi = $tahunSekarang - $tahunBerdiri;
                 <h4>Mushola Modern</h4>
                 <p>Tempat ibadah yang bersih, nyaman dan mencerminkan nilai Islami</p>
             </div>
+            @endforelse
         </div>
         
         <div class="text-center mt-4">
@@ -205,7 +227,7 @@ $lamaBeroperasi = $tahunSekarang - $tahunBerdiri;
 {{-- ============================================
      PRESTASI SECTION
 ============================================ --}}
-<section class="prestasi-preview">
+<section class="produksi-preview">
     <div class="container">
         <div class="section-header text-center">
             <span class="section-tag section-tag-light">Keunggulan</span>
@@ -213,31 +235,45 @@ $lamaBeroperasi = $tahunSekarang - $tahunBerdiri;
             <div class="section-line section-line-light"></div>
         </div>
         
-        <div class="prestasi-grid">
-            <div class="prestasi-card">
-                <div class="prestasi-badge">🏆</div>
+        <div class="produksi-grid">
+            @forelse($prestasis as $item)
+            <div class="produksi-card">
+                <div class="produksi-badge">
+                    @if($item->foto)
+                        <img src="{{ asset('assets/' . $item->foto) }}" alt="{{ $item->nama_prestasi }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
+                    @else
+                        🏆
+                    @endif
+                </div>
+                <h4>{{ $item->nama_prestasi }}</h4>
+                <p>{!! nl2br(e($item->isi)) !!}</p>
+            </div>
+            @empty
+            <div class="produksi-card">
+                <div class="produksi-badge">🏆</div>
                 <h4>Juara 1 Desain Grafis</h4>
                 <p>Kompetisi Tingkat Provinsi Jawa Barat - 2024</p>
             </div>
-            <div class="prestasi-card">
-                <div class="prestasi-badge">🥈</div>
+            <div class="produksi-card">
+                <div class="produksi-badge">🥈</div>
                 <h4>Juara 2 Coding</h4>
                 <p>Kompetisi Tingkat Kabupaten - 2024</p>
             </div>
-            <div class="prestasi-card">
-                <div class="prestasi-badge">⚽</div>
+            <div class="produksi-card">
+                <div class="produksi-badge">⚽</div>
                 <h4>Juara 1 Futsal</h4>
                 <p>Turnamen Tingkat Kecamatan - 2023</p>
             </div>
-            <div class="prestasi-card">
-                <div class="prestasi-badge">📊</div>
+            <div class="produksi-card">
+                <div class="produksi-badge">📊</div>
                 <h4>Best Student Award</h4>
                 <p>Penghargaan dari Dinas Pendidikan - 2023</p>
             </div>
+            @endforelse
         </div>
         
         <div class="text-center mt-4">
-            <a href="{{ route('prestasi.index') }}" class="btn btn-outline-white">Lihat Semua Prestasi</a>
+            <a href="" class="btn btn-outline-white">Lihat Semua Prestasi</a>
         </div>
     </div>
 </section>
@@ -255,6 +291,22 @@ $lamaBeroperasi = $tahunSekarang - $tahunBerdiri;
         </div>
         
         <div class="eskul-grid">
+            @forelse($eskuls as $item)
+            <div class="eskul-card">
+                <div class="eskul-icon">
+                    @if($item->gambar)
+                        <img src="{{ asset('assets/' . $item->gambar) }}" alt="{{ $item->nama_eskul }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
+                    @else
+                        🎯
+                    @endif
+                </div>
+                <h4>{{ $item->nama_eskul }}</h4>
+                <p>{{ $item->deskripsi }}</p>
+                @if($item->pembina)
+                <p style="font-size: 0.85rem; color: #667eea; margin-top: 10px;">Pembina: {{ $item->pembina }}</p>
+                @endif
+            </div>
+            @empty
             <div class="eskul-card">
                 <div class="eskul-icon">🎨</div>
                 <h4>Seni Rupa</h4>
@@ -285,6 +337,7 @@ $lamaBeroperasi = $tahunSekarang - $tahunBerdiri;
                 <h4>Pramuka</h4>
                 <p>Pengembangan karakter, kepemimpinan dan kemandirian</p>
             </div>
+            @endforelse
         </div>
         
         <div class="text-center mt-4">
@@ -791,24 +844,24 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Prestasi Preview */
-.prestasi-preview {
+.produksi-preview {
     padding: 100px 20px;
     background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
     color: white;
 }
 
-.prestasi-preview .section-title {
+.produksi-preview .section-title {
     color: white;
 }
 
-.prestasi-grid {
+.produksi-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     margin-top: 50px;
 }
 
-.prestasi-card {
+.produksi-card {
     background: rgba(255, 255, 255, 0.08);
     padding: 40px 30px;
     border-radius: 20px;
@@ -818,25 +871,25 @@ h1, h2, h3, h4, h5, h6 {
     backdrop-filter: blur(10px);
 }
 
-.prestasi-card:hover {
+.produksi-card:hover {
     background: rgba(255, 255, 255, 0.15);
     transform: translateY(-10px);
     border-color: rgba(255, 255, 255, 0.3);
 }
 
-.prestasi-badge {
+.produksi-badge {
     font-size: 50px;
     margin-bottom: 20px;
 }
 
-.prestasi-card h4 {
+.produksi-card h4 {
     font-size: 1.2rem;
     font-weight: 700;
     margin-bottom: 12px;
     color: white;
 }
 
-.prestasi-card p {
+.produksi-card p {
     font-size: 0.95rem;
     opacity: 0.85;
     margin: 0;
@@ -1008,7 +1061,7 @@ h1, h2, h3, h4, h5, h6 {
     
     .vm-grid,
     .fasilitas-grid,
-    .prestasi-grid,
+    .produksi-grid,
     .eskul-grid {
         grid-template-columns: 1fr;
     }

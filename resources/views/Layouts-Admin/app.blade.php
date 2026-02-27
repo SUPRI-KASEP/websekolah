@@ -514,6 +514,163 @@
         body.dark-mode .badge.bg-primary {
             background-color: #0d6efd !important;
         }
+
+        /* ================= LOGOUT MODAL ================= */
+        .logout-modal .modal-content {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .logout-modal .modal-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a2632 100%);
+            border: none;
+            padding: 25px 30px 20px;
+            position: relative;
+        }
+
+        .logout-modal .modal-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1abc9c, #16a085);
+        }
+
+        .logout-modal .modal-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logout-modal .modal-title i {
+            color: #1abc9c;
+            font-size: 1.5rem;
+        }
+
+        .logout-modal .modal-body {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .logout-modal .logout-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #fef3e2 0%, #fde4c8 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 25px rgba(243, 159, 75, 0.3);
+        }
+
+        .logout-modal .logout-icon i {
+            font-size: 2rem;
+            color: #f39c12;
+        }
+
+        .logout-modal .logout-text {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .logout-modal .logout-subtext {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .logout-modal .modal-footer {
+            border: none;
+            padding: 0 30px 30px;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .logout-modal .btn-cancel {
+            padding: 12px 35px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: 2px solid #e0e0e0;
+            background: white;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .logout-modal .btn-cancel:hover {
+            border-color: #ccc;
+            background: #f8f9fa;
+            color: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logout-modal .btn-logout {
+            padding: 12px 35px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .logout-modal .btn-logout:hover {
+            background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .logout-modal .btn-logout i {
+            margin-right: 8px;
+        }
+
+        /* Dark mode support for modal */
+        body.dark-mode .logout-modal .modal-content {
+            background-color: #2d2d2d;
+        }
+
+        body.dark-mode .logout-modal .modal-header {
+            background: linear-gradient(135deg, #1a2632 0%, #0d1520 100%);
+        }
+
+        body.dark-mode .logout-modal .logout-text {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .logout-modal .logout-subtext {
+            color: #999;
+        }
+
+        body.dark-mode .logout-modal .logout-icon {
+            background: linear-gradient(135deg, #3d3d3d 0%, #2d2d2d 100%);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .logout-modal .logout-icon i {
+            color: #f39c12;
+        }
+
+        body.dark-mode .logout-modal .btn-cancel {
+            background: #3d3d3d;
+            border-color: #555;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .logout-modal .btn-cancel:hover {
+            background: #4d4d4d;
+            border-color: #666;
+        }
     </style>
 </head>
 <body class="" id="body">
@@ -752,11 +909,15 @@
             });
         }
 
-        // Logout function
+        // Logout function with modal
         function logout() {
-            if (confirm('Apakah Anda yakin ingin logout?')) {
-                alert('Anda telah logout');
-            }
+            const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+            modal.show();
+        }
+
+        // Confirm logout
+        function confirmLogout() {
+            document.getElementById('logoutForm').submit();
         }
 
         // Mobile menu toggle
@@ -767,5 +928,39 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Logout Modal -->
+    <div class="modal fade logout-modal" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Konfirmasi Logout
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="logout-icon">
+                        <i class="fas fa-door-open"></i>
+                    </div>
+                    <p class="logout-text">Apakah Anda yakin ingin keluar?</p>
+                    <p class="logout-subtext">Anda akan keluar dari sistem dan perlu login kembali untuk mengakses fitur admin.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
+                        Batal
+                    </button>
+                    <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="button" class="btn btn-logout" onclick="confirmLogout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Ya, Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

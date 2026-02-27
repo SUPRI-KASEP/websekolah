@@ -11,5 +11,6 @@ class Eskul extends Model
         'pembina',
         'deskripsi',
         'gambar',
+        'status',
     ];
 }

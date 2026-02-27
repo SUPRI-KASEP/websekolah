@@ -79,7 +79,7 @@ $lamaBeroperasi = $tahunSekarang - $tahunBerdiri;
                 <div class="timeline-dot"></div>
                 <div class="timeline-content">
                     <h5 class="fw-bold"><?php echo $tahunBerdiri; ?></h5>
-                    <p>Didirikan dengan nama awal "SMK Teknologi UCUP" dengan fokus pada program keahlian Teknik Komputer dan Jaringan.</p>
+                    <p>Didirikan dengan nama awal "SMK Teknologi omay" dengan fokus pada program keahlian Teknik Komputer dan Jaringan.</p>
                 </div>
             </div>
 
@@ -123,7 +123,7 @@ $lamaBeroperasi = $tahunSekarang - $tahunBerdiri;
             <blockquote>
                 "Pendidikan adalah passport untuk masa depan, hari adalah milik kita bersama."
             </blockquote>
-            <cite>- Manajemen SMK-Ucup</cite>
+            <cite>- Manajemen SMK-SLB</cite>
         </div>
     </div>
 
