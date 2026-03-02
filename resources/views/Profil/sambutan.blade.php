@@ -40,12 +40,10 @@
 
                         <div class="profile-detail">
                             <span>📋</span>
-                            <span>NIP. {{ optional($profil)->nip ?? '19651231 198603 1 045' }}</span>
                         </div>
 
                         <div class="profile-detail">
                             <span>📧</span>
-                            <span>{{ optional($profil)->email ?? 'kepsek@sdncontoh.sch.id' }}</span>
                         </div>
                     </div>
                 </div>
@@ -55,37 +53,11 @@
             <div class="col-md-8">
                 <div class="sambutan-content">
 
-                    <p class="salam">
-                        Assalamu'alaikum Warahmatullahi Wabarakatuh,
-                    </p>
+                    
 
                     @if(optional($profil)->konten)
                         {!! nl2br(e($profil->konten)) !!}
-                    @else
-                        <p>
-                            Puji syukur kita panjatkan ke hadirat Tuhan Yang Maha Esa, 
-                            karena atas rahmat dan karunia-Nya, kita semua masih diberikan 
-                            kesehatan dan kesempatan untuk terus berkarya dalam dunia pendidikan.
-                        </p>
-
-                        <blockquote class="quote-block">
-                            Selamat datang di website resmi 
-                            {{ config('app.school_name', 'SD Negeri Contoh Sekolah') }}.
-                            Website ini kami hadirkan sebagai media informasi dan komunikasi
-                            antara sekolah, siswa, orang tua, dan masyarakat luas.
-                        </blockquote>
-
-                        <p>
-                            Kami berharap dengan adanya website ini, informasi mengenai 
-                            kegiatan dan perkembangan sekolah dapat diakses dengan mudah 
-                            dan transparan.
-                        </p>
-
-                        <p>
-                            Dengan dukungan tenaga pendidik yang kompeten dan fasilitas 
-                            yang memadai, kami optimis dapat mencetak generasi yang cerdas,
-                            berkarakter, dan siap menghadapi tantangan masa depan.
-                        </p>
+                    
                     @endif
 
                 </div>

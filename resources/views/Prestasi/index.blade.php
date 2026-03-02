@@ -1,447 +1,475 @@
 @extends('layouts.app')
 @section('title', 'Prestasi Sekolah')
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+@section('content')
 
 <style>
-    :root {
-        --primary: #1e3c72;
-        --primary-dark: #0f2744;
-        --primary-light: #2a4a7a;
-        --accent: #c9a959;
-        --accent-light: #e6d5b8;
-        --accent-dark: #b38f3f;
-        --gray-50: #f9fafc;
-        --gray-100: #f0f2f5;
-        --gray-200: #e5e7eb;
-        --gray-300: #d1d5db;
-        --gray-400: #9ca3af;
-        --gray-500: #6b7280;
-        --gray-600: #4b5563;
-        --gray-700: #374151;
-        --gray-800: #1f2937;
-        --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
-        --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
-        --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.02);
-        --shadow-hover: 0 30px 40px -15px rgba(0,0,0,0.15);
-    }
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
 
-    .prestasi-wrapper {
-        font-family: 'Inter', sans-serif;
-        background: var(--gray-50);
-        min-height: 100vh;
-    }
+:root {
+    --ink:        #0d1b2a;
+    --ink-mid:    #1c3144;
+    --ink-soft:   #2e4a63;
+    --accent:     #e8a87c;
+    --accent-dark:#c4834a;
+    --white:      #ffffff;
+    --off-white:  #f5f3ef;
+    --light-bg:   #fafaf8;
+    --text-body:  #4a5568;
+    --text-muted: #718096;
+    --border:     #e2e8f0;
+    --shadow-sm:  0 2px 8px rgba(13,27,42,0.06);
+    --shadow-md:  0 8px 30px rgba(13,27,42,0.10);
+    --shadow-lg:  0 20px 60px rgba(13,27,42,0.14);
+    --radius:     16px;
+}
 
-    /* Hero Section - Minimalis */
-    .prestasi-hero {
-        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-        padding: 80px 20px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-    }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    .prestasi-hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M30 5L55 30L30 55L5 30L30 5Z" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></svg>');
-        opacity: 0.3;
-    }
+.prestasi-wrapper {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--light-bg);
+    min-height: 100vh;
+    color: var(--text-body);
+}
 
-    .hero-badge {
-        display: inline-block;
-        background: rgba(255,255,255,0.1);
-        backdrop-filter: blur(5px);
-        color: var(--accent-light);
-        padding: 6px 20px;
-        border-radius: 30px;
-        font-size: 13px;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        margin-bottom: 25px;
-        border: 1px solid rgba(255,255,255,0.1);
-    }
+/* ===== HERO ===== */
+.prestasi-hero {
+    position: relative;
+    background: var(--ink);
+    padding: 100px 24px 90px;
+    text-align: center;
+    overflow: hidden;
+}
 
-    .prestasi-hero h1 {
-        font-family: 'Montserrat', sans-serif;
-        font-size: clamp(2.2rem, 5vw, 3.2rem);
-        font-weight: 700;
-        color: white;
-        margin: 0 0 15px;
-        line-height: 1.2;
-    }
+.hero-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(232,168,124,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,168,124,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+}
 
-    .prestasi-hero h1 span {
-        color: var(--accent);
-        position: relative;
-        display: inline-block;
-    }
+.hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+}
+.hero-orb-1 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(232,168,124,0.15) 0%, transparent 70%);
+    top: -100px; left: -80px;
+}
+.hero-orb-2 {
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(46,74,99,0.5) 0%, transparent 70%);
+    bottom: -60px; right: -40px;
+}
 
-    .prestasi-hero h1 span::after {
-        content: '';
-        position: absolute;
-        bottom: 5px;
-        left: 0;
-        width: 100%;
-        height: 8px;
-        background: rgba(201, 169, 89, 0.3);
-        z-index: -1;
-    }
+.hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 640px;
+    margin: 0 auto;
+    animation: fadeUp 0.9s ease both;
+}
 
-    .prestasi-hero p {
-        color: rgba(255,255,255,0.8);
-        font-size: 16px;
-        max-width: 550px;
-        margin: 0 auto;
-        line-height: 1.6;
-    }
+.hero-eyebrow {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(232,168,124,0.3);
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+    background: rgba(232,168,124,0.08);
+}
 
-    /* Stats Section */
-    .stats-section {
-        background: white;
-        padding: 30px 0;
-        border-bottom: 1px solid var(--gray-200);
-    }
+.prestasi-hero h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+}
 
-    .stat-item {
-        text-align: center;
-        padding: 15px;
-    }
+.prestasi-hero h1 span { color: var(--accent); }
 
-    .stat-number {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary);
-        line-height: 1.2;
-    }
+.prestasi-hero p {
+    color: rgba(255,255,255,0.7);
+    font-size: 1rem;
+    line-height: 1.75;
+    font-weight: 300;
+}
 
-    .stat-label {
-        font-size: 0.85rem;
-        color: var(--gray-500);
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-    }
+/* ===== STATS ===== */
+.stats-section {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+}
 
-    /* Content Section */
-    .prestasi-content {
-        padding: 60px 0 80px;
-    }
+.stats-inner {
+    display: flex;
+    justify-content: center;
+    divide: var(--border);
+}
 
-    .section-header {
-        text-align: center;
-        margin-bottom: 50px;
-    }
+.stat-item {
+    flex: 1;
+    text-align: center;
+    padding: 36px 20px;
+    border-right: 1px solid var(--border);
+    transition: background 0.2s ease;
+}
+.stat-item:last-child { border-right: none; }
+.stat-item:hover { background: var(--off-white); }
 
-    .section-title {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 2rem;
-        font-weight: 600;
-        color: var(--gray-800);
-        margin-bottom: 10px;
-    }
+.stat-number {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 6px;
+}
 
-    .section-subtitle {
-        color: var(--gray-500);
-        font-size: 1rem;
-        max-width: 500px;
-        margin: 0 auto;
-    }
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
 
-    /* Cards Grid - 4 Columns */
-    .cards-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 25px;
-        margin-top: 30px;
-    }
+/* ===== CONTENT ===== */
+.prestasi-content {
+    padding: 80px 24px 100px;
+    max-width: 1160px;
+    margin: 0 auto;
+}
 
-    /* Card Style */
-    .prestasi-card {
-        background: white;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: var(--shadow-md);
-        transition: all 0.3s ease;
-        border: 1px solid var(--gray-200);
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
+.section-header {
+    text-align: center;
+    margin-bottom: 56px;
+}
 
-    .prestasi-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow-hover);
-        border-color: var(--accent-light);
-    }
+.section-eyebrow {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    background: rgba(232,168,124,0.12);
+    border: 1px solid rgba(232,168,124,0.3);
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+}
 
-    .card-image {
-        height: 180px;
-        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
-    }
+.section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+}
 
-    .card-image::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(45deg, rgba(201,169,89,0.1) 0%, transparent 100%);
-    }
+.section-subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
 
-    .card-image img {
-        width: 90px;
-        height: 90px;
-        object-fit: cover;
-        border-radius: 50%;
-        border: 4px solid white;
-        box-shadow: var(--shadow-lg);
-        position: relative;
-        z-index: 2;
-    }
+.content-divider {
+    width: 48px;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 3px;
+    margin: 20px auto 0;
+}
 
-    .card-icon {
-        font-size: 48px;
-        z-index: 2;
-        position: relative;
-    }
+/* ===== CARDS GRID ===== */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
 
-    .card-body {
-        padding: 20px;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
+.prestasi-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    position: relative;
+}
 
-    .card-category {
-        display: inline-block;
-        background: var(--accent-light);
-        color: var(--accent-dark);
-        padding: 4px 12px;
-        border-radius: 30px;
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.3px;
-        margin-bottom: 12px;
-        width: fit-content;
-    }
+.prestasi-card::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
-    .card-title {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--gray-800);
-        margin-bottom: 10px;
-        line-height: 1.4;
-    }
+.prestasi-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(232,168,124,0.3);
+}
 
-    .card-text {
-        font-size: 0.9rem;
-        color: var(--gray-500);
-        line-height: 1.6;
-        margin-bottom: 15px;
-        flex: 1;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
+.prestasi-card:hover::after { opacity: 1; }
 
-    .card-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: auto;
-        padding-top: 15px;
-        border-top: 1px solid var(--gray-200);
-    }
+/* Card Image */
+.card-image {
+    height: 180px;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
 
-    .card-date {
-        font-size: 0.8rem;
-        color: var(--gray-400);
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
+.card-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(232,168,124,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,168,124,0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
 
-    .card-date i {
-        font-size: 14px;
-    }
+.card-image img {
+    width: 84px; height: 84px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.15);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 2;
+}
 
-    .card-badge {
-        background: var(--primary);
-        color: white;
-        padding: 4px 12px;
-        border-radius: 30px;
-        font-size: 10px;
-        font-weight: 600;
-        letter-spacing: 0.3px;
-    }
+.card-icon {
+    font-size: 52px;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+}
 
-    /* Empty State */
-    .empty-state {
-        grid-column: 1 / -1;
-        text-align: center;
-        padding: 80px 20px;
-        background: white;
-        border-radius: 20px;
-        border: 2px dashed var(--gray-300);
-    }
+/* Card Body */
+.card-body {
+    padding: 22px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
 
-    .empty-icon {
-        font-size: 70px;
-        margin-bottom: 20px;
-        opacity: 0.5;
-    }
+.card-category {
+    display: inline-block;
+    background: rgba(232,168,124,0.12);
+    color: var(--accent-dark);
+    border: 1px solid rgba(232,168,124,0.25);
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    width: fit-content;
+}
 
-    .empty-title {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--gray-700);
-        margin-bottom: 10px;
-    }
+.card-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
 
-    .empty-text {
-        color: var(--gray-500);
-        font-size: 1rem;
-    }
+.card-text {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
 
-    /* Responsive */
-    @media (max-width: 1200px) {
-        .cards-grid {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-    }
+.card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+}
 
-    @media (max-width: 992px) {
-        .cards-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-    }
+.card-date {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
 
-    @media (max-width: 576px) {
-        .cards-grid {
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-        
-        .prestasi-hero {
-            padding: 60px 20px;
-        }
-        
-        .section-title {
-            font-size: 1.6rem;
-        }
-        
-        .stat-number {
-            font-size: 1.6rem;
-        }
-    }
+.card-badge {
+    background: var(--ink);
+    color: var(--white);
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 40px;
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1.5px dashed var(--border);
+}
+
+.empty-icon { font-size: 64px; opacity: 0.35; margin-bottom: 20px; }
+.empty-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+}
+.empty-text { color: var(--text-muted); font-size: 0.95rem; }
+
+/* ===== ANIMATION ===== */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+    .cards-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 900px) {
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 576px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    .stats-inner { flex-direction: column; }
+    .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .stat-item:last-child { border-bottom: none; }
+}
 </style>
 
-@section('content')
 <div class="prestasi-wrapper">
-    {{-- Hero Section --}}
+
+    {{-- Hero --}}
     <section class="prestasi-hero">
-        <div class="container">
-            <span class="hero-badge">✦ ACHIEVEMENTS</span>
+        <div class="hero-bg-grid"></div>
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+        <div class="hero-inner">
+            <span class="hero-eyebrow">✦ Achievements</span>
             <h1>Prestasi <span>Sekolah</span></h1>
             <p>Kumpulan prestasi membanggakan yang telah diraih oleh siswa-siswi kami di berbagai bidang kompetisi</p>
         </div>
     </section>
 
-    {{-- Stats Section --}}
+    {{-- Stats --}}
     <section class="stats-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-4">
-                    <div class="stat-item">
-                        <div class="stat-number">{{ $prestasis->count() }}</div>
-                        <div class="stat-label">Total Prestasi</div>
-                    </div>
+        <div class="stats-inner">
+            <div class="stat-item">
+                <div class="stat-number">{{ $prestasis->count() }}</div>
+                <div class="stat-label">Total Prestasi</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">
+                    @php
+                        $akademik = $prestasis->filter(fn($item) =>
+                            str_contains(strtolower($item->nama_prestasi), 'akademik')
+                        )->count();
+                    @endphp
+                    {{ $akademik }}
                 </div>
-                <div class="col-4">
-                    <div class="stat-item">
-                        <div class="stat-number">
-                            @php
-                                $akademik = $prestasis->filter(function($item) {
-                                    return strpos(strtolower($item->nama_prestasi), 'akademik') !== false;
-                                })->count();
-                            @endphp
-                            {{ $akademik }}
-                        </div>
-                        <div class="stat-label">Akademik</div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="stat-item">
-                        <div class="stat-number">{{ $prestasis->count() - $akademik }}</div>
-                        <div class="stat-label">Non-Akademik</div>
-                    </div>
-                </div>
+                <div class="stat-label">Akademik</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ $prestasis->count() - $akademik }}</div>
+                <div class="stat-label">Non-Akademik</div>
             </div>
         </div>
     </section>
 
-    {{-- Content Section --}}
+    {{-- Content --}}
     <section class="prestasi-content">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Daftar Prestasi</h2>
-                <p class="section-subtitle">Berikut adalah prestasi yang telah berhasil diraih oleh siswa/i kami</p>
-            </div>
-            
-            <div class="cards-grid">
-                @forelse($prestasis as $index => $item)
-                    <div class="prestasi-card" data-aos="fade-up" data-aos-delay="{{ $index * 50 }}">
-                        <div class="card-image">
-                            @if($item->foto)
-                                <img src="{{ asset('assets/' . $item->foto) }}" 
-                                     alt="{{ $item->nama_prestasi }}">
-                            @else
-                                @php
-                                    $icons = ['🏆', '🥇', '🥈', '🥉', '📚', '🎨', '⚽', '🎭'];
-                                    $randomIcon = $icons[array_rand($icons)];
-                                @endphp
-                                <span class="card-icon">{{ $randomIcon }}</span>
-                            @endif
-                        </div>
-                        <div class="card-body">
-                            <span class="card-category">
-                                {{ $loop->even ? 'Akademik' : 'Non-Akademik' }}
-                            </span>
-                            <h5 class="card-title">{{ $item->nama_prestasi }}</h5>
-                            <p class="card-text">{{ Str::limit($item->isi, 100) }}</p>
-                            <div class="card-footer">
-                                <span class="card-date">
-                                    <i>📅</i> {{ now()->format('d M Y') }}
-                                </span>
-                                <span class="card-badge">PRESTASI</span>
-                            </div>
+        <div class="section-header">
+            <span class="section-eyebrow">Daftar Lengkap</span>
+            <h2 class="section-title">Prestasi & Penghargaan</h2>
+            <p class="section-subtitle">Berikut adalah prestasi yang telah berhasil diraih oleh siswa-siswi kami</p>
+            <div class="content-divider"></div>
+        </div>
+
+        <div class="cards-grid">
+            @forelse($prestasis as $index => $item)
+                @php
+                    $icons = ['🏆', '🥇', '🥈', '🥉', '📚', '🎨', '⚽', '🎭'];
+                @endphp
+                <div class="prestasi-card">
+                    <div class="card-image">
+                        @if($item->foto)
+                            <img src="{{ asset('assets/' . $item->foto) }}" alt="{{ $item->nama_prestasi }}">
+                        @else
+                            <span class="card-icon">{{ $icons[$index % count($icons)] }}</span>
+                        @endif
+                    </div>
+                    <div class="card-body">
+                        <span class="card-category">{{ $loop->even ? 'Akademik' : 'Non-Akademik' }}</span>
+                        <h5 class="card-title">{{ $item->nama_prestasi }}</h5>
+                        <p class="card-text">{{ Str::limit($item->isi, 100) }}</p>
+                        <div class="card-footer">
+                            <span class="card-date">📅 {{ now()->format('d M Y') }}</span>
+                            <span class="card-badge">Prestasi</span>
                         </div>
                     </div>
-                @empty
-                    <div class="empty-state">
-                        <div class="empty-icon">🏆</div>
-                        <h4 class="empty-title">Belum Ada Prestasi</h4>
-                        <p class="empty-text">Data prestasi akan segera ditambahkan</p>
-                    </div>
-                @endforelse
-            </div>
+                </div>
+            @empty
+                <div class="empty-state">
+                    <div class="empty-icon">🏆</div>
+                    <h4 class="empty-title">Belum Ada Prestasi</h4>
+                    <p class="empty-text">Data prestasi akan segera ditambahkan</p>
+                </div>
+            @endforelse
         </div>
     </section>
+
 </div>
+
 @endsection
