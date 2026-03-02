@@ -41,7 +41,7 @@ class ProfilController extends Controller
             // For other dynamic menu items
             $profil = profil::where('nama_menu', $slug)->where('status', true)->first();
             if ($profil) {
-                return view('Profil.detail', compact('profil'));
+                return view('Profil.struktur', compact('profil'));
             }
             abort(404);
         }
@@ -51,5 +51,11 @@ class ProfilController extends Controller
     {
         $profil = profil::where('nama_menu', 'sambutan')->where('status', true)->first();
         return view('Profil.sambutan', compact('profil'));
+    }
+
+    public function struktur()
+    {
+        $profil = profil::where('nama_menu', 'struktur-organisasi')->where('status', true)->first();
+        return view('Profil.struktur', compact('profil'));
     }
 }

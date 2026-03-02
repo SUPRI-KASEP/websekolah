@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EskulController;
 use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\ProfilController;
@@ -53,10 +54,14 @@ Route::get('/sambutan', [ProfilController::class, 'sambutan'])->name('profil.sam
 
 Route::get('/visi-misi', [ProfilController::class, 'vm'])->name('profil.vm');
 
+Route::get('/struktur-organisasi', [ProfilController::class, 'struktur'])->name('profil.struktur'); 
+
 Route::get('/profil', [ProfilController::class, 'dashboard'])->name('profil.dashboard');
 
 Route::get('/profil/{slug}', [ProfilController::class, 'menu'])->name('profil.menu');
 
 Route::get('/fasilitas', [FasilitasController::class, 'index'])->name('fasilitas.index');
+
+Route::get('/eskul', [EskulController::class, 'index'])->name('eskul.index');
 
 Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');

@@ -228,7 +228,7 @@
 
             <li><a href="{{ route('fasilitas.index') }}">Fasilitas</a></li>
             <li><a href="{{ route('prestasi.index') }}">Prestasi</a></li>
-            <li><a href="#">Eskul</a></li>
+            <li><a href="{{ route('eskul.index') }}">Eskul</a></li>
         </ul>
     </nav>
 
@@ -252,7 +252,7 @@
                     <li><a href="{{ route('profil.dashboard') }}">Profil</a></li>
                     <li><a href="{{ route('fasilitas.index') }}">Fasilitas</a></li>
                     <li><a href="{{ route('prestasi.index') }}">Prestasi</a></li>
-                    <li><a href="#">Eskul</a></li>
+                    <li><a href="{{ route('eskul.index') }}">Eskul</a></li>
                 </ul>
             </div>
 
