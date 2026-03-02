@@ -403,6 +403,7 @@ class AdminController extends Controller
         $request->validate([
             'nama_menu' => 'required|string|max:255|unique:profils,nama_menu',
             'judul' => 'required|string|max:255',
+            'nama_kepala_sekolah' => 'nullable|string|max:255',
             'konten' => 'nullable',
             'isi_visi' => 'nullable',
             'isi_misi' => 'nullable',
@@ -414,9 +415,16 @@ class AdminController extends Controller
             'status' => 'nullable',
         ]);
 
+        if ($request->nama_menu === 'sambutan') {
+            $request->validate([
+                'nama_kepala_sekolah' => 'required|string|max:255',
+            ]);
+        }
+
         $data = [
             'nama_menu' => $request->nama_menu,
             'judul' => $request->judul,
+            'nama_kepala_sekolah' => $request->nama_menu === 'sambutan' ? $request->nama_kepala_sekolah : null,
             'konten' => $request->konten,
             'isi_visi' => $request->isi_visi,
             'isi_misi' => $request->isi_misi,
@@ -452,6 +460,7 @@ class AdminController extends Controller
         $request->validate([
             'nama_menu' => 'required|string|max:255|unique:profils,nama_menu,' . $id,
             'judul' => 'required|string|max:255',
+            'nama_kepala_sekolah' => 'nullable|string|max:255',
             'konten' => 'nullable',
             'isi_visi' => 'nullable',
             'isi_misi' => 'nullable',
@@ -463,9 +472,16 @@ class AdminController extends Controller
             'status' => 'nullable',
         ]);
 
+        if ($request->nama_menu === 'sambutan') {
+            $request->validate([
+                'nama_kepala_sekolah' => 'required|string|max:255',
+            ]);
+        }
+
         $data = [
             'nama_menu' => $request->nama_menu,
             'judul' => $request->judul,
+            'nama_kepala_sekolah' => $request->nama_menu === 'sambutan' ? $request->nama_kepala_sekolah : null,
             'konten' => $request->konten,
             'isi_visi' => $request->isi_visi,
             'isi_misi' => $request->isi_misi,

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Website Sekolah')</title>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <style>
         * {
             margin: 0;
@@ -210,7 +212,7 @@
 
     {{-- NAVBAR --}}
     <nav class="navbar">
-        <div class="logo">Nama Sekolah</div>
+        <div class="logo">Sakola Gaul</div>
         <div class="menu-toggle" onclick="toggleMenu()">☰</div>
 
         <ul id="menu">

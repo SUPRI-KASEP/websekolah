@@ -9,6 +9,7 @@ class profil extends Model
     protected $fillable = [
         'nama_menu',
         'judul',
+        'nama_kepala_sekolah',
         'konten',
         'isi_visi',
         'isi_misi',

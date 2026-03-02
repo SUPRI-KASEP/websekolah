@@ -55,7 +55,12 @@
                                     @endif
                                 </td>
                                 <td>{{ $item->nama_menu }}</td>
-                                <td>{{ $item->judul }}</td>
+                                <td>
+                                    {{ $item->judul }}
+                                    @if ($item->nama_menu == 'sambutan' && $item->nama_kepala_sekolah)
+                                        <div class="text-muted" style="font-size: 12px;">{{ $item->nama_kepala_sekolah }}</div>
+                                    @endif
+                                </td>
                                 <td>{{ $item->urutan }}</td>
                                 <td>
                                     @if ($item->status)
@@ -114,6 +119,17 @@
                                                                 value="{{ $item->judul }}" required>
                                                         </div>
                                                     </div>
+                                                </div>
+
+                                                <!-- Nama Kepala Sekolah (khusus sambutan) -->
+                                                <div class="mb-3" id="editKepsekContainer{{ $item->id }}" style="{{ $item->nama_menu == 'sambutan' ? '' : 'display:none;' }}">
+                                                    <label class="form-label">Nama Kepala Sekolah</label>
+                                                    <input type="text" name="nama_kepala_sekolah" class="form-control"
+                                                        value="{{ $item->nama_kepala_sekolah }}" placeholder="Masukkan nama kepala sekolah">
+                                                    <small class="text-muted">Wajib diisi jika menu = Sambutan</small>
+                                                </div>
+                                                
+                                                <div class="row">
                                                 </div>
                                                 
                                                 <!-- Konten Biasa (untuk non-visi-misi dan non-sejarah) -->
@@ -209,27 +225,32 @@
                                     var visiMisiContainer = document.getElementById('editVisiMisiContainer{{ $item->id }}');
                                     var sejarahStatsContainer = document.getElementById('editSejarahStatsContainer{{ $item->id }}');
                                     var imageContainer = document.getElementById('editImageContainer{{ $item->id }}');
+                                    var kepsekContainer = document.getElementById('editKepsekContainer{{ $item->id }}');
                                     
                                     if (select.value === 'visi-misi') {
                                         kontenContainer.style.display = 'none';
                                         visiMisiContainer.style.display = 'block';
                                         sejarahStatsContainer.style.display = 'none';
                                         imageContainer.style.display = 'none';
+                                        kepsekContainer.style.display = 'none';
                                     } else if (select.value === 'sejarah') {
                                         kontenContainer.style.display = 'block';
                                         visiMisiContainer.style.display = 'none';
                                         sejarahStatsContainer.style.display = 'block';
                                         imageContainer.style.display = 'none';
+                                        kepsekContainer.style.display = 'none';
                                     } else if (select.value === 'sambutan') {
                                         kontenContainer.style.display = 'block';
                                         visiMisiContainer.style.display = 'none';
                                         sejarahStatsContainer.style.display = 'none';
                                         imageContainer.style.display = 'block';
+                                        kepsekContainer.style.display = 'block';
                                     } else {
                                         kontenContainer.style.display = 'block';
                                         visiMisiContainer.style.display = 'none';
                                         sejarahStatsContainer.style.display = 'none';
                                         imageContainer.style.display = 'none';
+                                        kepsekContainer.style.display = 'none';
                                     }
                                 }
                             </script>
@@ -277,6 +298,16 @@
                                 <input type="text" name="judul" class="form-control" placeholder="Masukkan judul profil" required>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Nama Kepala Sekolah (khusus sambutan) -->
+                    <div class="mb-3" id="addKepsekContainer" style="display:none;">
+                        <label class="form-label">Nama Kepala Sekolah</label>
+                        <input type="text" name="nama_kepala_sekolah" class="form-control" placeholder="Masukkan nama kepala sekolah">
+                        <small class="text-muted">Wajib diisi jika menu = Sambutan</small>
+                    </div>
+                    
+                    <div class="row">
                     </div>
                     
                     <!-- Konten Biasa (untuk non-visi-misi dan non-sejarah) -->
@@ -360,27 +391,32 @@
         var visiMisiContainer = document.getElementById('addVisiMisiContainer');
         var sejarahStatsContainer = document.getElementById('addSejarahStatsContainer');
         var imageContainer = document.getElementById('addImageContainer');
+        var kepsekContainer = document.getElementById('addKepsekContainer');
         
         if (select.value === 'visi-misi') {
             kontenContainer.style.display = 'none';
             visiMisiContainer.style.display = 'block';
             sejarahStatsContainer.style.display = 'none';
             imageContainer.style.display = 'none';
+            kepsekContainer.style.display = 'none';
         } else if (select.value === 'sejarah') {
             kontenContainer.style.display = 'block';
             visiMisiContainer.style.display = 'none';
             sejarahStatsContainer.style.display = 'block';
             imageContainer.style.display = 'none';
+            kepsekContainer.style.display = 'none';
         } else if (select.value === 'sambutan') {
             kontenContainer.style.display = 'block';
             visiMisiContainer.style.display = 'none';
             sejarahStatsContainer.style.display = 'none';
             imageContainer.style.display = 'block';
+            kepsekContainer.style.display = 'block';
         } else {
             kontenContainer.style.display = 'block';
             visiMisiContainer.style.display = 'none';
             sejarahStatsContainer.style.display = 'none';
             imageContainer.style.display = 'none';
+            kepsekContainer.style.display = 'none';
         }
     }
 </script>

@@ -2,200 +2,244 @@
 @section('title', 'Sambutan Kepala Sekolah')
 @section('content')
 
-<div class="container py-4">
-    <!-- Header -->
-    <h2 class="fw-bold mb-2">{{ $profil->judul ?? 'Sambutan Kepala Sekolah' }}</h2>
-    <p class="fst-italic text-secondary mb-4">"Membangun Generasi Cerdas dan Berkarakter"</p>
-    
-    <hr class="mb-4">
+<div class="sambutan-wrapper">
+    <div class="container py-5">
 
-    <!-- Konten Utama -->
-    <div class="row">
-        <!-- Kolom Kiri: Foto dan Info -->
-        <div class="col-md-4 mb-4">
-            <!-- Container untuk gambar dengan rasio 9:16 -->
-            <div style="width: 100%; max-width: 250px; aspect-ratio: 9/12; overflow: hidden; border: 1px solid #dee2e6; padding: 5px; background: #f8f9fa; border-radius: 20px;">
-                @if($profil && $profil->gambar)
-                    <img src="{{ asset('assets/' . $profil->gambar) }}" 
-                         alt="Kepala Sekolah" 
-                         style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
-                @else
-                    <img src="{{ asset('assets/udin.png') }}" 
-                         alt="Kepala Sekolah" 
-                         style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
-                @endif
-            </div>
-            
-            @if($profil && $profil->konten)
-                <div class="mt-3">
-                    {!! nl2br(e($profil->konten)) !!}
+        <!-- Header -->
+        <div class="header-section mb-5">
+            <div class="header-accent"></div>
+            <h2 class="page-title fw-bold mb-1">
+                {{ optional($profil)->judul ?? 'Sambutan Kepala Sekolah' }}
+            </h2>
+            <p class="page-subtitle fst-italic">
+                "Membangun Generasi Cerdas dan Berkarakter"
+            </p>
+        </div>
+
+        <div class="row g-5">
+
+            <!-- LEFT SIDE -->
+            <div class="col-md-4 mb-4">
+                <div class="profile-card">
+
+                    <!-- FOTO -->
+                    <div class="profile-img-wrap">
+                        <img src="{{ asset('assets/' . (optional($profil)->gambar ?? 'udin.png')) }}"
+                             alt="Kepala Sekolah">
+                    </div>
+
+                    <!-- INFO PROFIL -->
+                    <div class="profile-info mt-3">
+                        <h4 class="fw-bold mb-1">
+                            {{ optional($profil)->nama ?? 'Drs. Budi Santoso' }}
+                        </h4>
+
+                        <p class="profile-role mb-3">
+                            {{ optional($profil)->jabatan ?? 'Kepala Sekolah' }}
+                        </p>
+
+                        <div class="profile-detail">
+                            <span>📋</span>
+                            <span>NIP. {{ optional($profil)->nip ?? '19651231 198603 1 045' }}</span>
+                        </div>
+
+                        <div class="profile-detail">
+                            <span>📧</span>
+                            <span>{{ optional($profil)->email ?? 'kepsek@sdncontoh.sch.id' }}</span>
+                        </div>
+                    </div>
                 </div>
-            @else
-                <h4 class="fw-bold mb-1 mt-3">Drs. Budi Santoso</h4>
-                <p class="mb-2">Kepala Sekolah</p>
-                <p class="mb-1">📞 NIP. 19651231 198603 1 045</p>
-                <p class="mb-3">📧 kepsek@sdncontoh.sch.id</p>
-            @endif
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="col-md-8">
+                <div class="sambutan-content">
+
+                    <p class="salam">
+                        Assalamu'alaikum Warahmatullahi Wabarakatuh,
+                    </p>
+
+                    @if(optional($profil)->konten)
+                        {!! nl2br(e($profil->konten)) !!}
+                    @else
+                        <p>
+                            Puji syukur kita panjatkan ke hadirat Tuhan Yang Maha Esa, 
+                            karena atas rahmat dan karunia-Nya, kita semua masih diberikan 
+                            kesehatan dan kesempatan untuk terus berkarya dalam dunia pendidikan.
+                        </p>
+
+                        <blockquote class="quote-block">
+                            Selamat datang di website resmi 
+                            {{ config('app.school_name', 'SD Negeri Contoh Sekolah') }}.
+                            Website ini kami hadirkan sebagai media informasi dan komunikasi
+                            antara sekolah, siswa, orang tua, dan masyarakat luas.
+                        </blockquote>
+
+                        <p>
+                            Kami berharap dengan adanya website ini, informasi mengenai 
+                            kegiatan dan perkembangan sekolah dapat diakses dengan mudah 
+                            dan transparan.
+                        </p>
+
+                        <p>
+                            Dengan dukungan tenaga pendidik yang kompeten dan fasilitas 
+                            yang memadai, kami optimis dapat mencetak generasi yang cerdas,
+                            berkarakter, dan siap menghadapi tantangan masa depan.
+                        </p>
+                    @endif
+
+                </div>
+            </div>
+
         </div>
-        
-        <!-- Kolom Kanan: Teks Sambutan -->
-        <div class="col-md-8">
-            <p class="mb-3">Assalamu'alaikum Warahmatullahi Wabarakatuh,</p>
-            
-            @if($profil && $profil->konten)
-                {!! nl2br(e($profil->konten)) !!}
-            @else
-                <p class="mb-3">Puji syukur kita panjatkan ke hadirat Tuhan Yang Maha Esa, karena atas rahmat dan karunia-Nya, kita semua masih diberikan kesehatan dan kesempatan untuk terus berkarya dalam dunia pendidikan.</p>
-                
-                <p class="mb-3 fst-italic">"Selamat datang di website resmi SD Negeri Contoh Sekolah. Website ini kami hadirkan sebagai media informasi dan komunikasi antara sekolah, siswa, orang tua, dan masyarakat luas."</p>
-                
-                <p class="mb-3">Kami berharap dengan adanya website ini, informasi mengenai kegiatan dan perkembangan sekolah dapat diakses dengan mudah dan transparan. Kami berkomitmen untuk terus meningkatkan kualitas pendidikan dan pelayanan kepada siswa.</p>
-                
-                <p class="mb-3">Dengan dukungan tenaga pendidik yang kompeten dan fasilitas yang memadai, kami optimis dapat mencetak generasi yang cerdas, berkarakter, dan siap menghadapi tantangan masa depan.</p>
-            @endif
-        </div>
+
+
     </div>
-
-    <!-- Penutup -->
-    <p class="mb-3">Akhir kata, kami mengucapkan terima kasih atas kepercayaan masyarakat kepada SD Negeri Contoh Sekolah. Kritik dan saran yang membangun selalu kami nantikan untuk kemajuan sekolah kita tercinta.</p>
-    
-    <p class="mb-4">Wassalamu'alaikum Warahmatullahi Wabarakatuh.</p>
-
-    <!-- Tanda Tangan -->
-    <div class="mb-5">
-        <h5 class="fw-bold mb-1">Drs. Budi Santoso</h5>
-        <p>Kepala Sekolah</p>
-    </div>
-
-    <hr class="mb-5">
-
-    <!-- Sejarah Schools (also from database if available) -->
-    @php
-        $sejarah = \App\Models\profil::where('nama_menu', 'sejarah')->where('status', true)->first();
-    @endphp
-    
-    @if($sejarah)
-        <h2 class="fw-bold mb-2">{{ $sejarah->judul }}</h2>
-        <p class="fst-italic text-secondary mb-4">Perjalanan panjang sekolah</p>
-        
-        <p class="mb-5">{!! nl2br(e($sejarah->konten)) !!}
-    @else
-        <h2 class="fw-bold mb-2">Sejarah Sekolah</h2>
-        <p class="fst-italic text-secondary mb-4">Perjalanan panjang SD Negeri Contoh Sekolah</p>
-
-        <!-- Timeline Sejarah -->
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <p class="fw-bold mb-1">1985</p>
-                <p class="text-secondary">Berdirinya sekolah</p>
-            </div>
-            <div class="col-md-3">
-                <p class="fw-bold mb-1">1995</p>
-                <p class="text-secondary">Renovasi gedung</p>
-            </div>
-            <div class="col-md-3">
-                <p class="fw-bold mb-1">2010</p>
-                <p class="text-secondary">Akreditasi A</p>
-            </div>
-            <div class="col-md-3">
-                <p class="fw-bold mb-1">2024</p>
-                <p class="text-secondary">Sekolah unggulan</p>
-            </div>
-        </div>
-
-        <!-- Teks Sejarah -->
-        <p class="mb-3">SD Negeri Contoh Sekolah, yang terletak di Jalan Pendidikan No. 123, Kota Contoh, Jawa Barat, merupakan sekolah negeri yang berdiri sejak tahun 1985. Dengan akreditasi A berdasarkan SK No. 123/BAN-SM/SK/2010, SD Negeri Contoh Sekolah berkomitmen untuk menyediakan pendidikan berkualitas tinggi bagi para siswanya.</p>
-        
-        <p class="mb-5">Sekolah ini berada di bawah naungan Kementerian Pendidikan dan Kebudayaan dan memiliki sistem penyelenggaraan pendidikan yang terus berkembang mengikuti kemajuan zaman. Dengan berbagai program unggulan dan dukungan tenaga pendidik yang profesional, SD Negeri Contoh Sekolah terus berupaya mencetak lulusan yang cerdas, berkarakter, dan mampu bersaing di masa depan.</p>
-    @endif
-
-    <!-- Footer -->
-    <hr class="mb-3">
-    <p class="text-secondary text-center small">SD Negeri Contoh Sekolah • Website resmi sekolah</p>
 </div>
 
+
 <style>
+
+/* ================= BASE ================= */
+
 body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    line-height: 1.6;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f8f9fa;
+    line-height: 1.8;
     color: #333;
 }
 
 .container {
-    max-width: 1140px;
-    margin: 0 auto;
-    padding: 20px;
+    max-width: 1100px;
+    margin: auto;
 }
 
-h1, h2, h4, h5 {
-    color: #212529;
+/* ================= HEADER ================= */
+
+.header-section {
+    position: relative;
+    padding-left: 20px;
 }
 
-h1 {
-    font-size: 2.2rem;
+.header-accent {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 4px;
+    height: 80%;
+    background: linear-gradient(180deg,#1a5276,#2e86c1);
+    border-radius: 4px;
 }
 
-h2 {
-    font-size: 1.8rem;
+.page-title {
+    font-size: 28px;
+    color: #1a2f4a;
 }
 
-hr {
-    border: 0;
-    border-top: 1px solid #dee2e6;
+.page-subtitle {
+    font-size: 14px;
+    color: #7f8c8d;
+}
+
+/* ================= PROFILE CARD ================= */
+
+.profile-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.profile-img-wrap {
+    width: 100%;
+    max-width: 220px;
+    aspect-ratio: 9/12;
+    overflow: hidden;
+    margin: auto;
+    border-radius: 12px;
+    border: 3px solid #e9ecef;
+}
+
+.profile-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* supaya teks tidak mentok */
+.profile-info,
+.sambutan-content {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.profile-detail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    flex-wrap: wrap;
+}
+
+/* ================= SAMBUTAN ================= */
+
+.sambutan-content {
+    background: #fff;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+    text-align: justify;
+}
+
+.salam {
+    font-weight: 600;
+    color: #1a5276;
+    border-bottom: 1px dashed #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.quote-block {
+    border-left: 4px solid #2e86c1;
+    background: #eef6fc;
+    padding: 15px 20px;
+    border-radius: 0 10px 10px 0;
     margin: 20px 0;
-}
-
-p {
-    margin-bottom: 1rem;
-}
-
-.text-secondary {
-    color: #6c757d;
-}
-
-.fw-bold {
-    font-weight: 700;
-}
-
-.fst-italic {
     font-style: italic;
 }
 
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
+/* ================= TTD ================= */
+
+.ttd-box {
+    display: inline-block;
+    background: #fff;
+    padding: 15px 30px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
 }
 
-.col-md-3, .col-md-4, .col-md-8 {
-    position: relative;
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
+.footer-divider {
+    border-top: 1px solid #ddd;
 }
 
-@media (min-width: 768px) {
-    .col-md-3 {
-        flex: 0 0 25%;
-        max-width: 25%;
-    }
-    .col-md-4 {
-        flex: 0 0 33.333333%;
-        max-width: 33.333333%;
-    }
-    .col-md-8 {
-        flex: 0 0 66.666667%;
-        max-width: 66.666667%;
-    }
+.footer-text {
+    font-size: 13px;
+    color: #888;
 }
 
-.mb-1 { margin-bottom: 0.25rem; }
-.mb-2 { margin-bottom: 0.5rem; }
-.mb-3 { margin-bottom: 1rem; }
-.mb-4 { margin-bottom: 1.5rem; }
-.mb-5 { margin-bottom: 3rem; }
-.mt-3 { margin-top: 1rem; }
+@media (min-width:768px){
+    .row{
+        display:flex;
+        gap:30px;
+    }
+    .col-md-4{width:33%;}
+    .col-md-8{width:67%;}
+}
+
 </style>
 
 @endsection
