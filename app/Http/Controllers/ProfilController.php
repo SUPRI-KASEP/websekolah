@@ -40,6 +40,10 @@ class ProfilController extends Controller
         } elseif ($slug === 'sejarah') {
             $profil = profil::where('nama_menu', 'sejarah')->where('status', true)->first();
             return view('Profil.sejarah', compact('profil'));
+        } elseif ($slug === 'struktur-organisasi') {
+            $profil = profil::where('nama_menu', 'struktur-organisasi')->where('status', true)->first();
+            $profils = profil::where('nama_menu', 'struktur-organisasi')->where('status', true)->orderBy('urutan')->get();
+            return view('Profil.struktur', compact('profil', 'profils'));
         } else {
             // For other dynamic menu items
             $profil = profil::where('nama_menu', $slug)->where('status', true)->first();
@@ -59,6 +63,7 @@ class ProfilController extends Controller
     public function struktur()
     {
         $profil = profil::where('nama_menu', 'struktur-organisasi')->where('status', true)->first();
-        return view('Profil.struktur', compact('profil'));
+        $profils = profil::where('nama_menu', 'struktur-organisasi')->where('status', true)->orderBy('urutan')->get();
+        return view('Profil.struktur', compact('profil', 'profils'));
     }
 }
