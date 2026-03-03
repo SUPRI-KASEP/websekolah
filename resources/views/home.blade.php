@@ -3,9 +3,6 @@
 
 @section('content')
 
-{{-- ============================================
-     HERO SECTION
-============================================ --}}
 <section class="hero-section">
     <div class="hero-bg-grid"></div>
     <div class="hero-orb hero-orb-1"></div>
@@ -19,14 +16,9 @@
             <a href="{{ route('fasilitas.index') }}" class="btn btn-ghost">Jelajahi Fasilitas</a>
         </div>
     </div>
-    <div class="hero-scroll-indicator">
-        <span></span>
-    </div>
+    <div class="hero-scroll-indicator"><span></span></div>
 </section>
 
-{{-- ============================================
-     PROFIL SECTION - Sambutan
-============================================ --}}
 <section class="section-light profil-preview">
     <div class="container">
         <div class="split-layout">
@@ -48,7 +40,7 @@
                 <div class="content-divider"></div>
                 <p class="body-text">
                     @if($sambutan && $sambutan->konten)
-                        {!! Str::limit(strip_tags(nl2br(e($sambutan->konten))), 300) !!}
+                        {{ Str::limit(strip_tags($sambutan->konten), 300) }}
                     @else
                         Assalamu'alaikum Warahmatullahi Wabarakatuh. Puji syukur kita panjatkan ke hadirat Tuhan Yang Maha Esa, karena atas rahmat dan karunia-Nya, kita semua masih diberikan kesehatan dan kesempatan untuk terus berkarya dalam dunia pendidikan.
                     @endif
@@ -59,9 +51,6 @@
     </div>
 </section>
 
-{{-- ============================================
-     VISI MISI SECTION
-============================================ --}}
 <section class="section-dark vm-section">
     <div class="container">
         <div class="section-header-center">
@@ -69,7 +58,6 @@
             <h2 class="heading-display heading-light">Visi & Misi</h2>
             <div class="content-divider divider-center divider-light"></div>
         </div>
-
         <div class="vm-grid">
             <div class="vm-card vm-visi">
                 <div class="vm-icon-wrap">👁️</div>
@@ -81,12 +69,11 @@
                     @endif
                 </p>
             </div>
-
             <div class="vm-card vm-misi">
                 <div class="vm-icon-wrap">🎯</div>
                 <h3 class="vm-label">MISI</h3>
                 @if($visimisi && $visimisi->isi_misi)
-                    {!! nl2br(e($visimisi->isi_misi)) !!}
+                    <p style="color:rgba(255,255,255,0.8);line-height:1.8;">{!! nl2br(e($visimisi->isi_misi)) !!}</p>
                 @else
                     <ul class="misi-list">
                         <li><span class="misi-num">01</span>Pendidikan berkualitas relevan kebutuhan dunia kerja</li>
@@ -98,16 +85,12 @@
                 @endif
             </div>
         </div>
-
         <div class="text-center mt-5">
             <a href="{{ route('profil.menu', 'visi-misi') }}" class="btn btn-accent">Selengkapnya</a>
         </div>
     </div>
 </section>
 
-{{-- ============================================
-     SEJARAH SECTION
-============================================ --}}
 <section class="section-light sejarah-preview">
     <div class="container">
         <div class="split-layout split-reverse">
@@ -117,37 +100,106 @@
                     @if($sejarah && $sejarah->judul) {{ $sejarah->judul }} @else Sejarah Sekolah @endif
                 </h2>
                 <div class="content-divider"></div>
-                <p class="body-text">
-                    @if($sejarah && $sejarah->konten)
-                        {!! Str::limit(strip_tags(nl2br(e($sejarah->konten))), 250) !!}
-                    @else
-                        SMK SLB didirikan dengan visi untuk menciptakan sumber daya manusia yang kompeten dan berkarakter. Perjalanan panjang kami penuh dengan pencapaian dan pembelajaran berharga.
-                    @endif
-                </p>
-                <p class="body-text">Dengan dukungan tenaga pendidik profesional dan fasilitas modern, kami terus berinovasi menghadirkan pendidikan berkualitas yang relevan dengan perkembangan zaman.</p>
+                
+                <!-- Description with blur effect -->
+                @if($sejarah && $sejarah->description)
+                    <div class="sejarah-preview-text">
+                        <p class="body-text">{{ Str::limit(strip_tags($sejarah->description), 150) }}</p>
+                    </div>
+                @elseif($sejarah && $sejarah->konten)
+                    <div class="sejarah-preview-text">
+                        <p class="body-text">{{ Str::limit(strip_tags($sejarah->konten), 150) }}</p>
+                    </div>
+                @else
+                    <p class="body-text">SMK SLB didirikan dengan visi untuk menciptakan sumber daya manusia yang kompeten dan berkarakter...</p>
+                @endif
+                
                 <a href="{{ route('profil.menu', 'sejarah') }}" class="link-arrow">Baca Selengkapnya <span>→</span></a>
             </div>
             <div class="split-stats">
-                <div class="stat-card">
-                    <span class="stat-num">{{ $tahunBerdiri }}</span>
-                    <span class="stat-lbl">Tahun Berdiri</span>
-                </div>
-                <div class="stat-card stat-card-accent">
-                    <span class="stat-num">{{ $lamaBeroperasi }}+</span>
-                    <span class="stat-lbl">Tahun Berpengalaman</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-num">{{ number_format($lulusanSukses) }}+</span>
-                    <span class="stat-lbl">Lulusan Sukses</span>
-                </div>
+                <!-- Photo Gallery from historyImages -->
+                @if($sejarah && $sejarah->historyImages && $sejarah->historyImages->count() > 0)
+                    <div class="sejarah-photo-card">
+                        <div class="sejarah-photo-grid">
+                            @foreach($sejarah->historyImages->take(3) as $index => $image)
+                                <div class="sejarah-photo-item">
+                                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="Foto Sejarah {{ $index + 1 }}">
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @else
+                    <div class="stat-card">
+                        <span class="stat-num">{{ $tahunBerdiri }}</span>
+                        <span class="stat-lbl">Tahun Berdiri</span>
+                    </div>
+                    <div class="stat-card stat-card-accent">
+                        <span class="stat-num">{{ $lamaBeroperasi }}+</span>
+                        <span class="stat-lbl">Tahun Berpengalaman</span>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
 </section>
 
-{{-- ============================================
-     FASILITAS SECTION
-============================================ --}}
+<style>
+.sejarah-preview-text {
+    position: relative;
+    max-height: 80px;
+    overflow: hidden;
+}
+.sejarah-preview-text::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: linear-gradient(transparent, var(--white));
+}
+
+.sejarah-photo-card {
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+.sejarah-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.sejarah-photo-item {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.sejarah-photo-item img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.sejarah-photo-item:hover img {
+    transform: scale(1.05);
+}
+
+.sejarah-photo-grid:only-child {
+    display: flex;
+    justify-content: center;
+}
+
+.sejarah-photo-grid:only-child .sejarah-photo-item {
+    max-width: 200px;
+}
+</style>
+
 <section class="section-offwhite fasilitas-preview">
     <div class="container">
         <div class="section-header-center">
@@ -156,7 +208,6 @@
             <div class="content-divider divider-center"></div>
             <p class="body-text text-center" style="max-width:560px;margin:0 auto;">Dilengkapi dengan fasilitas modern untuk mendukung proses pembelajaran optimal</p>
         </div>
-
         <div class="fasilitas-grid">
             @forelse($fasilitas as $item)
             <div class="fasilitas-card">
@@ -179,16 +230,12 @@
             <div class="fasilitas-card"><div class="fasilitas-icon-box"><span>🕌</span></div><h4>Mushola Modern</h4><p>Tempat ibadah yang bersih, nyaman dan mencerminkan nilai Islami</p></div>
             @endforelse
         </div>
-
         <div class="text-center mt-5">
             <a href="{{ route('fasilitas.index') }}" class="btn btn-primary-dark">Jelajahi Semua Fasilitas</a>
         </div>
     </div>
 </section>
 
-{{-- ============================================
-     PRESTASI SECTION
-============================================ --}}
 <section class="section-dark prestasi-preview">
     <div class="container">
         <div class="section-header-center">
@@ -196,7 +243,6 @@
             <h2 class="heading-display heading-light">Prestasi & Penghargaan</h2>
             <div class="content-divider divider-center divider-light"></div>
         </div>
-
         <div class="prestasi-grid">
             @forelse($prestasis as $item)
             <div class="prestasi-card">
@@ -208,7 +254,7 @@
                     @endif
                 </div>
                 <h4 class="prestasi-title">{{ $item->nama_prestasi }}</h4>
-                <p class="prestasi-desc">{!! nl2br(e(Str::limit($item->isi, 100))) !!}</p>
+                <p class="prestasi-desc">{{ Str::limit(strip_tags($item->isi), 100) }}</p>
                 <div class="prestasi-footer">
                     <a href="" class="btn btn-accent btn-sm">Selengkapnya</a>
                 </div>
@@ -220,16 +266,12 @@
             </div>
             @endforelse
         </div>
-
         <div class="text-center mt-5">
             <a href="{{ route('prestasi.index') }}" class="btn btn-ghost">Lihat Semua Prestasi</a>
         </div>
     </div>
 </section>
 
-{{-- ============================================
-     EKSTRAKURIKULER SECTION
-============================================ --}}
 <section class="section-light eskul-preview">
     <div class="container">
         <div class="section-header-center">
@@ -238,7 +280,6 @@
             <div class="content-divider divider-center"></div>
             <p class="body-text text-center" style="max-width:560px;margin:0 auto;">Berbagai pilihan kegiatan untuk mengembangkan bakat dan minat siswa</p>
         </div>
-
         <div class="eskul-grid">
             @forelse($eskuls as $item)
             <div class="eskul-card">
@@ -264,16 +305,12 @@
             <div class="eskul-card"><div class="eskul-icon">🕌</div><h4>Pramuka</h4><p>Pengembangan karakter, kepemimpinan dan kemandirian</p></div>
             @endforelse
         </div>
-
         <div class="text-center mt-5">
             <a href="#" class="btn btn-primary-dark">Daftar Ekstrakurikuler</a>
         </div>
     </div>
 </section>
 
-{{-- ============================================
-     CTA SECTION
-============================================ --}}
 <section class="cta-section">
     <div class="cta-glow"></div>
     <div class="container text-center">
@@ -287,13 +324,9 @@
     </div>
 </section>
 
-{{-- ============================================
-     STYLES
-============================================ --}}
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
 
-/* ===== DESIGN TOKENS ===== */
 :root {
     --ink:        #0d1b2a;
     --ink-mid:    #1c3144;
@@ -310,10 +343,8 @@
     --shadow-md:  0 8px 30px rgba(13,27,42,0.10);
     --shadow-lg:  0 20px 60px rgba(13,27,42,0.14);
     --radius:     16px;
-    --radius-sm:  10px;
 }
 
-/* ===== RESET & BASE ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -321,42 +352,51 @@ body {
     color: var(--text-body);
     line-height: 1.7;
     background: var(--light-bg);
+    /* KUNCI: cegah overflow horizontal global */
+    overflow-x: hidden;
 }
 
-img { display: block; max-width: 100%; }
+img { display: block; max-width: 100%; height: auto; }
 
 .container {
     max-width: 1160px;
     margin: 0 auto;
     padding: 0 24px;
+    /* KUNCI: container tidak boleh meluap */
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* ===== SECTIONS ===== */
-.section-light    { background: var(--white); padding: 100px 0; }
-.section-dark     { background: var(--ink); padding: 100px 0; }
-.section-offwhite { background: var(--off-white); padding: 100px 0; }
+.section-light    { background: var(--white); padding: 80px 0; }
+.section-dark     { background: var(--ink); padding: 80px 0; }
+.section-offwhite { background: var(--off-white); padding: 80px 0; }
 
-/* ===== TYPOGRAPHY ===== */
 .heading-display {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
     font-weight: 700;
     color: var(--ink);
     line-height: 1.2;
     letter-spacing: -0.5px;
+    /* KUNCI: heading tidak boleh overflow */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 .heading-light { color: var(--white); }
 
 .body-text {
-    font-size: 1rem;
+    font-size: 0.97rem;
     color: var(--text-body);
     line-height: 1.8;
     margin-bottom: 1rem;
+    /* KUNCI: fix overflow teks panjang tanpa spasi */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .eyebrow-tag {
     display: inline-block;
-    font-family: 'DM Sans', sans-serif;
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 2px;
@@ -367,6 +407,10 @@ img { display: block; max-width: 100%; }
     padding: 6px 16px;
     border-radius: 100px;
     margin-bottom: 16px;
+    /* KUNCI */
+    max-width: 100%;
+    white-space: normal;
+    word-break: break-word;
 }
 .eyebrow-light {
     color: var(--accent);
@@ -384,55 +428,44 @@ img { display: block; max-width: 100%; }
 .divider-center { margin-left: auto; margin-right: auto; }
 .divider-light  { background: rgba(232,168,124,0.6); }
 
-.section-header-center { text-align: center; margin-bottom: 60px; }
+.section-header-center { text-align: center; margin-bottom: 56px; }
 
 /* ===== BUTTONS ===== */
 .btn {
     display: inline-block;
-    padding: 14px 32px;
+    padding: 13px 28px;
     border-radius: 100px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.25s ease;
     cursor: pointer;
     border: none;
+    white-space: nowrap;
 }
-.btn-sm { padding: 9px 22px; font-size: 0.85rem; }
+.btn-sm { padding: 9px 20px; font-size: 0.82rem; }
 
 .btn-accent {
     background: var(--accent);
     color: var(--ink);
     box-shadow: 0 4px 18px rgba(232,168,124,0.35);
 }
-.btn-accent:hover {
-    background: var(--accent-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(232,168,124,0.45);
-}
+.btn-accent:hover { background: var(--accent-dark); transform: translateY(-2px); }
 
 .btn-ghost {
     background: transparent;
     color: var(--white);
     border: 1.5px solid rgba(255,255,255,0.4);
 }
-.btn-ghost:hover {
-    background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.7);
-    transform: translateY(-2px);
-}
+.btn-ghost:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
 
 .btn-primary-dark {
     background: var(--ink);
     color: var(--white);
     box-shadow: var(--shadow-md);
 }
-.btn-primary-dark:hover {
-    background: var(--ink-mid);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
+.btn-primary-dark:hover { background: var(--ink-mid); transform: translateY(-2px); }
 
 .link-arrow {
     display: inline-flex;
@@ -451,29 +484,23 @@ img { display: block; max-width: 100%; }
 .hero-section {
     position: relative;
     background: var(--ink);
-    min-height: 680px;
+    min-height: 620px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    padding: 120px 24px 100px;
+    padding: 100px 24px 90px;
 }
 
 .hero-bg-grid {
-    position: absolute;
-    inset: 0;
-    background-image: 
+    position: absolute; inset: 0;
+    background-image:
         linear-gradient(rgba(232,168,124,0.04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(232,168,124,0.04) 1px, transparent 1px);
     background-size: 60px 60px;
 }
 
-.hero-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    pointer-events: none;
-}
+.hero-orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
 .hero-orb-1 {
     width: 500px; height: 500px;
     background: radial-gradient(circle, rgba(232,168,124,0.18) 0%, transparent 70%);
@@ -486,423 +513,348 @@ img { display: block; max-width: 100%; }
 }
 
 .hero-content {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    color: var(--white);
-    max-width: 820px;
+    position: relative; z-index: 2;
+    text-align: center; color: var(--white);
+    max-width: 820px; width: 100%;
     animation: fadeUp 0.9s ease both;
 }
 
 .hero-eyebrow {
     display: inline-block;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 2.5px; text-transform: uppercase;
     color: var(--accent);
     border: 1px solid rgba(232,168,124,0.3);
-    padding: 6px 18px;
-    border-radius: 100px;
+    padding: 6px 18px; border-radius: 100px;
     margin-bottom: 24px;
     background: rgba(232,168,124,0.08);
 }
 
 .hero-title {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(2.4rem, 6vw, 4.2rem);
-    font-weight: 700;
-    line-height: 1.15;
-    margin-bottom: 24px;
-    letter-spacing: -1px;
+    font-size: clamp(2rem, 6vw, 4.2rem);
+    font-weight: 700; line-height: 1.15;
+    margin-bottom: 20px; letter-spacing: -1px;
     color: var(--white);
+    word-wrap: break-word;
 }
 .text-accent { color: var(--accent); }
 
 .hero-subtitle {
-    font-size: clamp(1rem, 2vw, 1.2rem);
-    opacity: 0.8;
-    margin-bottom: 44px;
+    font-size: clamp(0.95rem, 2vw, 1.15rem);
+    opacity: 0.8; margin-bottom: 40px;
     font-weight: 300;
-    letter-spacing: 0.3px;
 }
 
 .hero-buttons {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: flex; gap: 14px;
+    justify-content: center; flex-wrap: wrap;
 }
 
 .hero-scroll-indicator {
-    position: absolute;
-    bottom: 32px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    position: absolute; bottom: 28px;
+    left: 50%; transform: translateX(-50%);
 }
 .hero-scroll-indicator span {
-    width: 1.5px;
-    height: 48px;
+    display: block; width: 1.5px; height: 44px;
     background: linear-gradient(to bottom, rgba(232,168,124,0.8), transparent);
     animation: scrollPulse 1.8s ease-in-out infinite;
 }
 
-/* ===== SPLIT LAYOUT ===== */
+/* ===== SPLIT LAYOUT — KUNCI FIX UTAMA ===== */
 .split-layout {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
+    /* minmax(0,1fr) adalah FIX UTAMA agar konten tidak overflow keluar grid */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 60px;
     align-items: center;
+    /* WAJIB: pastikan grid tidak meluap */
+    width: 100%;
+    overflow: hidden;
 }
+
 .split-reverse { direction: rtl; }
 .split-reverse > * { direction: ltr; }
+
+/* WAJIB pada semua child grid */
+.split-image,
+.split-content,
+.split-stats {
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
+}
 
 .img-frame {
     position: relative;
     border-radius: var(--radius);
     overflow: hidden;
     box-shadow: var(--shadow-lg);
+    width: 100%;
+    display: block;
 }
 .img-frame img {
     width: 100%;
-    height: 480px;
+    height: clamp(260px, 35vw, 480px);
     object-fit: cover;
+    display: block;
     transition: transform 0.5s ease;
 }
 .img-frame:hover img { transform: scale(1.04); }
 
 .img-badge {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    background: var(--accent);
-    color: var(--ink);
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 8px 18px;
-    border-radius: 100px;
+    position: absolute; bottom: 20px; left: 20px;
+    background: var(--accent); color: var(--ink);
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 8px 18px; border-radius: 100px;
+    z-index: 2;
 }
 
 /* ===== VISI MISI ===== */
 .vm-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+    gap: 28px;
 }
 
 .vm-card {
     border-radius: var(--radius);
-    padding: 48px 40px;
+    padding: 40px 32px;
     border: 1px solid rgba(255,255,255,0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
-.vm-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 24px 60px rgba(0,0,0,0.25);
-}
-
+.vm-card:hover { transform: translateY(-6px); }
 .vm-visi {
     background: linear-gradient(135deg, rgba(232,168,124,0.18) 0%, rgba(232,168,124,0.06) 100%);
     border-color: rgba(232,168,124,0.2);
 }
-.vm-misi {
-    background: rgba(255,255,255,0.04);
-}
+.vm-misi { background: rgba(255,255,255,0.04); }
 
-.vm-icon-wrap {
-    font-size: 48px;
-    margin-bottom: 20px;
-    line-height: 1;
-}
+.vm-icon-wrap { font-size: 44px; margin-bottom: 18px; line-height: 1; }
 
 .vm-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: var(--accent);
-    margin-bottom: 16px;
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 3px; color: var(--accent);
+    margin-bottom: 14px;
 }
 
 .vm-card p {
     color: rgba(255,255,255,0.8);
-    font-size: 1rem;
-    line-height: 1.8;
+    font-size: 0.97rem; line-height: 1.8;
+    word-wrap: break-word; overflow-wrap: break-word;
 }
 
-.misi-list {
-    list-style: none;
-}
+.misi-list { list-style: none; }
 .misi-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 14px 0;
+    display: flex; align-items: flex-start;
+    gap: 14px; padding: 12px 0;
     border-bottom: 1px solid rgba(255,255,255,0.07);
     color: rgba(255,255,255,0.8);
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: 0.92rem; line-height: 1.6;
+    word-wrap: break-word; overflow-wrap: break-word;
 }
 .misi-list li:last-child { border-bottom: none; }
 
 .misi-num {
     flex-shrink: 0;
-    width: 32px; height: 32px;
-    border-radius: 50%;
+    width: 30px; height: 30px; border-radius: 50%;
     background: rgba(232,168,124,0.2);
     border: 1px solid rgba(232,168,124,0.3);
     display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--accent);
+    font-size: 0.72rem; font-weight: 700; color: var(--accent);
 }
 
 /* ===== SEJARAH STATS ===== */
 .split-stats {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: flex; flex-direction: column; gap: 18px;
 }
 
 .stat-card {
     background: var(--off-white);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 32px 36px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    padding: 28px 30px;
+    display: flex; flex-direction: column; gap: 6px;
     transition: all 0.3s ease;
     box-shadow: var(--shadow-sm);
+    word-wrap: break-word; overflow-wrap: break-word;
 }
-.stat-card:hover {
-    transform: translateX(8px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--accent);
-}
-.stat-card-accent {
-    background: var(--ink);
-    border-color: var(--ink);
-}
+.stat-card:hover { transform: translateX(6px); border-color: var(--accent); }
+.stat-card-accent { background: var(--ink); border-color: var(--ink); }
 .stat-card-accent .stat-num { color: var(--accent); }
 .stat-card-accent .stat-lbl { color: rgba(255,255,255,0.7); }
 
 .stat-num {
     font-family: 'Playfair Display', serif;
-    font-size: 2.6rem;
-    font-weight: 700;
-    color: var(--ink);
-    line-height: 1;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700; color: var(--ink); line-height: 1;
 }
 .stat-lbl {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    font-weight: 500;
-    letter-spacing: 0.5px;
+    font-size: 0.83rem; color: var(--text-muted);
+    font-weight: 500; letter-spacing: 0.5px;
 }
 
 /* ===== FASILITAS ===== */
 .fasilitas-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin-top: 50px;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 20px; margin-top: 48px;
 }
 
 .fasilitas-card {
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 36px 28px;
+    padding: 30px 22px;
     text-align: center;
     transition: all 0.3s ease;
     box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    word-wrap: break-word;
 }
-.fasilitas-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--accent);
-}
+.fasilitas-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--accent); }
 
 .fasilitas-icon-box {
-    width: 64px; height: 64px;
-    border-radius: 14px;
-    background: var(--ink);
+    width: 60px; height: 60px;
+    border-radius: 12px; background: var(--ink);
     display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 20px;
-    font-size: 28px;
-    transition: background 0.3s ease;
+    margin: 0 auto 18px; font-size: 26px;
+    transition: background 0.3s ease; flex-shrink: 0;
 }
 .fasilitas-card:hover .fasilitas-icon-box { background: var(--accent); }
-.fasilitas-icon-box img { width: 40px; height: 40px; object-fit: cover; border-radius: 8px; }
+.fasilitas-icon-box img { width: 36px; height: 36px; object-fit: cover; border-radius: 8px; }
 
 .fasilitas-card h4 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 10px;
+    font-size: 0.98rem; font-weight: 700;
+    color: var(--ink); margin-bottom: 8px;
+    word-wrap: break-word;
 }
 .fasilitas-card p {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    margin: 0;
+    font-size: 0.87rem; color: var(--text-muted);
+    line-height: 1.6; margin: 0;
+    word-wrap: break-word; overflow-wrap: break-word;
 }
 
 /* ===== PRESTASI ===== */
 .prestasi-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
-    margin-top: 50px;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 24px; margin-top: 48px;
 }
 
 .prestasi-card {
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: var(--radius);
-    padding: 40px 28px 32px;
+    padding: 36px 24px 28px;
     text-align: center;
     transition: all 0.35s ease;
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
+    word-wrap: break-word;
 }
 .prestasi-card::after {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 3px;
+    content: ''; position: absolute;
+    inset: 0 0 auto 0; height: 3px;
     background: linear-gradient(90deg, var(--accent-dark), var(--accent));
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    opacity: 0; transition: opacity 0.3s ease;
 }
-.prestasi-card:hover {
-    background: rgba(255,255,255,0.08);
-    transform: translateY(-10px);
-    border-color: rgba(232,168,124,0.25);
-    box-shadow: 0 24px 60px rgba(0,0,0,0.3);
-}
+.prestasi-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-8px); border-color: rgba(232,168,124,0.25); }
 .prestasi-card:hover::after { opacity: 1; }
 
 .prestasi-medal {
-    width: 80px; height: 80px;
-    margin: 0 auto 24px;
-    border-radius: 50%;
+    width: 76px; height: 76px;
+    margin: 0 auto 20px; border-radius: 50%;
     background: linear-gradient(135deg, var(--accent-dark), var(--accent));
     display: flex; align-items: center; justify-content: center;
-    font-size: 36px;
+    font-size: 34px;
     box-shadow: 0 8px 28px rgba(232,168,124,0.35);
     border: 3px solid rgba(255,255,255,0.15);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease; flex-shrink: 0;
 }
 .prestasi-card:hover .prestasi-medal { transform: scale(1.1); }
 .medal-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
 .prestasi-title {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--white);
-    margin-bottom: 12px;
-    line-height: 1.4;
+    font-size: 0.97rem; font-weight: 700;
+    color: var(--white); margin-bottom: 10px; line-height: 1.4;
+    word-wrap: break-word; overflow-wrap: break-word;
 }
 .prestasi-desc {
-    font-size: 0.88rem;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.7;
-    margin-bottom: 20px;
+    font-size: 0.85rem; color: rgba(255,255,255,0.6);
+    line-height: 1.7; margin-bottom: 18px;
+    word-wrap: break-word; overflow-wrap: break-word;
 }
-.prestasi-footer {
-    padding-top: 16px;
-    border-top: 1px solid rgba(255,255,255,0.08);
-}
+.prestasi-footer { padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); }
 
 .empty-state {
-    grid-column: 1/-1;
-    text-align: center;
-    padding: 60px;
+    grid-column: 1/-1; text-align: center; padding: 60px;
     background: rgba(255,255,255,0.04);
     border-radius: var(--radius);
     border: 1px dashed rgba(255,255,255,0.15);
 }
-.empty-icon { font-size: 56px; opacity: 0.4; margin-bottom: 16px; }
+.empty-icon { font-size: 52px; opacity: 0.4; margin-bottom: 14px; }
 .empty-state p { color: rgba(255,255,255,0.5); }
 
 /* ===== ESKUL ===== */
 .eskul-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin-top: 50px;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 20px; margin-top: 48px;
 }
 
 .eskul-card {
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 36px 28px;
+    padding: 30px 22px;
     text-align: center;
     transition: all 0.3s ease;
     box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    word-wrap: break-word;
 }
-.eskul-card:hover {
-    border-color: var(--ink);
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-}
+.eskul-card:hover { border-color: var(--ink); transform: translateY(-6px); box-shadow: var(--shadow-lg); }
 
-.eskul-icon { font-size: 44px; margin-bottom: 18px; line-height: 1; }
+.eskul-icon { font-size: 42px; margin-bottom: 16px; line-height: 1; }
 .eskul-card h4 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 10px;
+    font-size: 0.98rem; font-weight: 700;
+    color: var(--ink); margin-bottom: 8px;
+    word-wrap: break-word;
 }
 .eskul-card p {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    margin: 0;
+    font-size: 0.87rem; color: var(--text-muted);
+    line-height: 1.6; margin: 0;
+    word-wrap: break-word; overflow-wrap: break-word;
 }
 .pembina-label {
-    font-size: 0.82rem;
-    color: var(--accent-dark);
-    font-weight: 600;
-    margin-top: 12px !important;
+    font-size: 0.8rem; color: var(--accent-dark);
+    font-weight: 600; margin-top: 10px !important;
 }
 
 /* ===== CTA ===== */
 .cta-section {
-    position: relative;
-    background: var(--ink);
-    padding: 100px 24px;
-    text-align: center;
-    overflow: hidden;
+    position: relative; background: var(--ink);
+    padding: 90px 24px; text-align: center; overflow: hidden;
 }
 .cta-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
     width: 600px; height: 300px;
     background: radial-gradient(ellipse, rgba(232,168,124,0.12) 0%, transparent 70%);
     pointer-events: none;
 }
 .cta-sub {
-    font-size: 1.05rem;
-    color: rgba(255,255,255,0.7);
-    margin: 16px auto 40px;
-    max-width: 520px;
-    font-weight: 300;
+    font-size: 1rem; color: rgba(255,255,255,0.7);
+    margin: 16px auto 36px; max-width: 520px; font-weight: 300;
+    word-wrap: break-word;
 }
 
-/* ===== UTILITIES ===== */
 .text-center { text-align: center; }
-.mt-5 { margin-top: 48px; }
+.mt-5 { margin-top: 44px; }
 
 /* ===== ANIMATIONS ===== */
 @keyframes fadeUp {
@@ -918,15 +870,16 @@ img { display: block; max-width: 100%; }
 @media (max-width: 1024px) {
     .fasilitas-grid,
     .prestasi-grid,
-    .eskul-grid { grid-template-columns: repeat(2, 1fr); }
+    .eskul-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
 }
 
 @media (max-width: 768px) {
-    .section-light, .section-dark, .section-offwhite { padding: 72px 0; }
+    .section-light, .section-dark, .section-offwhite { padding: 64px 0; }
 
+    /* Split layout jadi 1 kolom di mobile */
     .split-layout {
-        grid-template-columns: 1fr;
-        gap: 48px;
+        grid-template-columns: 1fr !important;
+        gap: 32px;
     }
     .split-reverse { direction: ltr; }
 
@@ -934,19 +887,36 @@ img { display: block; max-width: 100%; }
 
     .fasilitas-grid,
     .prestasi-grid,
-    .eskul-grid { grid-template-columns: 1fr; }
+    .eskul-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
 
     .split-stats { flex-direction: row; flex-wrap: wrap; }
-    .stat-card { flex: 1 1 calc(50% - 10px); }
+    .stat-card { flex: 1 1 calc(50% - 9px); }
 
-    .img-frame img { height: 320px; }
+    .img-frame img { height: clamp(220px, 55vw, 340px); }
+
+    /* Container full width di mobile */
+    .container { padding: 0 16px; }
 }
 
 @media (max-width: 480px) {
-    .hero-title { font-size: 2rem; }
-    .hero-buttons { flex-direction: column; }
-    .btn { width: 100%; text-align: center; }
+    .section-light, .section-dark, .section-offwhite { padding: 52px 0; }
+
+    .hero-section { min-height: auto; padding: 80px 20px 72px; }
+    .hero-title { font-size: 1.9rem; }
+    .hero-buttons { flex-direction: column; align-items: center; }
+    .hero-buttons .btn { width: 100%; text-align: center; max-width: 280px; }
+
     .stat-card { flex: 1 1 100%; }
+
+    .fasilitas-grid,
+    .prestasi-grid,
+    .eskul-grid { grid-template-columns: 1fr; }
+
+    .img-frame img { height: 240px; }
+
+    .vm-card { padding: 28px 20px; }
+
+    .container { padding: 0 14px; }
 }
 </style>
 

@@ -15,7 +15,10 @@ class ProfilController extends Controller
 
     public function sejarah()
     {
-        $profil = profil::where('nama_menu', 'sejarah')->where('status', true)->first();
+        $profil = profil::where('nama_menu', 'sejarah')
+            ->with('historyImages')
+            ->where('status', true)
+            ->first();
         return view('Profil.sejarah', compact('profil'));
     }
 

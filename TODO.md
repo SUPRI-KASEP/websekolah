@@ -1,24 +1,27 @@
-# TODO - Fitur Profil Dinamis
+# TODO - Upgrade Fitur Sejarah
 
-## Progress Implementation
+## Step 1: Migration
+- [x] Create migration for history_images table
+- [x] Add description column to profils table
 
-- [x] 1. Create Migration for visi-misi columns
-- [x] 2. Update Model - Add isi_visi and isi_misi to fillable
-- [x] 3. Update AdminController - Add profilIndex, profilStore, profilUpdate, profilDestroy methods with visi-misi support
-- [x] 4. Create Admin Profil Manage View
-- [x] 5. Update Routes - Add CRUD routes for profil management
-- [x] 6. Update Home Page - Fetch data dynamically from database
-- [x] 7. Update Profil Views (vm.blade.php) - Use isi_visi and isi_misi fields
-- [x] 8. Create Migration for sejarah fields (tahun_berdiri, jumlah_siswa, lulusan_sukes)
-- [x] 9. Update Admin View - Add sejarah stats fields (Tahun Berdiri, Jumlah Siswa, Lulusan Sukses)
-- [x] 10. Update Sejarah page (sejarah.blade.php) - Use dynamic stats
-- [x] 11. Update Home page - Use dynamic sejarah stats
+## Step 2: Models
+- [x] Create HistoryImage model
+- [x] Update profil model with relationship and description
 
-## Notes
-- Migration already exists: 2026_02_23_031320_create_profils_table.php
-- Model already exists: app/Models/profil.php
-- Routes already exist for frontend profil display
+## Step 3: Controllers
+- [x] Add historyImageStore() method in AdminController
+- [x] Add historyImageDestroy() method in AdminController
+- [x] Update profilUpdate() in AdminController
+- [x] Update profilDestroy() in AdminController
+- [x] Update sejarah() in ProfilController
 
-## Next Steps (Run these commands)
-- Run migration: `php artisan migrate`
-- Test the application
+## Step 4: Routes
+- [x] Add routes for history image management
+
+## Step 5: Views
+- [x] Update admin form (manage.blade.php)
+- [x] Update guest view (sejarah.blade.php)
+
+## Step 6: Storage Setup
+- [x] Create storage directory if needed
+

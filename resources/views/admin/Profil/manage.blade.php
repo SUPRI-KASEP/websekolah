@@ -152,29 +152,46 @@
                                                 
                                                 <!-- Stats untuk Sejarah (khusus untuk sejarah) -->
                                                 <div id="editSejarahStatsContainer{{ $item->id }}" style="{{ $item->nama_menu == 'sejarah' ? '' : 'display:none;' }}">
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Tahun Berdiri</label>
-                                                                <input type="number" name="tahun_berdiri" class="form-control" 
-                                                                    value="{{ $item->tahun_berdiri }}" placeholder="2000" min="1900" max="2100">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Jumlah Siswa Tahun Ini</label>
-                                                                <input type="number" name="jumlah_siswa" class="form-control" 
-                                                                    value="{{ $item->jumlah_siswa }}" placeholder="500" min="0">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Lulusan Sukses</label>
-                                                                <input type="number" name="lulusan_sukes" class="form-control" 
-                                                                    value="{{ $item->lulusan_sukes }}" placeholder="1000" min="0">
-                                                            </div>
-                                                        </div>
+                                                    
+                                                    <!-- Description for Sejarah -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Deskripsi</label>
+                                                        <textarea name="description" class="form-control" rows="6" 
+                                                            placeholder="Masukkan deskripsi sejarah sekolah">{{ $item->description }}</textarea>
                                                     </div>
+                                                    
+                                                    <!-- Multiple Images for Sejarah -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Foto Sejarah (Multiple)</label>
+                                                        <input type="file" name="images[]" class="form-control" 
+                                                            accept="image/*" multiple>
+                                                        <small class="text-muted">Bisa pilih beberapa foto sekaligus</small>
+                                                    </div>
+                                                    
+                                                    <!-- Existing Images Display -->
+                                                    @if ($item->nama_menu == 'sejarah' && $item->historyImages->count() > 0)
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Foto Sejarah Tersimpan</label>
+                                                            <div class="row g-2">
+                                                                @foreach($item->historyImages as $image)
+                                                                    <div class="col-6 col-md-4 col-lg-3">
+                                                                        <div class="position-relative border rounded p-1">
+                                                                            <img src="{{ asset('storage/' . $image->image_path) }}" 
+                                                                                alt="Foto Sejarah" 
+                                                                                class="img-fluid rounded"
+                                                                                style="width: 100%; height: 120px; object-fit: cover;">
+                                                                            <button type="button" 
+                                                                                class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
+                                                                                onclick="deleteImage({{ $image->id }})"
+                                                                                style="padding: 2px 6px; font-size: 10px;">
+                                                                                <i class="fas fa-times"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                                 
                                                 <div class="row">
@@ -330,25 +347,20 @@
                     
                     <!-- Stats untuk Sejarah (khusus untuk sejarah) -->
                     <div id="addSejarahStatsContainer" style="display:none;">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Tahun Berdiri</label>
-                                    <input type="number" name="tahun_berdiri" class="form-control" placeholder="2000" min="1900" max="2100">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Jumlah Siswa Tahun Ini</label>
-                                    <input type="number" name="jumlah_siswa" class="form-control" placeholder="500" min="0">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Lulusan Sukses</label>
-                                    <input type="number" name="lulusan_sukes" class="form-control" placeholder="1000" min="0">
-                                </div>
-                            </div>
+                        
+                        <!-- Description for Sejarah (Add Form) -->
+                        <div class="mb-3">
+                            <label class="form-label">Deskripsi</label>
+                            <textarea name="description" class="form-control" rows="6" 
+                                placeholder="Masukkan deskripsi sejarah sekolah"></textarea>
+                        </div>
+                        
+                        <!-- Multiple Images for Sejarah (Add Form) -->
+                        <div class="mb-3">
+                            <label class="form-label">Foto Sejarah (Multiple)</label>
+                            <input type="file" name="images[]" class="form-control" 
+                                accept="image/*" multiple>
+                            <small class="text-muted">Bisa pilih beberapa foto sekaligus</small>
                         </div>
                     </div>
                     
@@ -417,6 +429,31 @@
             sejarahStatsContainer.style.display = 'none';
             imageContainer.style.display = 'none';
             kepsekContainer.style.display = 'none';
+        }
+    }
+    
+    // Function to delete history image
+    function deleteImage(imageId) {
+        if (confirm('Apakah Anda yakin ingin menghapus foto ini?')) {
+            fetch('{{ route("admin.history-images.destroy", ":id") }}'.replace(':id', imageId), {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Reload the page to show updated images
+                    window.location.reload();
+                } else {
+                    alert('Gagal menghapus foto!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat menghapus foto!');
+            });
         }
     }
 </script>

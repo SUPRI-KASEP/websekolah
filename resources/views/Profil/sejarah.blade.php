@@ -1,367 +1,291 @@
 @extends('layouts.app')
+
 @section('title', 'Sejarah Sekolah')
+
 @section('content')
 
-<?php
-use Illuminate\Support\Str;
+@php
+    $sejarah = isset($profil) ? $profil : null;
+    $description = $sejarah?->description ?? '';
+    $historyImages = $sejarah?->historyImages ?? [];
+@endphp
 
-// Get sejarah profile data dari database atau null jika tidak ada
-$sejarah = isset($profil) ? $profil : null;
+<div class="sejarah-wrapper">
 
-// Ambil nilai dari database atau default value
-$tahunBerdiri = 2000;
-$jumlahSiswa = 500;
-$lulusanSukses = 1000;
-
-if ($sejarah) {
-    if ($sejarah->tahun_berdiri) {
-        $tahunBerdiri = $sejarah->tahun_berdiri;
-    }
-    if ($sejarah->jumlah_siswa) {
-        $jumlahSiswa = $sejarah->jumlah_siswa;
-    }
-    if ($sejarah->lulusan_sukes) {
-        $lulusanSukses = $sejarah->lulusan_sukes;
-    }
-}
-
-$tahunSekarang = date('Y');
-$lamaBeroperasi = $tahunSekarang - $tahunBerdiri;
-?>
-
-<div class="container py-4">
-    <!-- Header Section -->
-    <div class="text-center mb-5">
-        <span class="section-tag">Tentang Kami</span>
-        <h2 class="fw-bold mb-3"><?php echo ($sejarah && $sejarah->judul) ? e($sejarah->judul) : 'Sejarah SMK-Ucup'; ?></h2>
-        <p class="fst-italic text-secondary fs-5">"Perjalanan panjang menuju keunggulan pendidikan"</p>
-        <div class="section-line mx-auto"></div>
-    </div>
-
-    <!-- Hero Banner with Stats -->
-    <div class="sejarah-hero mb-5">
-        <div class="hero-content text-center">
-            <h3 class="fw-bold mb-3"><?php echo ($sejarah && $sejarah->konten) ? nl2br(e($sejarah->konten)) : 'Berdiri sejak tahun ' . $tahunBerdiri; ?></h3>
-            <span class="badge-years"><?php echo $tahunBerdiri; ?> - <?php echo $tahunSekarang; ?></span>
+    {{-- Page Header --}}
+    <div class="sejarah-hero">
+        <div class="sejarah-hero-inner">
+            <span class="sejarah-label">Profil Sekolah</span>
+            <h1 class="sejarah-title">
+                {{ $sejarah && $sejarah->judul ? $sejarah->judul : 'Sejarah Sekolah' }}
+            </h1>
+            <div class="sejarah-divider"></div>
         </div>
     </div>
 
-    <!-- Dynamic Statistics Section -->
-    <div class="stats-section mb-5">
-        <div class="stats-grid">
-            <div class="stat-box">
-                <span class="stat-number"><?php echo $lamaBeroperasi; ?>+</span>
-                <span class="stat-label">Tahun Pengalaman</span>
+    <div class="sejarah-container">
+
+        @if(count($historyImages) > 0)
+
+            {{-- Gallery --}}
+            <div class="sejarah-gallery-section">
+                <div class="section-header">
+                    <i class="bi bi-images"></i>
+                    <h3>Galeri Foto</h3>
+                </div>
+
+                <div class="gallery-card-wrapper">
+                    <div class="sejarah-gallery-grid">
+                        @foreach($historyImages as $image)
+                            <div class="gallery-item">
+                                <img 
+                                    src="{{ asset('storage/' . $image->image_path) }}" 
+                                    alt="Foto Sejarah"
+                                    onclick="openLightbox('{{ asset('storage/' . $image->image_path) }}')"
+                                    tabindex="0"
+                                    role="button"
+                                    aria-label="Zoom foto sejarah"
+                                >
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
-            <div class="stat-box">
-                <span class="stat-number"><?php echo number_format($lulusanSukses); ?>+</span>
-                <span class="stat-label">Lulusan Sukses</span>
+
+            {{-- Description --}}
+            @if($description)
+                <div class="sejarah-description">
+                    <div class="desc-icon">
+                        <i class="bi bi-book-half"></i>
+                    </div>
+                    <div class="desc-content">
+                        <h3>Tentang Sejarah</h3>
+                        <p>{{ $description }}</p>
+                    </div>
+                </div>
+            @endif
+
+        @else
+            <div class="sejarah-empty">
+                <i class="bi bi-clock-history"></i>
+                <p>Belum ada data sejarah yang tersedia.</p>
             </div>
-            <div class="stat-box">
-                <span class="stat-number"><?php echo number_format($jumlahSiswa); ?>+</span>
-                <span class="stat-label">Siswa Aktif</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-number">10+</span>
-                <span class="stat-label">Program Keahlian</span>
-            </div>
-        </div>
+        @endif
+
     </div>
+</div>
 
-    <!-- Timeline Section -->
-    <div class="section mb-5">
-        <h4 class="fw-bold mb-4 text-center">
-            <span class="section-icon">📅</span> Perjalanan Kami
-        </h4>
-        
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <h5 class="fw-bold"><?php echo $tahunBerdiri; ?></h5>
-                    <p>Didirikan dengan nama awal "SMK Teknologi omay" dengan fokus pada program keahlian Teknik Komputer dan Jaringan.</p>
-                </div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <h5 class="fw-bold"><?php echo $tahunBerdiri + 5; ?></h5>
-                    <p>Mengembangkan program keahlian baru yaitu Teknik Otomotif dan Akuntansi. Memperoleh akreditasi A dari BAN-SM.</p>
-                </div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <h5 class="fw-bold"><?php echo $tahunBerdiri + 10; ?></h5>
-                    <p>Menjadi sekolah pilot project untuk program Link and Match dengan dunia industri. Kerjasama dengan berbagai perusahaan terkemuka.</p>
-                </div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <h5 class="fw-bold"><?php echo $tahunBerdiri + 15; ?></h5>
-                    <p>Meraih predikat sekolah bermutu tingkat nasional. Melakukan pengembangan fasilitas laboratorium dan workshop.</p>
-                </div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <h5 class="fw-bold"><?php echo $tahunSekarang; ?></h5>
-                    <p>Terus berkomitmen untuk menyediakan pendidikan berkualitas tinggi dan menghasilkan lulusan yang kompeten dan berakhlakul karimah.</p>
-                </div>
-            </div>
-        </div>
+{{-- LIGHTBOX MODAL --}}
+<div id="lightbox" class="lightbox" onclick="closeLightbox()" role="dialog" aria-modal="true" aria-label="Gambar zoom sejarah">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+        <button class="close-btn" onclick="closeLightbox()" aria-label="Tutup zoom gambar">&times;</button>
+        <img id="lightbox-img" alt="Gambar zoom sejarah">
     </div>
-
-    <!-- Quote Section -->
-    <div class="section mb-5">
-        <div class="quote-box">
-            <blockquote>
-                "Pendidikan adalah passport untuk masa depan, hari adalah milik kita bersama."
-            </blockquote>
-            <cite>- Manajemen SMK-SLB</cite>
-        </div>
-    </div>
-
-    <hr class="mb-4">
-
-    <!-- Footer Info -->
-    <p class="text-secondary text-center small">SMK-Ucup • Website resmi sekolah</p>
 </div>
 
 <style>
-body {
+/* WRAPPER */
+.sejarah-wrapper {
     font-family: 'Segoe UI', Arial, sans-serif;
-    line-height: 1.6;
     color: #333;
+    background-color: #f4f6f9;
+    min-height: 80vh;
 }
 
-.container {
+/* HERO NAVY */
+.sejarah-hero {
+    background: #0b1f3a;
+    padding: 60px 20px 50px;
+    text-align: center;
+}
+
+.sejarah-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.sejarah-container {
     max-width: 1140px;
     margin: 0 auto;
+    padding: 50px 20px 60px;
+}
+
+/* GALLERY WRAPPER CARD */
+.gallery-card-wrapper {
+    background: #ffffff;
     padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    display: flex;
+    justify-content: center;
 }
 
-h1, h2, h3, h4, h5 {
-    color: #212529;
+/* FLEX GALERI SELALU */
+.sejarah-gallery-grid {
+    display: flex !important;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
-h2 {
+/* gambar gallery */
+.gallery-item img {
+    width: 140px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    flex-shrink: 0;
+}
+
+.gallery-item img:hover,
+.gallery-item img:focus {
+    outline: none;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* DESCRIPTION */
+.sejarah-description {
+    background: #ffffff;
+    border-left: 5px solid #0b1f3a;
+    border-radius: 8px;
+    padding: 30px;
+    margin-top: 40px;
+}
+
+.desc-icon {
     font-size: 2rem;
+    color: #0b1f3a;
+    margin-top: 2px;
+    flex-shrink: 0;
 }
 
-h3 {
-    font-size: 1.5rem;
-}
-
-h4 {
-    font-size: 1.3rem;
-}
-
-hr {
-    border: 0;
-    border-top: 1px solid #dee2e6;
-    margin: 20px 0;
-}
-
-p {
-    margin-bottom: 1rem;
-}
-
-.text-secondary {
-    color: #6c757d;
-}
-
-.fw-bold {
+.desc-content h3 {
+    font-size: 1.1rem;
     font-weight: 700;
-}
-
-.fst-italic {
-    font-style: italic;
-}
-
-.fs-5 {
-    font-size: 1.25rem;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.mx-auto {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Section Tag */
-.section-tag {
-    display: inline-block;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 8px 20px;
-    border-radius: 25px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    margin-bottom: 15px;
-}
-
-.section-line {
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 3px;
-    margin-top: 15px;
-}
-
-/* Hero Section */
-.sejarah-hero {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 20px;
-    padding: 50px 40px;
-    color: white;
-}
-
-.badge-years {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 8px 20px;
-    border-radius: 30px;
-    font-weight: 600;
-    margin-top: 15px;
-}
-
-/* Stats Grid */
-.stats-section {
-    padding: 30px 0;
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
-}
-
-.stat-box {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 15px;
-    padding: 25px;
-    text-align: center;
-    color: white;
-}
-
-.stat-number {
-    display: block;
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.stat-label {
-    font-size: 0.9rem;
-    opacity: 0.9;
-}
-
-/* Timeline */
-.timeline {
-    position: relative;
-    padding-left: 30px;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.timeline::before {
-    content: '';
-    position: absolute;
-    left: 7px;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: linear-gradient(to bottom, #667eea, #764ba2);
-    border-radius: 3px;
-}
-
-.timeline-item {
-    position: relative;
-    margin-bottom: 25px;
-    padding-left: 20px;
-}
-
-.timeline-dot {
-    position: absolute;
-    left: -27px;
-    top: 5px;
-    width: 16px;
-    height: 16px;
-    background: #667eea;
-    border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.timeline-content {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    border-left: 4px solid #667eea;
-}
-
-.timeline-content h5 {
-    color: #667eea;
+    color: #0b1f3a;
     margin-bottom: 10px;
 }
 
-.section-icon {
-    margin-right: 8px;
+.desc-content p {
+    color: #555;
+    line-height: 1.8;
+    margin: 0;
+    white-space: pre-line;
 }
 
-/* Quote Box */
-.quote-box {
-    background: #f8f9fa;
-    border-radius: 15px;
-    padding: 30px;
+/* EMPTY STATE */
+.sejarah-empty {
     text-align: center;
-    border-left: 5px solid #764ba2;
-    max-width: 800px;
-    margin: 0 auto;
+    padding: 80px 20px;
+    color: #aaa;
 }
 
-.quote-box blockquote {
-    font-size: 1.3rem;
-    font-style: italic;
-    color: #333;
-    margin-bottom: 15px;
+.sejarah-empty i {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    display: block;
+    color: #ccc;
 }
 
-.quote-box cite {
-    color: #667eea;
-    font-weight: 600;
+/* LIGHTBOX MODAL */
+.lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-.mb-3 {
-    margin-bottom: 1rem;
+.lightbox-content {
+    position: relative;
+    max-width: 60vw;
+    max-height: 60vh;
+    background: transparent;
+    border-radius: 10px;
 }
 
-.mb-4 {
-    margin-bottom: 1.5rem;
+.lightbox-content img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(255,255,255,0.8);
+    user-select: none;
 }
 
-.mb-5 {
-    margin-bottom: 3rem;
+.close-btn {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    background: #222;
+    color: #fff;
+    border: none;
+    font-size: 36px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    transition: background-color 0.3s ease;
+    z-index: 10;
 }
 
-.mt-3 {
-    margin-top: 1rem;
+.close-btn:hover,
+.close-btn:focus {
+    background-color: #444;
+    outline: none;
 }
 
-.small {
-    font-size: 0.875rem;
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .sejarah-title { font-size: 1.7rem; }
+    .sejarah-description { flex-direction: column; gap: 12px; }
 }
+
+@media (max-width: 480px) {
+    .gallery-item img {
+        width: 120px;
+        height: 100px;
+    }
+    .sejarah-gallery-grid {
+        gap: 8px;
+    }
+}
+
 </style>
+
+<script>
+function openLightbox(src) {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    lightboxImg.src = src;
+    lightbox.style.display = 'flex';
+    document.querySelector('.close-btn').focus();
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    lightbox.style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") {
+        closeLightbox();
+    }
+});
+</script>
 
 @endsection

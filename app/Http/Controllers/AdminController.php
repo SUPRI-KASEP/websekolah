@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Eskul;
 use App\Models\Fasilitas;
 use App\Models\Prestasi;
 use App\Models\profil;
+use App\Models\HistoryImage;
 
 class AdminController extends Controller
 {
@@ -407,10 +409,10 @@ class AdminController extends Controller
             'konten' => 'nullable',
             'isi_visi' => 'nullable',
             'isi_misi' => 'nullable',
-            'tahun_berdiri' => 'nullable|integer|min:1900|max:2100',
-            'jumlah_siswa' => 'nullable|integer|min:0',
-            'lulusan_sukes' => 'nullable|integer|min:0',
+            'description' => 'nullable|string',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images' => 'nullable',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'urutan' => 'nullable|integer',
             'status' => 'nullable',
         ]);
@@ -428,11 +430,9 @@ class AdminController extends Controller
             'konten' => $request->konten,
             'isi_visi' => $request->isi_visi,
             'isi_misi' => $request->isi_misi,
-            'tahun_berdiri' => $request->tahun_berdiri,
-            'jumlah_siswa' => $request->jumlah_siswa,
-            'lulusan_sukes' => $request->lulusan_sukes,
+            'description' => $request->description,
             'urutan' => $request->urutan ?? 0,
-            'status' => $request->has('status'), // True if checkbox is checked, false otherwise
+            'status' => $request->has('status'),
         ];
 
         // Handle image upload - only for welcome message (sambutan)
@@ -445,7 +445,12 @@ class AdminController extends Controller
             $data['gambar'] = null;
         }
 
-        profil::create($data);
+        $profil = profil::create($data);
+
+        // Handle multiple image upload for sejarah
+        if ($request->nama_menu === 'sejarah' && $request->hasFile('images')) {
+            $this->storeHistoryImages($request->file('images'), $profil->id);
+        }
 
         return redirect()->route('admin.profil')->with('success', 'Profil berhasil ditambahkan!');
     }
@@ -464,10 +469,10 @@ class AdminController extends Controller
             'konten' => 'nullable',
             'isi_visi' => 'nullable',
             'isi_misi' => 'nullable',
-            'tahun_berdiri' => 'nullable|integer|min:1900|max:2100',
-            'jumlah_siswa' => 'nullable|integer|min:0',
-            'lulusan_sukes' => 'nullable|integer|min:0',
+            'description' => 'nullable|string',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images' => 'nullable',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'urutan' => 'nullable|integer',
             'status' => 'nullable',
         ]);
@@ -485,11 +490,9 @@ class AdminController extends Controller
             'konten' => $request->konten,
             'isi_visi' => $request->isi_visi,
             'isi_misi' => $request->isi_misi,
-            'tahun_berdiri' => $request->tahun_berdiri,
-            'jumlah_siswa' => $request->jumlah_siswa,
-            'lulusan_sukes' => $request->lulusan_sukes,
+            'description' => $request->description,
             'urutan' => $request->urutan ?? 0,
-            'status' => $request->has('status'), // True if checkbox is checked, false otherwise
+            'status' => $request->has('status'),
         ];
 
         // Handle image upload - only for welcome message
@@ -518,6 +521,11 @@ class AdminController extends Controller
 
         $profil->update($data);
 
+        // Handle multiple image upload for sejarah
+        if ($request->nama_menu === 'sejarah' && $request->hasFile('images')) {
+            $this->storeHistoryImages($request->file('images'), $profil->id);
+        }
+
         return redirect()->route('admin.profil')->with('success', 'Profil berhasil diperbarui!');
     }
 
@@ -533,8 +541,66 @@ class AdminController extends Controller
             unlink(public_path('assets/' . $profil->gambar));
         }
 
+        // Delete all related history images for sejarah
+        if ($profil->nama_menu === 'sejarah') {
+            $this->deleteAllHistoryImages($profil->id);
+        }
+
         $profil->delete();
 
         return redirect()->route('admin.profil')->with('success', 'Profil berhasil dihapus!');
+    }
+
+    // ==================== HISTORY IMAGE MANAGEMENT ====================
+
+    /**
+     * Store multiple history images.
+     */
+    protected function storeHistoryImages($images, $profilId)
+    {
+        foreach ($images as $image) {
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            
+            // Store in storage/app/public/history
+            $path = $image->storeAs('history', $imageName, 'public');
+            
+            HistoryImage::create([
+                'profil_id' => $profilId,
+                'image_path' => $path,
+            ]);
+        }
+    }
+
+    /**
+     * Delete all history images for a profil.
+     */
+    protected function deleteAllHistoryImages($profilId)
+    {
+        $historyImages = HistoryImage::where('profil_id', $profilId)->get();
+        
+        foreach ($historyImages as $image) {
+            // Delete file from storage
+            if (Storage::disk('public')->exists($image->image_path)) {
+                Storage::disk('public')->delete($image->image_path);
+            }
+            $image->delete();
+        }
+    }
+
+    /**
+     * Delete a single history image.
+     */
+    public function historyImageDestroy($id)
+    {
+        $historyImage = HistoryImage::findOrFail($id);
+        
+        // Delete file from storage
+        if (Storage::disk('public')->exists($historyImage->image_path)) {
+            Storage::disk('public')->delete($historyImage->image_path);
+        }
+        
+        $historyImage->delete();
+
+        return redirect()->route('admin.profil')->with('success', 'Foto berhasil dihapus!');
     }
 }

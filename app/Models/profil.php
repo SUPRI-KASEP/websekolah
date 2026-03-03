@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class profil extends Model
 {
@@ -16,8 +17,17 @@ class profil extends Model
         'tahun_berdiri',
         'jumlah_siswa',
         'lulusan_sukes',
+        'description',
         'gambar',
         'urutan',
         'status',
     ];
+
+    /**
+     * Get the history images for this profile (specifically for sejarah).
+     */
+    public function historyImages(): HasMany
+    {
+        return $this->hasMany(HistoryImage::class);
+    }
 }

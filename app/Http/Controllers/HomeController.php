@@ -15,7 +15,10 @@ class HomeController extends Controller
         // Get profil data
         $sambutan = profil::where('nama_menu', 'sambutan')->where('status', true)->first();
         $visimisi = profil::where('nama_menu', 'visi-misi')->where('status', true)->first();
-        $sejarah = profil::where('nama_menu', 'sejarah')->where('status', true)->first();
+        $sejarah = profil::where('nama_menu', 'sejarah')
+            ->with('historyImages')
+            ->where('status', true)
+            ->first();
 
         // Calculate dynamic stats for sejarah
         $tahunBerdiri = $sejarah && $sejarah->tahun_berdiri ? $sejarah->tahun_berdiri : 2000;

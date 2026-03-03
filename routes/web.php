@@ -48,6 +48,9 @@ Route::middleware(['auth.admin:admin'])->group(function () {
     Route::post('/admin/profil', [AdminController::class, 'profilStore'])->name('admin.profil.store');
     Route::put('/admin/profil/{id}', [AdminController::class, 'profilUpdate'])->name('admin.profil.update');
     Route::delete('/admin/profil/{id}', [AdminController::class, 'profilDestroy'])->name('admin.profil.destroy');
+    
+    // History Image Management Routes
+    Route::delete('/admin/history-images/{id}', [AdminController::class, 'historyImageDestroy'])->name('admin.history-images.destroy');
 });
 
 Route::get('/sambutan', [ProfilController::class, 'sambutan'])->name('profil.sambutan');
