@@ -219,7 +219,7 @@
             <li><a href="/">Home</a></li>
 
             <li class="dropdown">
-                <a href="#" onclick="toggleDropdown(event)">Profil</a>
+                <a href="{{ route('profil.dashboard') }}" onclick="toggleDropdown(event)">Profil</a>
                 <ul class="dropdown-menu">
                     <li><a href="{{ route('profil.menu', 'sambutan') }}">Sambutan Kepala Sekolah</a></li>
                     <li><a href="{{ route('profil.menu', 'visi-misi') }}">Visi & Misi</a></li>

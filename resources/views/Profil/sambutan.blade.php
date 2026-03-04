@@ -195,8 +195,8 @@
     border: 1px solid var(--border);
     box-shadow: var(--shadow-md);
     padding: 40px 44px;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .salam-text {
@@ -213,6 +213,9 @@
     line-height: 1.85;
     color: var(--text-body);
     text-align: justify;
+    max-width: 100%;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .konten-text p {
@@ -351,14 +354,8 @@
                              alt="Kepala Sekolah">
                     </div>
                     <div class="profile-info">
-                        <div class="profile-name">{{ optional($profil)->nama ?? 'Drs. Budi Santoso' }}</div>
-                        <div class="profile-role">{{ optional($profil)->jabatan ?? 'Kepala Sekolah' }}</div>
-                        @if(optional($profil)->nip)
-                        <div class="profile-detail">📋 NIP. {{ $profil->nip }}</div>
-                        @endif
-                        @if(optional($profil)->email)
-                        <div class="profile-detail">📧 {{ $profil->email }}</div>
-                        @endif
+                        <div class="profile-name">{{ optional($profil)->nama_kepala_sekolah ?? 'Drs. Budi Santoso' }}</div>
+                        <div class="profile-role">Kepala Sekolah</div>
                     </div>
                 </div>
             </aside>
@@ -381,17 +378,6 @@
         </div>
     </div>
 
-    {{-- PENUTUP & TTD --}}
-    <div class="penutup-section">
-        <div class="penutup-card">
-            <p class="penutup-text">Akhir kata, kami mengucapkan terima kasih atas kepercayaan masyarakat kepada {{ config('app.school_name', 'sekolah kami') }}. Kritik dan saran yang membangun selalu kami nantikan untuk kemajuan sekolah kita tercinta.</p>
-            <p class="wassalam-text">Wassalamu'alaikum Warahmatullahi Wabarakatuh.</p>
-            <div class="ttd-box">
-                <div class="ttd-name">{{ optional($profil)->nama ?? 'Drs. Budi Santoso' }}</div>
-                <div class="ttd-role">{{ optional($profil)->jabatan ?? 'Kepala Sekolah' }}</div>
-            </div>
-        </div>
-    </div>
 
     {{-- FOOTER --}}
     <div class="sambutan-footer">

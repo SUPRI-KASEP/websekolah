@@ -25,8 +25,15 @@ class ProfilController extends Controller
     public function dashboard()
     {
         $profils = profil::where('status', true)->orderBy('urutan')->get();
-        return view('Profil.dashboard', compact('profils'));
-    } 
+        
+        // Get visi-misi data
+        $visimisi = profil::where('nama_menu', 'visi-misi')->where('status', true)->first();
+        
+        // Get struktur organisasi data
+        $strukturs = profil::where('nama_menu', 'struktur-organisasi')->where('status', true)->orderBy('urutan')->get();
+        
+        return view('Profil.dashboard', compact('profils', 'visimisi', 'strukturs'));
+    }
 
     public function menu($slug)
     {

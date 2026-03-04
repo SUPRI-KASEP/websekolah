@@ -1,261 +1,263 @@
 @extends('layouts.app')
-@section('title', 'Profil - Dashboard')
+@section('title', 'Profil Sekolah')
 @section('content')
 
-<div class="container py-5">
-    <!-- Header Section -->
-    <div class="text-center mb-5">
-        <h1 class="fw-bold">Profil Sekolah</h1>
-        <p class="text-secondary fs-5">Ketahui lebih dalam tentang SMK-Ucup</p>
-        <div class="divider mx-auto"></div>
-    </div>
-
-    <!-- Menu Cards Grid -->
-    <div class="row g-4">
-        @foreach($profils as $index => $profil)
-        <div class="col-md-6 col-lg-3">
-            <a href="{{ route('profil.menu', $profil->nama_menu) }}" class="text-decoration-none">
-                <div class="profil-card h-100">
-                    <div class="card-icon">
-                        @switch($profil->nama_menu)
-                            @case('sambutan')
-                                <span>👨‍🏫</span>
-                                @break
-                            @case('visi-misi')
-                                <span>🎯</span>
-                                @break
-                            @case('struktur-organisasi')
-                                <span>🏛️</span>
-                                @break
-                            @case('sejarah')
-                                <span>📜</span>
-                                @break
-                            @default
-                                <span>📋</span>
-                        @endswitch
-                    </div>
-                    <h3 class="card-title">{{ $profil->judul }}</h3>
-                    <p class="card-text">
-                        Klik untuk melihat detail {{ strtolower($profil->judul) }}
-                    </p>
-                    <div class="card-arrow">
-                        <span>→</span>
-                    </div>
-                </div>
-            </a>
-        </div>
-        @endforeach
-    </div>
-
-    <!-- Back to Home -->
-    <div class="text-center mt-5">
-        <a href="/" class="btn-back">
-            ← Kembali ke Halaman Utama
-        </a>
-    </div>
-</div>
-
 <style>
-/* Container & Layout */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+    --ink:#0d1b2a;
+    --ink-mid:#1c3144;
+    --accent:#e8a87c;
+    --accent-dark:#c4834a;
+    --white:#ffffff;
+    --off-white:#f5f3ef;
+    --light-bg:#fafaf8;
+    --text-body:#4a5568;
+    --text-muted:#718096;
+    --border:#e2e8f0;
+    --shadow-sm:0 2px 8px rgba(13,27,42,0.06);
+    --shadow-md:0 8px 30px rgba(13,27,42,0.10);
+    --shadow-lg:0 20px 60px rgba(13,27,42,0.14);
+    --radius:16px;
 }
 
-/* Header Styles */
-.text-center {
-    text-align: center;
+*{box-sizing:border-box;margin:0;padding:0}
+
+.profil-wrapper{
+    font-family:'DM Sans',sans-serif;
+    background:var(--light-bg);
+    min-height:100vh;
 }
 
-.fw-bold {
-    font-weight: 700;
+/* HERO */
+.profil-hero{
+    background:var(--ink);
+    padding:80px 24px;
+    text-align:center;
+    color:white;
 }
 
-.text-secondary {
-    color: #6c757d;
+.hero-title{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(2rem,5vw,3rem);
+    font-weight:700;
 }
 
-.fs-5 {
-    font-size: 1.25rem;
+.hero-subtitle{
+    opacity:.7;
+    font-style:italic;
 }
 
-/* Divider */
-.divider {
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(90deg, #667eea, #764ba2);
-    border-radius: 2px;
-    margin-top: 20px;
+/* SECTION */
+.profil-main{
+    max-width:1200px;
+    margin:auto;
+    padding:60px 24px;
 }
 
-/* Card Grid */
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin: -15px;
+.section-header{
+    text-align:center;
+    margin-bottom:50px;
 }
 
-.g-4 {
-    gap: 1.5rem;
+.section-header h2{
+    font-family:'Playfair Display',serif;
+    font-size:2rem;
+    color:var(--ink);
 }
 
-.col-md-6, .col-lg-3 {
-    padding: 15px;
-    position: relative;
-    width: 100%;
+/* MENU GRID */
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:24px;
 }
 
-@media (min-width: 768px) {
-    .col-md-6 {
-        flex: 0 0 50%;
-        max-width: 50%;
-    }
+@media(max-width:992px){
+    .menu-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:576px){
+    .menu-grid{grid-template-columns:1fr;}
 }
 
-@media (min-width: 992px) {
-    .col-lg-3 {
-        flex: 0 0 25%;
-        max-width: 25%;
-    }
+.menu-card{
+    background:white;
+    border-radius:var(--radius);
+    border:1px solid var(--border);
+    padding:30px 20px;
+    text-align:center;
+    text-decoration:none;
+    color:inherit;
+    transition:.3s;
+    box-shadow:var(--shadow-md);
 }
 
-/* Profil Card */
-.profil-card {
-    background: white;
-    border-radius: 20px;
-    padding: 30px 25px;
-    text-align: center;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    border: 2px solid transparent;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
+.menu-card:hover{
+    transform:translateY(-6px);
+    box-shadow:var(--shadow-lg);
+    border-color:var(--accent);
 }
 
-.profil-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #667eea, #764ba2);
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
+.menu-icon{
+    font-size:38px;
+    margin-bottom:15px;
 }
 
-.profil-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
-    border-color: #667eea;
+.menu-title{
+    font-weight:700;
+    margin-bottom:8px;
 }
 
-.profil-card:hover::before {
-    transform: scaleX(1);
+.menu-desc{
+    font-size:.85rem;
+    color:var(--text-muted);
 }
 
-/* Card Icon */
-.card-icon {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    font-size: 35px;
-    transition: transform 0.4s ease;
+/* STRUKTUR GRID MODERN */
+.struktur-preview{
+    background:white;
+    padding:48px;
+    border-radius:var(--radius);
+    border:1px solid var(--border);
+    box-shadow:var(--shadow-md);
 }
 
-.profil-card:hover .card-icon {
-    transform: scale(1.1) rotate(5deg);
+.struktur-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:24px;
 }
 
-/* Card Title */
-.card-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 10px;
+@media(max-width:992px){
+    .struktur-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:576px){
+    .struktur-grid{grid-template-columns:1fr;}
 }
 
-/* Card Text */
-.card-text {
-    color: #7f8c8d;
-    font-size: 0.9rem;
-    margin-bottom: 15px;
-    line-height: 1.5;
+.org-card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:28px 20px;
+    text-align:center;
+    transition:.3s;
+    box-shadow:var(--shadow-sm);
 }
 
-/* Card Arrow */
-.card-arrow {
-    width: 40px;
-    height: 40px;
-    background: #f8f9fa;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: auto;
-    transition: all 0.3s ease;
-    color: #667eea;
-    font-weight: bold;
+.org-card:hover{
+    transform:translateY(-6px);
+    box-shadow:var(--shadow-lg);
+    border-color:var(--accent);
 }
 
-.profil-card:hover .card-arrow {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    transform: translateX(5px);
+.org-img{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:16px;
+    border:4px solid var(--off-white);
 }
 
-/* Back Button */
-.btn-back {
-    display: inline-block;
-    padding: 12px 30px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    text-decoration: none;
-    border-radius: 30px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+.org-name{
+    font-family:'Playfair Display',serif;
+    font-weight:700;
+    font-size:1rem;
+    color:var(--ink);
+    margin-bottom:5px;
 }
 
-.btn-back:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-    color: white;
+.org-jabatan{
+    font-size:.85rem;
+    color:var(--text-muted);
 }
 
-/* Text Decoration */
-.text-decoration-none {
-    text-decoration: none;
-}
-
-/* Animation */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.profil-card {
-    animation: fadeInUp 0.6s ease forwards;
-    animation-delay: {{ $index * 0.1 }}s;
-    opacity: 0;
+.empty-card{
+    text-align:center;
+    padding:40px;
+    background:var(--off-white);
+    border-radius:var(--radius);
+    border:1px dashed var(--border);
+    color:var(--text-muted);
 }
 </style>
+
+<div class="profil-wrapper">
+
+    {{-- HERO --}}
+    <section class="profil-hero">
+        <h1 class="hero-title">Profil Sekolah</h1>
+        <p class="hero-subtitle">"Membangun Generasi Cerdas dan Berkarakter"</p>
+    </section>
+
+    <div class="profil-main">
+
+        {{-- MENU PROFIL --}}
+        <div class="section-header">
+            <h2>Menu Profil</h2>
+        </div>
+
+        <div class="menu-grid">
+            @foreach($profils as $profil)
+                <a href="{{ route('profil.menu', $profil->nama_menu) }}" class="menu-card">
+                    <div class="menu-icon">
+                        @switch($profil->nama_menu)
+                            @case('sambutan') 👨‍🏫 @break
+                            @case('visi-misi') 🎯 @break
+                            @case('struktur-organisasi') 🏛️ @break
+                            @case('sejarah') 📜 @break
+                            @default 📋
+                        @endswitch
+                    </div>
+                    <div class="menu-title">{{ $profil->judul }}</div>
+                    <div class="menu-desc">
+                        Klik untuk melihat detail {{ strtolower($profil->judul) }}
+                    </div>
+                </a>
+            @endforeach
+        </div>
+
+        {{-- STRUKTUR ORGANISASI --}}
+        <div style="margin-top:100px" class="section-header">
+            <h2>Struktur Organisasi</h2>
+        </div>
+
+        <div class="struktur-preview">
+            @if(isset($strukturs) && $strukturs->count())
+                <div class="struktur-grid">
+                    @foreach($strukturs->take(4) as $item)
+                        <div class="org-card">
+                            @if($item->gambar)
+                                <img src="{{ asset('assets/'.$item->gambar) }}" 
+                                     alt="{{ $item->judul }}" 
+                                     class="org-img">
+                            @else
+                                <img src="{{ asset('assets/udin.png') }}" 
+                                     alt="Foto" 
+                                     class="org-img">
+                            @endif
+
+                            <div class="org-name">
+                                {!! nl2br(e($item->judul)) !!}
+                            </div>
+
+                            <div class="org-jabatan">
+                                {{ $item->jabatan ?? '-' }}
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="empty-card">
+                    Data struktur organisasi belum tersedia.
+                </div>
+            @endif
+        </div>
+
+    </div>
+
+</div>
 
 @endsection
