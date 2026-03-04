@@ -422,33 +422,39 @@
     }
 
     .level-3 {
-        grid-template-columns: repeat(2, auto);
+        grid-template-columns: repeat(3, auto);
         gap: 16px;
     }
 
     .card-org,
     .card-org.main,
     .card-org.small {
-        width: 160px;
+        width: 170px;
     }
   }
 
-  @media (max-width: 580px) {
-    .stats-bar { flex-direction: row; flex-wrap: wrap; }
-    .stat-item { flex: 1 1 40%; border-right: none; border-bottom: 1px solid #EDE8E0; }
-    .struktur-section { padding: 50px 20px 60px; }
-    .struktur-hero { padding: 70px 24px 60px; }
-    .hero-title { font-size: 2rem; }
+  @media (max-width: 768px) {
+    .level-3 {
+        grid-template-columns: repeat(2, auto);
+        gap: 14px;
+    }
+    .struktur-section { padding: 44px 16px 56px; }
+    .struktur-hero { padding: 64px 20px 56px; }
+    .stats-bar { flex-wrap: wrap; }
+    .stat-item { flex: 1 1 40%; border-right: none; border-bottom: 1px solid #EDE8E0; padding: 18px 16px; }
+  }
 
+  @media (max-width: 580px) {
     .level-2 {
-        flex-direction: column;
-        gap: 16px;
-        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
     }
 
     .level-3 {
         grid-template-columns: repeat(2, auto);
-        gap: 12px;
+        gap: 10px;
     }
 
     .card-org,
@@ -458,9 +464,11 @@
         padding: 14px 10px;
     }
 
-    .card-org img, .card-org.main img { width: 70px; height: 70px; }
-    .card-org h4 { font-size: 13px; }
+    .card-org img, .card-org.main img { width: 64px; height: 64px; }
+    .card-org.small img { width: 56px; height: 56px; }
+    .card-org h4 { font-size: 12px; }
     .card-org p { font-size: 11px; }
+    .section-title { font-size: 1.6rem; }
   }
 </style>
 
@@ -502,9 +510,9 @@
           <div class="level level-1">
             <div class="card-org main">
               @if($item->gambar)
-                <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}">
+                <img src="{{ asset('assets/' . $item->gambar) }}" alt="{{ $item->judul }}">
               @else
-                <img src="https://via.placeholder.com/100" alt="Foto">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;border-radius:50%;"><circle cx="50" cy="50" r="50" fill="#e2e8f0"/><circle cx="50" cy="38" r="18" fill="#94a3b8"/><ellipse cx="50" cy="85" rx="30" ry="20" fill="#94a3b8"/></svg>
               @endif
               <h4>{!! nl2br(e($item->judul)) !!}</h4>
               @if($item->konten)
@@ -522,9 +530,9 @@
             <div class="org-item">
               <div class="card-org main">
                 @if($item->gambar)
-                  <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}">
+                  <img src="{{ asset('assets/' . $item->gambar) }}" alt="{{ $item->judul }}">
                 @else
-                  <img src="https://via.placeholder.com/100" alt="Foto">
+                  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;border-radius:50%;"><circle cx="50" cy="50" r="50" fill="#e2e8f0"/><circle cx="50" cy="38" r="18" fill="#94a3b8"/><ellipse cx="50" cy="85" rx="30" ry="20" fill="#94a3b8"/></svg>
                 @endif
                 <h4>{!! nl2br(e($item->judul)) !!}</h4>
                 @if($item->konten)
@@ -543,9 +551,9 @@
             <div class="org-item">
               <div class="card-org main">
                 @if($item->gambar)
-                  <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}">
+                  <img src="{{ asset('assets/' . $item->gambar) }}" alt="{{ $item->judul }}">
                 @else
-                  <img src="https://via.placeholder.com/100" alt="Foto">
+                  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;border-radius:50%;"><circle cx="50" cy="50" r="50" fill="#e2e8f0"/><circle cx="50" cy="38" r="18" fill="#94a3b8"/><ellipse cx="50" cy="85" rx="30" ry="20" fill="#94a3b8"/></svg>
                 @endif
                 <h4>{!! nl2br(e($item->judul)) !!}</h4>
                 @if($item->konten)

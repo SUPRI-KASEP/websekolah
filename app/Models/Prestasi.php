@@ -10,6 +10,7 @@ class Prestasi extends Model
         'nama_prestasi',
         'isi',
         'foto',
+        'kategori',
         'status',
     ];
 }

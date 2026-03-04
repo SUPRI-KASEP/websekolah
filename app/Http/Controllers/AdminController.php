@@ -21,58 +21,48 @@ class AdminController extends Controller
     }
 
     // ==================== USER MANAGEMENT ====================
-    
-    /**
-     * Display a listing of the users.
-     */
+
     public function userIndex()
     {
         $users = User::all();
         return view('admin.user', compact('users'));
     }
 
-    /**
-     * Store a newly created user in storage.
-     */
     public function userStore(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'     => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username',
             'password' => 'required|string|min:6',
-            'role' => 'required|in:admin,user',
+            'role'     => 'required|in:admin,user',
         ]);
 
         User::create([
-            'name' => $request->name,
+            'name'     => $request->name,
             'username' => $request->username,
             'password' => $request->password,
-            'role' => $request->role,
+            'role'     => $request->role,
         ]);
 
         return redirect()->route('admin.user')->with('success', 'User berhasil ditambahkan!');
     }
 
-    /**
-     * Update the specified user in storage.
-     */
     public function userUpdate(Request $request, $id)
     {
         $user = User::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'     => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $id,
-            'role' => 'required|in:admin,user',
+            'role'     => 'required|in:admin,user',
         ]);
 
         $data = [
-            'name' => $request->name,
+            'name'     => $request->name,
             'username' => $request->username,
-            'role' => $request->role,
+            'role'     => $request->role,
         ];
 
-        // Only update password if provided
         if ($request->filled('password')) {
             $data['password'] = $request->password;
         }
@@ -82,14 +72,10 @@ class AdminController extends Controller
         return redirect()->route('admin.user')->with('success', 'User berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified user from storage.
-     */
     public function userDestroy($id)
     {
         $user = User::findOrFail($id);
-        
-        // Prevent deleting own account
+
         if ($user->id === Auth::id()) {
             return redirect()->route('admin.user')->with('error', 'Tidak dapat menghapus akun sendiri!');
         }
@@ -100,37 +86,30 @@ class AdminController extends Controller
     }
 
     // ==================== ESKUL MANAGEMENT ====================
-    
-    /**
-     * Display a listing of the eskul.
-     */
+
     public function eskulIndex()
     {
         $eskuls = Eskul::all();
         return view('admin.eskul', compact('eskuls'));
     }
 
-    /**
-     * Store a newly created eskul in storage.
-     */
     public function eskulStore(Request $request)
     {
         $request->validate([
             'nama_eskul' => 'required|string|max:255',
-            'pembina' => 'required|string|max:255',
-            'deskripsi' => 'required',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'pembina'    => 'required|string|max:255',
+            'deskripsi'  => 'required',
+            'gambar'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $data = [
             'nama_eskul' => $request->nama_eskul,
-            'pembina' => $request->pembina,
-            'deskripsi' => $request->deskripsi,
+            'pembina'    => $request->pembina,
+            'deskripsi'  => $request->deskripsi,
         ];
 
-        // Handle image upload
         if ($request->hasFile('gambar')) {
-            $image = $request->file('gambar');
+            $image     = $request->file('gambar');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('assets'), $imageName);
             $data['gambar'] = $imageName;
@@ -141,34 +120,28 @@ class AdminController extends Controller
         return redirect()->route('admin.eskul')->with('success', 'Eskul berhasil ditambahkan!');
     }
 
-    /**
-     * Update the specified eskul in storage.
-     */
     public function eskulUpdate(Request $request, $id)
     {
         $eskul = Eskul::findOrFail($id);
 
         $request->validate([
             'nama_eskul' => 'required|string|max:255',
-            'pembina' => 'required|string|max:255',
-            'deskripsi' => 'required',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'pembina'    => 'required|string|max:255',
+            'deskripsi'  => 'required',
+            'gambar'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $data = [
             'nama_eskul' => $request->nama_eskul,
-            'pembina' => $request->pembina,
-            'deskripsi' => $request->deskripsi,
+            'pembina'    => $request->pembina,
+            'deskripsi'  => $request->deskripsi,
         ];
 
-        // Handle image upload
         if ($request->hasFile('gambar')) {
-            // Delete old image if exists
             if ($eskul->gambar && file_exists(public_path('assets/' . $eskul->gambar))) {
                 unlink(public_path('assets/' . $eskul->gambar));
             }
-            
-            $image = $request->file('gambar');
+            $image     = $request->file('gambar');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('assets'), $imageName);
             $data['gambar'] = $imageName;
@@ -179,14 +152,10 @@ class AdminController extends Controller
         return redirect()->route('admin.eskul')->with('success', 'Eskul berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified eskul from storage.
-     */
     public function eskulDestroy($id)
     {
         $eskul = Eskul::findOrFail($id);
-        
-        // Delete image if exists
+
         if ($eskul->gambar && file_exists(public_path('assets/' . $eskul->gambar))) {
             unlink(public_path('assets/' . $eskul->gambar));
         }
@@ -197,35 +166,28 @@ class AdminController extends Controller
     }
 
     // ==================== FASILITAS MANAGEMENT ====================
-    
-    /**
-     * Display a listing of the fasilitas.
-     */
+
     public function fasilitasIndex()
     {
         $fasilitas = Fasilitas::all();
         return view('admin.fasilitas', compact('fasilitas'));
     }
 
-    /**
-     * Store a newly created fasilitas in storage.
-     */
     public function fasilitasStore(Request $request)
     {
         $request->validate([
             'nama_fasilitas' => 'required|string|max:255',
-            'deskripsi' => 'required',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'deskripsi'      => 'required',
+            'gambar'         => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $data = [
             'nama_fasilitas' => $request->nama_fasilitas,
-            'deskripsi' => $request->deskripsi,
+            'deskripsi'      => $request->deskripsi,
         ];
 
-        // Handle image upload
         if ($request->hasFile('gambar')) {
-            $image = $request->file('gambar');
+            $image     = $request->file('gambar');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('assets'), $imageName);
             $data['gambar'] = $imageName;
@@ -236,32 +198,26 @@ class AdminController extends Controller
         return redirect()->route('admin.fasilitas')->with('success', 'Fasilitas berhasil ditambahkan!');
     }
 
-    /**
-     * Update the specified fasilitas in storage.
-     */
     public function fasilitasUpdate(Request $request, $id)
     {
         $fasilitas = Fasilitas::findOrFail($id);
 
         $request->validate([
             'nama_fasilitas' => 'required|string|max:255',
-            'deskripsi' => 'required',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'deskripsi'      => 'required',
+            'gambar'         => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $data = [
             'nama_fasilitas' => $request->nama_fasilitas,
-            'deskripsi' => $request->deskripsi,
+            'deskripsi'      => $request->deskripsi,
         ];
 
-        // Handle image upload
         if ($request->hasFile('gambar')) {
-            // Delete old image if exists
             if ($fasilitas->gambar && file_exists(public_path('assets/' . $fasilitas->gambar))) {
                 unlink(public_path('assets/' . $fasilitas->gambar));
             }
-            
-            $image = $request->file('gambar');
+            $image     = $request->file('gambar');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('assets'), $imageName);
             $data['gambar'] = $imageName;
@@ -272,14 +228,10 @@ class AdminController extends Controller
         return redirect()->route('admin.fasilitas')->with('success', 'Fasilitas berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified fasilitas from storage.
-     */
     public function fasilitasDestroy($id)
     {
         $fasilitas = Fasilitas::findOrFail($id);
-        
-        // Delete image if exists
+
         if ($fasilitas->gambar && file_exists(public_path('assets/' . $fasilitas->gambar))) {
             unlink(public_path('assets/' . $fasilitas->gambar));
         }
@@ -290,37 +242,32 @@ class AdminController extends Controller
     }
 
     // ==================== PRESTASI MANAGEMENT ====================
-    
-    /**
-     * Display a listing of the prestasi.
-     */
+
     public function prestasiIndex()
     {
-        $prestasis = Prestasi::all();
+        $prestasis = Prestasi::orderBy('id', 'desc')->get();
         return view('admin.prestasi', compact('prestasis'));
     }
 
-    /**
-     * Store a newly created prestasi in storage.
-     */
     public function prestasiStore(Request $request)
     {
         $request->validate([
             'nama_prestasi' => 'required|string|max:255',
-            'isi' => 'required',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'status' => 'nullable',
+            'isi'           => 'required',
+            'kategori'      => 'nullable|string|max:100',
+            'foto'          => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status'        => 'nullable',
         ]);
 
         $data = [
             'nama_prestasi' => $request->nama_prestasi,
-            'isi' => $request->isi,
-            'status' => $request->has('status') ? true : false,
+            'isi'           => $request->isi,
+            'kategori'      => $request->kategori ?? 'Non-Akademik',
+            'status'        => $request->has('status') ? true : false,
         ];
 
-        // Handle image upload
         if ($request->hasFile('foto')) {
-            $image = $request->file('foto');
+            $image     = $request->file('foto');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('assets'), $imageName);
             $data['foto'] = $imageName;
@@ -331,34 +278,30 @@ class AdminController extends Controller
         return redirect()->route('admin.prestasi')->with('success', 'Prestasi berhasil ditambahkan!');
     }
 
-    /**
-     * Update the specified prestasi in storage.
-     */
     public function prestasiUpdate(Request $request, $id)
     {
         $prestasi = Prestasi::findOrFail($id);
 
         $request->validate([
             'nama_prestasi' => 'required|string|max:255',
-            'isi' => 'required',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'status' => 'nullable',
+            'isi'           => 'required',
+            'kategori'      => 'nullable|string|max:100',
+            'foto'          => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status'        => 'nullable',
         ]);
 
         $data = [
             'nama_prestasi' => $request->nama_prestasi,
-            'isi' => $request->isi,
-            'status' => $request->has('status') ? true : false,
+            'isi'           => $request->isi,
+            'kategori'      => $request->kategori ?? 'Non-Akademik',
+            'status'        => $request->has('status') ? true : false,
         ];
 
-        // Handle image upload
         if ($request->hasFile('foto')) {
-            // Delete old image if exists
             if ($prestasi->foto && file_exists(public_path('assets/' . $prestasi->foto))) {
                 unlink(public_path('assets/' . $prestasi->foto));
             }
-            
-            $image = $request->file('foto');
+            $image     = $request->file('foto');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('assets'), $imageName);
             $data['foto'] = $imageName;
@@ -369,14 +312,10 @@ class AdminController extends Controller
         return redirect()->route('admin.prestasi')->with('success', 'Prestasi berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified prestasi from storage.
-     */
     public function prestasiDestroy($id)
     {
         $prestasi = Prestasi::findOrFail($id);
-        
-        // Delete image if exists
+
         if ($prestasi->foto && file_exists(public_path('assets/' . $prestasi->foto))) {
             unlink(public_path('assets/' . $prestasi->foto));
         }
@@ -387,57 +326,52 @@ class AdminController extends Controller
     }
 
     // ==================== PROFIL MANAGEMENT ====================
-    
-    /**
-     * Display a listing of the profil.
-     */
+
     public function profilIndex()
     {
-        $profils = profil::orderBy('urutan')->get();
-        return view('admin.profil.manage', compact('profils'));
+        // load historyImages untuk sejarah
+        $profils = profil::with('historyImages')->orderBy('urutan')->get();
+        return view('admin.Profil.manage', compact('profils'));
     }
 
-    /**
-     * Store a newly created profil in storage.
-     */
     public function profilStore(Request $request)
     {
         $request->validate([
-            'nama_menu' => 'required|string|max:255|unique:profils,nama_menu',
-            'judul' => 'required|string|max:255',
-            'nama_kepala_sekolah' => 'nullable|string|max:255',
-            'konten' => 'nullable',
-            'isi_visi' => 'nullable',
-            'isi_misi' => 'nullable',
-            'description' => 'nullable|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'images' => 'nullable',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'urutan' => 'nullable|integer',
-            'status' => 'nullable',
+            'nama_menu'          => 'required|string|max:255|unique:profils,nama_menu',
+            'judul'              => 'required|string|max:255',
+            'nama_kepala_sekolah'=> 'nullable|string|max:255',
+            'konten'             => 'nullable',
+            'isi_visi'           => 'nullable',
+            'isi_misi'           => 'nullable',
+            'description'        => 'nullable|string',
+            'gambar'             => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images'             => 'nullable',
+            'images.*'           => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status'             => 'nullable',
         ]);
 
         if ($request->nama_menu === 'sambutan') {
-            $request->validate([
-                'nama_kepala_sekolah' => 'required|string|max:255',
-            ]);
+            $request->validate(['nama_kepala_sekolah' => 'required|string|max:255']);
         }
 
+        // Urutan otomatis — ambil max urutan + 1
+        $maxUrutan = profil::max('urutan') ?? 0;
+
         $data = [
-            'nama_menu' => $request->nama_menu,
-            'judul' => $request->judul,
+            'nama_menu'           => $request->nama_menu,
+            'judul'               => $request->judul,
             'nama_kepala_sekolah' => $request->nama_menu === 'sambutan' ? $request->nama_kepala_sekolah : null,
-            'konten' => $request->konten,
-            'isi_visi' => $request->isi_visi,
-            'isi_misi' => $request->isi_misi,
-            'description' => $request->description,
-            'urutan' => $request->urutan ?? 0,
-            'status' => $request->has('status'),
+            'konten'              => $request->konten,
+            'isi_visi'            => $request->isi_visi,
+            'isi_misi'            => $request->isi_misi,
+            'description'         => $request->description,
+            'urutan'              => $maxUrutan + 1,
+            'status'              => $request->has('status'),
         ];
 
-        // Handle image upload - only for welcome message (sambutan)
-        if ($request->nama_menu === 'sambutan' && $request->hasFile('gambar')) {
-            $image = $request->file('gambar');
+        // Gambar untuk sambutan DAN struktur-organisasi
+        if (in_array($request->nama_menu, ['sambutan', 'struktur-organisasi']) && $request->hasFile('gambar')) {
+            $image     = $request->file('gambar');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('assets'), $imageName);
             $data['gambar'] = $imageName;
@@ -447,7 +381,7 @@ class AdminController extends Controller
 
         $profil = profil::create($data);
 
-        // Handle multiple image upload for sejarah
+        // Gambar multiple untuk sejarah
         if ($request->nama_menu === 'sejarah' && $request->hasFile('images')) {
             $this->storeHistoryImages($request->file('images'), $profil->id);
         }
@@ -455,65 +389,56 @@ class AdminController extends Controller
         return redirect()->route('admin.profil')->with('success', 'Profil berhasil ditambahkan!');
     }
 
-    /**
-     * Update the specified profil in storage.
-     */
     public function profilUpdate(Request $request, $id)
     {
         $profil = profil::findOrFail($id);
 
         $request->validate([
-            'nama_menu' => 'required|string|max:255|unique:profils,nama_menu,' . $id,
-            'judul' => 'required|string|max:255',
-            'nama_kepala_sekolah' => 'nullable|string|max:255',
-            'konten' => 'nullable',
-            'isi_visi' => 'nullable',
-            'isi_misi' => 'nullable',
-            'description' => 'nullable|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'images' => 'nullable',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'urutan' => 'nullable|integer',
-            'status' => 'nullable',
+            'nama_menu'          => 'required|string|max:255|unique:profils,nama_menu,' . $id,
+            'judul'              => 'required|string|max:255',
+            'nama_kepala_sekolah'=> 'nullable|string|max:255',
+            'konten'             => 'nullable',
+            'isi_visi'           => 'nullable',
+            'isi_misi'           => 'nullable',
+            'description'        => 'nullable|string',
+            'gambar'             => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images'             => 'nullable',
+            'images.*'           => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status'             => 'nullable',
         ]);
 
         if ($request->nama_menu === 'sambutan') {
-            $request->validate([
-                'nama_kepala_sekolah' => 'required|string|max:255',
-            ]);
+            $request->validate(['nama_kepala_sekolah' => 'required|string|max:255']);
         }
 
         $data = [
-            'nama_menu' => $request->nama_menu,
-            'judul' => $request->judul,
+            'nama_menu'           => $request->nama_menu,
+            'judul'               => $request->judul,
             'nama_kepala_sekolah' => $request->nama_menu === 'sambutan' ? $request->nama_kepala_sekolah : null,
-            'konten' => $request->konten,
-            'isi_visi' => $request->isi_visi,
-            'isi_misi' => $request->isi_misi,
-            'description' => $request->description,
-            'urutan' => $request->urutan ?? 0,
-            'status' => $request->has('status'),
+            'konten'              => $request->konten,
+            'isi_visi'            => $request->isi_visi,
+            'isi_misi'            => $request->isi_misi,
+            'description'         => $request->description,
+            'urutan'              => $profil->urutan, // pertahankan urutan lama
+            'status'              => $request->has('status'),
         ];
 
-        // Handle image upload - only for welcome message
-        if ($request->nama_menu === 'sambutan') {
+        // Gambar untuk sambutan DAN struktur-organisasi
+        if (in_array($request->nama_menu, ['sambutan', 'struktur-organisasi'])) {
             if ($request->hasFile('gambar')) {
-                // Delete old image if exists
                 if ($profil->gambar && file_exists(public_path('assets/' . $profil->gambar))) {
                     unlink(public_path('assets/' . $profil->gambar));
                 }
-                
-                $image = $request->file('gambar');
+                $image     = $request->file('gambar');
                 $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('assets'), $imageName);
                 $data['gambar'] = $imageName;
             } else {
-                // Keep old image if no new image uploaded
-                $data['gambar'] = $profil->gambar;
+                $data['gambar'] = $profil->gambar; // pertahankan gambar lama
             }
         } else {
-            // For non-welcome menus, remove image if exists
-            if ($profil->gambar && file_exists(public_path('assets/' . $profil->gambar))) {
+            // Menu lain tidak pakai gambar — hapus bila ada
+            if ($profil->gambar && !in_array($profil->nama_menu, ['sambutan', 'struktur-organisasi']) && file_exists(public_path('assets/' . $profil->gambar))) {
                 unlink(public_path('assets/' . $profil->gambar));
             }
             $data['gambar'] = null;
@@ -521,7 +446,7 @@ class AdminController extends Controller
 
         $profil->update($data);
 
-        // Handle multiple image upload for sejarah
+        // Gambar multiple untuk sejarah
         if ($request->nama_menu === 'sejarah' && $request->hasFile('images')) {
             $this->storeHistoryImages($request->file('images'), $profil->id);
         }
@@ -529,19 +454,14 @@ class AdminController extends Controller
         return redirect()->route('admin.profil')->with('success', 'Profil berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified profil from storage.
-     */
     public function profilDestroy($id)
     {
         $profil = profil::findOrFail($id);
-        
-        // Delete image if exists
+
         if ($profil->gambar && file_exists(public_path('assets/' . $profil->gambar))) {
             unlink(public_path('assets/' . $profil->gambar));
         }
 
-        // Delete all related history images for sejarah
         if ($profil->nama_menu === 'sejarah') {
             $this->deleteAllHistoryImages($profil->id);
         }
@@ -553,33 +473,24 @@ class AdminController extends Controller
 
     // ==================== HISTORY IMAGE MANAGEMENT ====================
 
-    /**
-     * Store multiple history images.
-     */
     protected function storeHistoryImages($images, $profilId)
     {
         foreach ($images as $image) {
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            
-            // Store in storage/app/public/history
             $path = $image->storeAs('history', $imageName, 'public');
-            
+
             HistoryImage::create([
-                'profil_id' => $profilId,
+                'profil_id'  => $profilId,
                 'image_path' => $path,
             ]);
         }
     }
 
-    /**
-     * Delete all history images for a profil.
-     */
     protected function deleteAllHistoryImages($profilId)
     {
         $historyImages = HistoryImage::where('profil_id', $profilId)->get();
-        
+
         foreach ($historyImages as $image) {
-            // Delete file from storage
             if (Storage::disk('public')->exists($image->image_path)) {
                 Storage::disk('public')->delete($image->image_path);
             }
@@ -587,18 +498,14 @@ class AdminController extends Controller
         }
     }
 
-    /**
-     * Delete a single history image.
-     */
     public function historyImageDestroy($id)
     {
         $historyImage = HistoryImage::findOrFail($id);
-        
-        // Delete file from storage
+
         if (Storage::disk('public')->exists($historyImage->image_path)) {
             Storage::disk('public')->delete($historyImage->image_path);
         }
-        
+
         $historyImage->delete();
 
         return redirect()->route('admin.profil')->with('success', 'Foto berhasil dihapus!');

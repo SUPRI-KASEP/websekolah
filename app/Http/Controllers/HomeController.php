@@ -29,7 +29,7 @@ class HomeController extends Controller
 
         // Get dynamic data for home page
         $fasilitas = Fasilitas::where('status', true)->orderBy('id', 'asc')->limit(6)->get();
-        $prestasis = Prestasi::orderBy('id', 'desc')->limit(4)->get();
+        $prestasis = Prestasi::where('status', true)->orderBy('id', 'desc')->limit(4)->get();
         $eskuls = Eskul::where('status', true)->orderBy('id', 'asc')->limit(6)->get();
 
         return view('home', compact(

@@ -27,7 +27,7 @@
                     @if($sambutan && $sambutan->gambar)
                         <img src="{{ asset('assets/' . $sambutan->gambar) }}" alt="{{ $sambutan->judul }}">
                     @else
-                        <img src="{{ asset('assets/udin.png') }}" alt="Kepala Sekolah">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;border-radius:12px;"><rect width="200" height="200" fill="#e2e8f0"/><circle cx="100" cy="80" r="40" fill="#94a3b8"/><ellipse cx="100" cy="180" rx="65" ry="45" fill="#94a3b8"/></svg>
                     @endif
                     <div class="img-badge">Kepala Sekolah</div>
                 </div>
@@ -111,7 +111,7 @@
                         <p class="body-text">{{ Str::limit(strip_tags($sejarah->konten), 150) }}</p>
                     </div>
                 @else
-                    <p class="body-text">SMK SLB didirikan dengan visi untuk menciptakan sumber daya manusia yang kompeten dan berkarakter...</p>
+                    <p class="body-text">Belum ada data sejarah.</p>
                 @endif
                 
                 <a href="{{ route('profil.menu', 'sejarah') }}" class="link-arrow">Baca Selengkapnya <span>→</span></a>
@@ -222,12 +222,9 @@
                 <p>{{ $item->deskripsi }}</p>
             </div>
             @empty
-            <div class="fasilitas-card"><div class="fasilitas-icon-box"><span>💻</span></div><h4>Lab Komputer</h4><p>Komputer modern dengan spesifikasi tinggi dan akses internet cepat</p></div>
-            <div class="fasilitas-card"><div class="fasilitas-icon-box"><span>📚</span></div><h4>Perpustakaan Digital</h4><p>Koleksi 3000+ buku fisik dan akses ke ribuan referensi digital</p></div>
-            <div class="fasilitas-card"><div class="fasilitas-icon-box"><span>🏃</span></div><h4>Lapangan Olahraga</h4><p>Fasilitas olahraga multifungsi untuk berbagai aktivitas atletik</p></div>
-            <div class="fasilitas-card"><div class="fasilitas-icon-box"><span>🔬</span></div><h4>Lab Sains</h4><p>Peralatan praktikum lengkap untuk eksperimen dan penelitian</p></div>
-            <div class="fasilitas-card"><div class="fasilitas-icon-box"><span>🚌</span></div><h4>Layanan Transportasi</h4><p>Bus sekolah modern untuk kenyamanan dan keamanan siswa</p></div>
-            <div class="fasilitas-card"><div class="fasilitas-icon-box"><span>🕌</span></div><h4>Mushola Modern</h4><p>Tempat ibadah yang bersih, nyaman dan mencerminkan nilai Islami</p></div>
+            <div class="fasilitas-card" style="grid-column:1/-1;text-align:center;padding:40px;">
+                <p style="color:var(--text-muted);">Belum ada data fasilitas.</p>
+            </div>
             @endforelse
         </div>
         <div class="text-center mt-5">
@@ -297,12 +294,9 @@
                 @endif
             </div>
             @empty
-            <div class="eskul-card"><div class="eskul-icon">🎨</div><h4>Seni Rupa</h4><p>Mengeksplorasi kreativitas melalui berbagai medium seni</p></div>
-            <div class="eskul-card"><div class="eskul-icon">🎵</div><h4>Paduan Suara</h4><p>Mengembangkan bakat musik dan vokal bersama profesional</p></div>
-            <div class="eskul-card"><div class="eskul-icon">⚽</div><h4>Klub Olahraga</h4><p>Futsal, Basket, Volly, Atletik dan cabang olahraga lainnya</p></div>
-            <div class="eskul-card"><div class="eskul-icon">💻</div><h4>IT Club</h4><p>Programming, Jaringan Komputer, dan Multimedia</p></div>
-            <div class="eskul-card"><div class="eskul-icon">📖</div><h4>OSIS</h4><p>Organisasi Siswa Intra Sekolah untuk kepemimpinan</p></div>
-            <div class="eskul-card"><div class="eskul-icon">🕌</div><h4>Pramuka</h4><p>Pengembangan karakter, kepemimpinan dan kemandirian</p></div>
+            <div class="eskul-card" style="grid-column:1/-1;text-align:center;padding:40px;">
+                <p style="color:var(--text-muted);">Belum ada data ekstrakurikuler.</p>
+            </div>
             @endforelse
         </div>
         <div class="text-center mt-5">
@@ -316,7 +310,7 @@
     <div class="container text-center">
         <span class="eyebrow-tag eyebrow-light">Bergabung Bersama Kami</span>
         <h2 class="heading-display heading-light" style="margin-top:12px;">Siap Wujudkan Masa Depan Cerah?</h2>
-        <p class="cta-sub">Daftarkan diri Anda dan jadilah bagian dari komunitas SMK SLB yang berprestasi</p>
+        <p class="cta-sub">Daftarkan diri Anda dan jadilah bagian dari komunitas sekolah kami yang berprestasi</p>
         <div class="hero-buttons">
             <a href="#" class="btn btn-accent">Hubungi Kami</a>
             <a href="#" class="btn btn-ghost">Daftar Online</a>
