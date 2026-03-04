@@ -1,8 +1,12 @@
-# TODO - Fix Admin Layout Issues
+# TODO: Ubah Field Struktur Organisasi - judul/konten → jabatan/nama
 
-## Tasks:
-- [x] Fix mobile toggle button in Layouts-Admin/app.blade.php
-- [x] Add urutan field to struktur organisasi form in admin/Profil/manage.blade.php
+## Plan:
+1. [x] Create migration to add `jabatan` and `nama` columns to profils table
+2. [x] Update Model (profil.php) - add new fields to $fillable
+3. [x] Update AdminController - modify CRUD operations for struktur-organisasi
+4. [x] Update manage.blade.php - change form labels for struktur-organisasi
+5. [x] Update struktur.blade.php - change display from judul/konten to jabatan/nama
 
-## Status: Completed
+## Status: COMPLETED
+## Next Step: Run migration with `php artisan migrate`
 

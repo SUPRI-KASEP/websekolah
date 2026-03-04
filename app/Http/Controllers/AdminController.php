@@ -11,6 +11,7 @@ use App\Models\Fasilitas;
 use App\Models\Prestasi;
 use App\Models\profil;
 use App\Models\HistoryImage;
+use App\Models\Pesan;
 
 class AdminController extends Controller
 {
@@ -355,6 +356,8 @@ class AdminController extends Controller
             'images.*'           => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status'             => 'nullable',
             'urutan'            => 'nullable|integer|min:1',
+            'jabatan'            => 'nullable|string|max:255',
+            'nama'               => 'nullable|string|max:255',
         ]);
 
         if ($request->nama_menu === 'sambutan') {
@@ -377,7 +380,13 @@ class AdminController extends Controller
             'status'              => $request->has('status'),
         ];
 
-        // Gambar untuk sambutan DAN struktur-organisasi
+        // Jabatan dan Nama untuk struktur-organisasi
+        if ($request->nama_menu === 'struktur-organisasi') {
+            $data['jabatan'] = $request->jabatan;
+            $data['nama'] = $request->nama;
+        }
+
+        // Gambar untuk sambutAN DAN struktur-organisasi
         if (in_array($request->nama_menu, ['sambutan', 'struktur-organisasi']) && $request->hasFile('gambar')) {
             $image     = $request->file('gambar');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
@@ -420,6 +429,8 @@ class AdminController extends Controller
             'images.*'           => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status'             => 'nullable',
             'urutan'            => 'nullable|integer|min:1',
+            'jabatan'            => 'nullable|string|max:255',
+            'nama'               => 'nullable|string|max:255',
         ]);
 
         if ($request->nama_menu === 'sambutan') {
@@ -441,7 +452,13 @@ class AdminController extends Controller
             'status'              => $request->has('status'),
         ];
 
-        // Gambar untuk sambutan DAN struktur-organisasi
+        // Jabatan dan Nama untuk struktur-organisasi
+        if ($request->nama_menu === 'struktur-organisasi') {
+            $data['jabatan'] = $request->jabatan;
+            $data['nama'] = $request->nama;
+        }
+
+        // Gambar untuk sambutAN DAN struktur-organisasi
         if (in_array($request->nama_menu, ['sambutan', 'struktur-organisasi'])) {
             if ($request->hasFile('gambar')) {
                 if ($profil->gambar && file_exists(public_path('assets/' . $profil->gambar))) {
@@ -527,5 +544,46 @@ class AdminController extends Controller
         $historyImage->delete();
 
         return redirect()->route('admin.profil')->with('success', 'Foto berhasil dihapus!');
+    }
+
+    // ==================== PESAN MANAGEMENT ====================
+
+    public function pesanIndex()
+    {
+        $pesans = Pesan::orderBy('created_at', 'desc')->get();
+        return view('admin.pesan', compact('pesans'));
+    }
+
+    public function pesanShow($id)
+    {
+        $pesan = Pesan::findOrFail($id);
+        return view('admin.pesan-show', compact('pesan'));
+    }
+
+    public function pesanUpdate(Request $request, $id)
+    {
+        $pesan = Pesan::findOrFail($id);
+
+        $request->validate([
+            'nama'  => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'pesan' => 'required',
+        ]);
+
+        $pesan->update([
+            'nama'  => $request->nama,
+            'email' => $request->email,
+            'pesan' => $request->pesan,
+        ]);
+
+        return redirect()->route('admin.pesan')->with('success', 'Pesan berhasil diperbarui!');
+    }
+
+    public function pesanDestroy($id)
+    {
+        $pesan = Pesan::findOrFail($id);
+        $pesan->delete();
+
+        return redirect()->route('admin.pesan')->with('success', 'Pesan berhasil dihapus!');
     }
 }

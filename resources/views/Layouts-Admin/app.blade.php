@@ -778,6 +778,14 @@
                 </a>
             </li>
 
+            <!-- Pesan -->
+            <li class="nav-item">
+                <a href="{{ route('admin.pesan') }}" class="nav-link">
+                    <i class="fas fa-envelope"></i>
+                    <span class="menu-text">Pesan</span>
+                </a>
+            </li>
+
             <div class="divider"></div>
 
             <!-- Logout -->
@@ -818,7 +826,7 @@
                     <i class="far fa-bell"></i>
                     <span class="notification-badge">3</span>
                 </button>
-                <button class="icon-btn" onclick="showMessages()">
+                <button class="icon-btn" href="{{ route('admin.pesan') }}">
                     <i class="far fa-envelope"></i>
                     <span class="notification-badge">5</span>
                 </button>

@@ -312,8 +312,8 @@
         <h2 class="heading-display heading-light" style="margin-top:12px;">Siap Wujudkan Masa Depan Cerah?</h2>
         <p class="cta-sub">Daftarkan diri Anda dan jadilah bagian dari komunitas sekolah kami yang berprestasi</p>
         <div class="hero-buttons">
-            <a href="#" class="btn btn-accent">Hubungi Kami</a>
-            <a href="#" class="btn btn-ghost">Daftar Online</a>
+            <a href="" class="btn btn-accent">Hubungi Kami</a>
+            <a href="{{ route('pesan.index') }}" class="btn btn-ghost">Daftar Online</a>
         </div>
     </div>
 </section>

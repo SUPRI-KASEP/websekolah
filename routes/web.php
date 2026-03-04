@@ -49,6 +49,12 @@ Route::middleware(['auth.admin:admin'])->group(function () {
     Route::put('/admin/profil/{id}', [AdminController::class, 'profilUpdate'])->name('admin.profil.update');
     Route::delete('/admin/profil/{id}', [AdminController::class, 'profilDestroy'])->name('admin.profil.destroy');
     
+    // Pesan Management Routes
+    Route::get('/admin/pesan', [AdminController::class, 'pesanIndex'])->name('admin.pesan');
+    Route::get('/admin/pesan/{id}', [AdminController::class, 'pesanShow'])->name('admin.pesan.show');
+    Route::put('/admin/pesan/{id}', [AdminController::class, 'pesanUpdate'])->name('admin.pesan.update');
+    Route::delete('/admin/pesan/{id}', [AdminController::class, 'pesanDestroy'])->name('admin.pesan.destroy');
+    
     // History Image Management Routes
     Route::delete('/admin/history-images/{id}', [AdminController::class, 'historyImageDestroy'])->name('admin.history-images.destroy');
 });
@@ -68,3 +74,6 @@ Route::get('/fasilitas', [FasilitasController::class, 'index'])->name('fasilitas
 Route::get('/eskul', [EskulController::class, 'index'])->name('eskul.index');
 
 Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');
+
+Route::get('/pesan', [App\Http\Controllers\PesanController::class, 'index'])->name('pesan.index');
+Route::post('/pesan', [App\Http\Controllers\PesanController::class, 'store'])->name('pesan.store');

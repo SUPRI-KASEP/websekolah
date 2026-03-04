@@ -510,13 +510,13 @@
           <div class="level level-1">
             <div class="card-org main">
               @if($item->gambar)
-                <img src="{{ asset('assets/' . $item->gambar) }}" alt="{{ $item->judul }}">
+                <img src="{{ asset('assets/' . $item->gambar) }}" alt="{{ $item->jabatan }}">
               @else
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;border-radius:50%;"><circle cx="50" cy="50" r="50" fill="#e2e8f0"/><circle cx="50" cy="38" r="18" fill="#94a3b8"/><ellipse cx="50" cy="85" rx="30" ry="20" fill="#94a3b8"/></svg>
               @endif
-              <h4>{!! nl2br(e($item->judul)) !!}</h4>
-              @if($item->konten)
-                <p>{!! nl2br(e($item->konten)) !!}</p>
+              <h4>{!! nl2br(e($item->jabatan)) !!}</h4>
+              @if($item->nama)
+                <p>{!! nl2br(e($item->nama)) !!}</p>
               @endif
             </div>
           </div>
@@ -530,13 +530,13 @@
             <div class="org-item">
               <div class="card-org main">
                 @if($item->gambar)
-                  <img src="{{ asset('assets/' . $item->gambar) }}" alt="{{ $item->judul }}">
+                  <img src="{{ asset('assets/' . $item->gambar) }}" alt="{{ $item->jabatan }}">
                 @else
                   <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;border-radius:50%;"><circle cx="50" cy="50" r="50" fill="#e2e8f0"/><circle cx="50" cy="38" r="18" fill="#94a3b8"/><ellipse cx="50" cy="85" rx="30" ry="20" fill="#94a3b8"/></svg>
                 @endif
-                <h4>{!! nl2br(e($item->judul)) !!}</h4>
-                @if($item->konten)
-                  <p>{!! nl2br(e($item->konten)) !!}</p>
+                <h4>{!! nl2br(e($item->jabatan)) !!}</h4>
+                @if($item->nama)
+                  <p>{!! nl2br(e($item->nama)) !!}</p>
                 @endif
               </div>
             </div>
@@ -551,13 +551,13 @@
             <div class="org-item">
               <div class="card-org main">
                 @if($item->gambar)
-                  <img src="{{ asset('assets/' . $item->gambar) }}" alt="{{ $item->judul }}">
+                  <img src="{{ asset('assets/' . $item->gambar) }}" alt="{{ $item->jabatan }}">
                 @else
                   <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;border-radius:50%;"><circle cx="50" cy="50" r="50" fill="#e2e8f0"/><circle cx="50" cy="38" r="18" fill="#94a3b8"/><ellipse cx="50" cy="85" rx="30" ry="20" fill="#94a3b8"/></svg>
                 @endif
-                <h4>{!! nl2br(e($item->judul)) !!}</h4>
-                @if($item->konten)
-                  <p>{!! nl2br(e($item->konten)) !!}</p>
+                <h4>{!! nl2br(e($item->jabatan)) !!}</h4>
+                @if($item->nama)
+                  <p>{!! nl2br(e($item->nama)) !!}</p>
                 @endif
               </div>
             </div>
