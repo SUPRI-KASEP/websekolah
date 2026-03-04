@@ -868,55 +868,119 @@ img { display: block; max-width: 100%; height: auto; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
-    .fasilitas-grid,
-    .prestasi-grid,
-    .eskul-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .fasilitas-grid  { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .prestasi-grid   { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .eskul-grid      { grid-template-columns: repeat(3, minmax(0,1fr)); }
 }
 
+/* ── TABLET (768–1024px) ── */
+@media (max-width: 900px) {
+    .fasilitas-grid  { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .prestasi-grid   { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .eskul-grid      { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+/* ── MOBILE (≤768px) ── */
 @media (max-width: 768px) {
-    .section-light, .section-dark, .section-offwhite { padding: 64px 0; }
-
-    /* Split layout jadi 1 kolom di mobile */
-    .split-layout {
-        grid-template-columns: 1fr !important;
-        gap: 32px;
-    }
-    .split-reverse { direction: ltr; }
-
-    .vm-grid { grid-template-columns: 1fr; }
-
-    .fasilitas-grid,
-    .prestasi-grid,
-    .eskul-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-
-    .split-stats { flex-direction: row; flex-wrap: wrap; }
-    .stat-card { flex: 1 1 calc(50% - 9px); }
-
-    .img-frame img { height: clamp(220px, 55vw, 340px); }
-
-    /* Container full width di mobile */
+    .section-light, .section-dark, .section-offwhite { padding: 56px 0; }
     .container { padding: 0 16px; }
+
+    /* --- Sambutan: foto kiri kecil + teks kanan --- */
+    .profil-preview .split-layout {
+        grid-template-columns: 110px minmax(0,1fr) !important;
+        gap: 16px;
+        align-items: flex-start;
+    }
+    .profil-preview .img-frame img {
+        height: 140px;
+        border-radius: 12px;
+    }
+    .profil-preview .img-badge {
+        font-size: 0.6rem;
+        padding: 5px 10px;
+        bottom: 8px; left: 8px;
+    }
+    .profil-preview .split-content .heading-display {
+        font-size: 1rem;
+    }
+    .profil-preview .split-content .body-text {
+        font-size: 0.82rem;
+        /* Batasi preview teks sambutan di mobile */
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+    .profil-preview .content-divider { margin: 10px 0 12px; }
+
+    /* --- Sejarah: teks atas, foto bawah --- */
+    .sejarah-preview .split-layout {
+        grid-template-columns: 1fr !important;
+        gap: 24px;
+        direction: ltr;
+    }
+    .sejarah-preview .split-stats {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .sejarah-preview .stat-card { flex: 1 1 calc(50% - 5px); }
+    .sejarah-preview .sejarah-photo-grid { grid-template-columns: repeat(3,1fr); }
+
+    /* --- Visi Misi: tetap 2 kolom di mobile (compact) --- */
+    .vm-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+    .vm-card { padding: 22px 16px; }
+    .vm-icon-wrap { font-size: 30px; margin-bottom: 10px; }
+    .vm-card p, .misi-list li { font-size: 0.82rem; }
+
+    /* --- Fasilitas/Prestasi/Eskul: 2 kolom di mobile --- */
+    .fasilitas-grid  { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+    .prestasi-grid   { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+    .eskul-grid      { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+
+    .fasilitas-card, .eskul-card { padding: 20px 14px; }
+    .prestasi-card { padding: 24px 14px 20px; }
+    .prestasi-medal { width: 56px; height: 56px; font-size: 26px; }
 }
 
+/* ── SMALL MOBILE (≤480px) ── */
 @media (max-width: 480px) {
-    .section-light, .section-dark, .section-offwhite { padding: 52px 0; }
+    .section-light, .section-dark, .section-offwhite { padding: 44px 0; }
+    .container { padding: 0 14px; }
 
-    .hero-section { min-height: auto; padding: 80px 20px 72px; }
-    .hero-title { font-size: 1.9rem; }
+    .hero-section { min-height: auto; padding: 72px 16px 64px; }
+    .hero-title { font-size: 1.7rem; }
     .hero-buttons { flex-direction: column; align-items: center; }
-    .hero-buttons .btn { width: 100%; text-align: center; max-width: 280px; }
+    .hero-buttons .btn { width: 100%; text-align: center; max-width: 260px; }
+
+    /* Sambutan tetap 2 kolom tapi lebih kecil */
+    .profil-preview .split-layout {
+        grid-template-columns: 90px minmax(0,1fr) !important;
+        gap: 12px;
+    }
+    .profil-preview .img-frame img { height: 115px; }
+
+    /* Visi Misi tetap 2 kolom */
+    .vm-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .vm-card { padding: 18px 12px; }
+
+    /* Fasilitas/Prestasi/Eskul tetap 2 kolom */
+    .fasilitas-grid  { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+    .prestasi-grid   { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+    .eskul-grid      { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+
+    .fasilitas-card h4, .eskul-card h4 { font-size: 0.85rem; }
+    .fasilitas-card p, .eskul-card p { font-size: 0.78rem; }
+    .prestasi-title { font-size: 0.85rem; }
+    .prestasi-desc { font-size: 0.78rem; }
 
     .stat-card { flex: 1 1 100%; }
-
-    .fasilitas-grid,
-    .prestasi-grid,
-    .eskul-grid { grid-template-columns: 1fr; }
-
-    .img-frame img { height: 240px; }
-
-    .vm-card { padding: 28px 20px; }
-
-    .container { padding: 0 14px; }
+    .img-frame img { height: 220px; }
+    .vm-card { padding: 20px 14px; }
 }
 </style>
 

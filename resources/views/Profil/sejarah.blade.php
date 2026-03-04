@@ -123,22 +123,27 @@
 
 /* FLEX GALERI SELALU */
 .sejarah-gallery-grid {
-    display: flex !important;
-    justify-content: center;
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
-    flex-wrap: wrap;
+    width: 100%;
 }
 
 /* gambar gallery */
-.gallery-item img {
-    width: 140px;
-    height: 120px;
-    object-fit: cover;
+.gallery-item {
+    aspect-ratio: 4/3;
+    overflow: hidden;
     border-radius: 8px;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     cursor: pointer;
     transition: transform 0.3s ease;
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    flex-shrink: 0;
+    display: block;
 }
 
 .gallery-item img:hover,
@@ -248,17 +253,23 @@
 }
 
 /* RESPONSIVE */
+@media (max-width: 900px) {
+    .sejarah-gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .sejarah-title { font-size: 1.7rem; }
     .sejarah-description { flex-direction: column; gap: 12px; }
+    .sejarah-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 480px) {
-    .gallery-item img {
-        width: 120px;
-        height: 100px;
-    }
     .sejarah-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
         gap: 8px;
     }
 }

@@ -148,12 +148,15 @@
 @media (max-width: 992px) {
     .menu-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
     }
 }
 
 @media (max-width: 576px) {
+    /* Tetap 2 kolom di HP kecil */
     .menu-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
     }
 }
 
@@ -308,17 +311,18 @@
     .hero-title { font-size: 1.8rem; }
     .section-header-center { margin-bottom: 36px; }
     .section-header-center h2 { font-size: clamp(1.3rem, 5vw, 1.8rem); }
+    .menu-icon-wrap { width: 70px; height: 70px; font-size: 28px; margin: 22px auto 14px; }
+    .menu-card-title { font-size: 0.95rem; }
+    .menu-card-desc { font-size: 0.8rem; margin-bottom: 16px; }
+    .menu-arrow { width: 36px; height: 36px; margin-bottom: 18px; }
 }
 
 @media (max-width: 480px) {
-    .menu-icon-wrap {
-        width: 70px;
-        height: 70px;
-        font-size: 30px;
-        margin: 24px auto 16px;
-    }
-    .menu-card-title { font-size: 1rem; }
-    .menu-card-desc { font-size: 0.82rem; }
+    .menu-grid { gap: 10px; }
+    .menu-icon-wrap { width: 56px; height: 56px; font-size: 22px; margin: 18px auto 12px; }
+    .menu-card-title { font-size: 0.85rem; padding: 0 12px; }
+    .menu-card-desc { font-size: 0.75rem; padding: 0 12px; margin-bottom: 12px; }
+    .menu-arrow { width: 32px; height: 32px; font-size: 14px; margin-bottom: 14px; }
 }
 </style>
 
