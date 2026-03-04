@@ -1,27 +1,8 @@
-# TODO - Upgrade Fitur Sejarah
+# TODO - Fix Admin Layout Issues
 
-## Step 1: Migration
-- [x] Create migration for history_images table
-- [x] Add description column to profils table
+## Tasks:
+- [x] Fix mobile toggle button in Layouts-Admin/app.blade.php
+- [x] Add urutan field to struktur organisasi form in admin/Profil/manage.blade.php
 
-## Step 2: Models
-- [x] Create HistoryImage model
-- [x] Update profil model with relationship and description
-
-## Step 3: Controllers
-- [x] Add historyImageStore() method in AdminController
-- [x] Add historyImageDestroy() method in AdminController
-- [x] Update profilUpdate() in AdminController
-- [x] Update profilDestroy() in AdminController
-- [x] Update sejarah() in ProfilController
-
-## Step 4: Routes
-- [x] Add routes for history image management
-
-## Step 5: Views
-- [x] Update admin form (manage.blade.php)
-- [x] Update guest view (sejarah.blade.php)
-
-## Step 6: Storage Setup
-- [x] Create storage directory if needed
+## Status: Completed
 

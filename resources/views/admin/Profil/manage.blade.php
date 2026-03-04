@@ -191,6 +191,13 @@
                                                     <small class="text-muted">Kosongkan jika tidak ingin mengubah gambar</small>
                                                 </div>
 
+                                                <!-- Urutan (untuk struktur-organisasi) - Auto Increment -->
+                                                <div class="mb-3" id="editUrutanContainer{{ $item->id }}" style="{{ $item->nama_menu == 'struktur-organisasi' ? '' : 'display:none;' }}">
+                                                    <label class="form-label">Urutan (Otomatis)</label>
+                                                    <input type="text" class="form-control" value="{{ $item->urutan ?? 'Auto' }}" readonly>
+                                                    <small class="text-muted">Urutan akan diatur otomatis</small>
+                                                </div>
+
                                                 <div class="mb-3">
                                                     <label class="form-label">Status</label>
                                                     <div class="form-check form-switch mt-1">
@@ -218,12 +225,14 @@
                                 var img      = document.getElementById('editImageContainer{{ $item->id }}');
                                 var kepsek   = document.getElementById('editKepsekContainer{{ $item->id }}');
                                 var imgLabel = document.getElementById('editImageLabel{{ $item->id }}');
+                                var urutan   = document.getElementById('editUrutanContainer{{ $item->id }}');
 
                                 konten.style.display  = 'none';
                                 vm.style.display      = 'none';
                                 sejarah.style.display = 'none';
                                 img.style.display     = 'none';
                                 kepsek.style.display  = 'none';
+                                urutan.style.display  = 'none';
 
                                 if (val === 'visi-misi') {
                                     vm.style.display = 'block';
@@ -238,6 +247,7 @@
                                     konten.style.display  = 'block';
                                     img.style.display     = 'block';
                                     imgLabel.textContent  = 'Foto Anggota Struktur';
+                                    urutan.style.display  = 'block';
                                 } else {
                                     konten.style.display = 'block';
                                 }
@@ -330,6 +340,13 @@
                         <input type="file" name="gambar" class="form-control" accept="image/*">
                     </div>
 
+                    <!-- Urutan (untuk struktur-organisasi) - Auto Increment - displayed only -->
+                    <div class="mb-3" id="addUrutanContainer" style="display:none;">
+                        <label class="form-label">Urutan (Otomatis)</label>
+                        <input type="text" class="form-control" value="Akan diatur otomatis" readonly>
+                        <small class="text-muted">Urutan akan diatur secara otomatis</small>
+                    </div>
+
                     <div class="mb-3">
                         <label class="form-label">Status</label>
                         <div class="form-check form-switch mt-1">
@@ -356,12 +373,14 @@ function toggleAddFields() {
     var img      = document.getElementById('addImageContainer');
     var kepsek   = document.getElementById('addKepsekContainer');
     var imgLabel = document.getElementById('addImageLabel');
+    var urutan   = document.getElementById('addUrutanContainer');
 
     konten.style.display  = 'none';
     vm.style.display      = 'none';
     sejarah.style.display = 'none';
     img.style.display     = 'none';
     kepsek.style.display  = 'none';
+    urutan.style.display  = 'none';
 
     if (val === 'visi-misi') {
         vm.style.display = 'block';
@@ -376,6 +395,7 @@ function toggleAddFields() {
         konten.style.display = 'block';
         img.style.display    = 'block';
         imgLabel.textContent = 'Foto Anggota Struktur';
+        urutan.style.display = 'block';
     }
 }
 

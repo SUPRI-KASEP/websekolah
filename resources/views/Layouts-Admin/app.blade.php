@@ -367,10 +367,15 @@
             .sidebar {
                 transform: translateX(-100%);
                 position: fixed;
+                width: 280px !important;
             }
             
             .sidebar.active {
                 transform: translateX(0);
+            }
+            
+            .sidebar.collapsed {
+                width: 280px !important;
             }
             
             .main-content {
@@ -378,8 +383,35 @@
                 width: 100% !important;
             }
             
+            .main-content.expanded {
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+            
             .search-box {
                 width: 180px;
+            }
+            
+            /* Overlay for mobile */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+            
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .sidebar-overlay {
+                display: none !important;
             }
         }
 
@@ -675,6 +707,9 @@
 </head>
 <body class="" id="body">
 
+    {{-- SIDEBAR OVERLAY (for mobile) --}}
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
     {{-- SIDEBAR --}}
     <div class="sidebar" id="sidebar">
         <!-- Logo -->
@@ -809,23 +844,59 @@
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('mainContent');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-        menuToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
+        // Main toggle function - handles both mobile and desktop
+        function toggleSidebar() {
+            const isMobile = window.innerWidth <= 768;
             
-            if (sidebar.classList.contains('collapsed')) {
-                localStorage.setItem('sidebarCollapsed', 'true');
+            if (isMobile) {
+                // Mobile: toggle sidebar visibility (active class)
+                sidebar.classList.toggle('active');
+                sidebarOverlay.classList.toggle('active');
+                
+                if (sidebar.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling when sidebar is open
+                } else {
+                    document.body.style.overflow = '';
+                }
             } else {
-                localStorage.setItem('sidebarCollapsed', 'false');
+                // Desktop: toggle collapsed state
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+                
+                if (sidebar.classList.contains('collapsed')) {
+                    localStorage.setItem('sidebarCollapsed', 'true');
+                } else {
+                    localStorage.setItem('sidebarCollapsed', 'false');
+                }
             }
-        });
+        }
+
+        menuToggle.addEventListener('click', toggleSidebar);
 
         // Check saved state
-        if (localStorage.getItem('sidebarCollapsed') === 'true') {
+        if (localStorage.getItem('sidebarCollapsed') === 'true' && window.innerWidth > 768) {
             sidebar.classList.add('collapsed');
             mainContent.classList.add('expanded');
         }
+
+        // Handle responsive - reset states on resize
+        function handleResponsive() {
+            if (window.innerWidth > 768) {
+                // Desktop: remove mobile active state
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            } else {
+                // Mobile: remove desktop collapsed state
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('expanded');
+            }
+        }
+
+        window.addEventListener('resize', handleResponsive);
+        handleResponsive();
 
         // Dropdown Menu
         const menuItems = document.querySelectorAll('.has-submenu > .nav-link');
@@ -850,18 +921,6 @@
                 }
             });
         });
-
-        // Handle responsive
-        function handleResponsive() {
-            if (window.innerWidth <= 768) {
-                sidebar.classList.remove('collapsed');
-                mainContent.classList.remove('expanded');
-                sidebar.classList.remove('active');
-            }
-        }
-
-        window.addEventListener('resize', handleResponsive);
-        handleResponsive();
 
         // Notification functions
         function showNotification() {
@@ -920,9 +979,9 @@
             document.getElementById('logoutForm').submit();
         }
 
-        // Mobile menu toggle
+        // Mobile menu toggle - keep for backward compatibility
         function toggleMenu() {
-            sidebar.classList.toggle('active');
+            toggleSidebar();
         }
     </script>
 

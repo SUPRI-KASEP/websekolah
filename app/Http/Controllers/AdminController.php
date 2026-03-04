@@ -336,8 +336,14 @@ class AdminController extends Controller
 
     public function profilStore(Request $request)
     {
+        // Validasi unik untuk nama_menu, tapi izinkan duplikasi untuk struktur-organisasi
+        $uniqueRule = 'required|string|max:255';
+        if ($request->nama_menu !== 'struktur-organisasi') {
+            $uniqueRule .= '|unique:profils,nama_menu';
+        }
+
         $request->validate([
-            'nama_menu'          => 'required|string|max:255|unique:profils,nama_menu',
+            'nama_menu'          => $uniqueRule,
             'judul'              => 'required|string|max:255',
             'nama_kepala_sekolah'=> 'nullable|string|max:255',
             'konten'             => 'nullable',
@@ -348,14 +354,16 @@ class AdminController extends Controller
             'images'             => 'nullable',
             'images.*'           => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status'             => 'nullable',
+            'urutan'            => 'nullable|integer|min:1',
         ]);
 
         if ($request->nama_menu === 'sambutan') {
             $request->validate(['nama_kepala_sekolah' => 'required|string|max:255']);
         }
 
-        // Urutan otomatis — ambil max urutan + 1
+        // Urutan: jika diisi manual gunakan itu, jika tidak ambil max + 1
         $maxUrutan = profil::max('urutan') ?? 0;
+        $urutan = $request->filled('urutan') ? $request->urutan : $maxUrutan + 1;
 
         $data = [
             'nama_menu'           => $request->nama_menu,
@@ -365,7 +373,7 @@ class AdminController extends Controller
             'isi_visi'            => $request->isi_visi,
             'isi_misi'            => $request->isi_misi,
             'description'         => $request->description,
-            'urutan'              => $maxUrutan + 1,
+            'urutan'              => $urutan,
             'status'              => $request->has('status'),
         ];
 
@@ -393,8 +401,14 @@ class AdminController extends Controller
     {
         $profil = profil::findOrFail($id);
 
+        // Validasi unik untuk nama_menu, tapi izinkan duplikasi untuk struktur-organisasi
+        $uniqueRule = 'required|string|max:255';
+        if ($request->nama_menu !== 'struktur-organisasi') {
+            $uniqueRule .= '|unique:profils,nama_menu,' . $id;
+        }
+
         $request->validate([
-            'nama_menu'          => 'required|string|max:255|unique:profils,nama_menu,' . $id,
+            'nama_menu'          => $uniqueRule,
             'judul'              => 'required|string|max:255',
             'nama_kepala_sekolah'=> 'nullable|string|max:255',
             'konten'             => 'nullable',
@@ -405,11 +419,15 @@ class AdminController extends Controller
             'images'             => 'nullable',
             'images.*'           => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status'             => 'nullable',
+            'urutan'            => 'nullable|integer|min:1',
         ]);
 
         if ($request->nama_menu === 'sambutan') {
             $request->validate(['nama_kepala_sekolah' => 'required|string|max:255']);
         }
+
+        // Urutan: jika diisi manual gunakan itu, jika tidak pertahankan urutan lama
+        $urutan = $request->filled('urutan') ? $request->urutan : $profil->urutan;
 
         $data = [
             'nama_menu'           => $request->nama_menu,
@@ -419,7 +437,7 @@ class AdminController extends Controller
             'isi_visi'            => $request->isi_visi,
             'isi_misi'            => $request->isi_misi,
             'description'         => $request->description,
-            'urutan'              => $profil->urutan, // pertahankan urutan lama
+            'urutan'              => $urutan,
             'status'              => $request->has('status'),
         ];
 
