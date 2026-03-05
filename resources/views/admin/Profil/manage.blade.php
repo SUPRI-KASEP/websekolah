@@ -59,7 +59,9 @@
                                 </td>
                                 <td>
                                     {{ $item->judul }}
-                                    @if ($item->nama_menu == 'sambutan' && $item->nama_kepala_sekolah)
+                                    @if ($item->nama_menu == 'struktur-organisasi' && $item->jabatan)
+                                        <div class="text-muted" style="font-size:12px;">{{ $item->jabatan }} - {{ $item->nama }}</div>
+                                    @elseif ($item->nama_menu == 'sambutan' && $item->nama_kepala_sekolah)
                                         <div class="text-muted" style="font-size:12px;">{{ $item->nama_kepala_sekolah }}</div>
                                     @endif
                                 </td>
@@ -126,10 +128,22 @@
                                                         value="{{ $item->nama_kepala_sekolah }}" placeholder="Nama lengkap kepala sekolah">
                                                 </div>
 
-                                                <!-- Konten biasa (sambutan, struktur, default) -->
-                                                <div class="mb-3" id="editKontenContainer{{ $item->id }}" style="{{ in_array($item->nama_menu, ['visi-misi', 'sejarah']) ? 'display:none;' : '' }}">
+                                                <!-- Konten biasa (sambutan, default) - NOT for struktur-organisasi anymore -->
+                                                <div class="mb-3" id="editKontenContainer{{ $item->id }}" style="{{ in_array($item->nama_menu, ['visi-misi', 'sejarah', 'struktur-organisasi']) ? 'display:none;' : '' }}">
                                                     <label class="form-label">Konten</label>
                                                     <textarea name="konten" class="form-control" rows="5">{{ $item->konten }}</textarea>
+                                                </div>
+
+                                                <!-- Jabatan dan Nama untuk struktur-organisasi -->
+                                                <div id="editJabatanNamaContainer{{ $item->id }}" style="{{ $item->nama_menu == 'struktur-organisasi' ? '' : 'display:none;' }}">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Jabatan</label>
+                                                        <input type="text" name="jabatan" class="form-control" value="{{ $item->jabatan ?? '' }}" placeholder="Contoh: Kepala Sekolah, Wakili Kepala Sekolah, dll">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Nama</label>
+                                                        <input type="text" name="nama" class="form-control" value="{{ $item->nama ?? '' }}" placeholder="Nama lengkap personil">
+                                                    </div>
                                                 </div>
 
                                                 <!-- Visi Misi -->
@@ -226,6 +240,7 @@
                                 var kepsek   = document.getElementById('editKepsekContainer{{ $item->id }}');
                                 var imgLabel = document.getElementById('editImageLabel{{ $item->id }}');
                                 var urutan   = document.getElementById('editUrutanContainer{{ $item->id }}');
+                                var jabatan  = document.getElementById('editJabatanNamaContainer{{ $item->id }}');
 
                                 konten.style.display  = 'none';
                                 vm.style.display      = 'none';
@@ -233,6 +248,7 @@
                                 img.style.display     = 'none';
                                 kepsek.style.display  = 'none';
                                 urutan.style.display  = 'none';
+                                jabatan.style.display = 'none';
 
                                 if (val === 'visi-misi') {
                                     vm.style.display = 'block';
@@ -244,7 +260,7 @@
                                     kepsek.style.display  = 'block';
                                     imgLabel.textContent  = 'Foto Kepala Sekolah';
                                 } else if (val === 'struktur-organisasi') {
-                                    konten.style.display  = 'block';
+                                    jabatan.style.display = 'block';
                                     img.style.display     = 'block';
                                     imgLabel.textContent  = 'Foto Anggota Struktur';
                                     urutan.style.display  = 'block';
@@ -304,10 +320,22 @@
                         <input type="text" name="nama_kepala_sekolah" class="form-control" placeholder="Nama lengkap kepala sekolah">
                     </div>
 
-                    <!-- Konten biasa -->
+                    <!-- Konten biasa (sambutan, default) -->
                     <div class="mb-3" id="addKontenContainer" style="display:none;">
                         <label class="form-label">Konten</label>
                         <textarea name="konten" class="form-control" rows="5" placeholder="Isi konten"></textarea>
+                    </div>
+
+                    <!-- Jabatan dan Nama untuk struktur-organisasi -->
+                    <div id="addJabatanNamaContainer" style="display:none;">
+                        <div class="mb-3">
+                            <label class="form-label">Jabatan</label>
+                            <input type="text" name="jabatan" class="form-control" placeholder="Contoh: Kepala Sekolah, Wakili Kepala Sekolah, dll">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nama</label>
+                            <input type="text" name="nama" class="form-control" placeholder="Nama lengkap personil">
+                        </div>
                     </div>
 
                     <!-- Visi Misi -->
@@ -374,6 +402,7 @@ function toggleAddFields() {
     var kepsek   = document.getElementById('addKepsekContainer');
     var imgLabel = document.getElementById('addImageLabel');
     var urutan   = document.getElementById('addUrutanContainer');
+    var jabatan  = document.getElementById('addJabatanNamaContainer');
 
     konten.style.display  = 'none';
     vm.style.display      = 'none';
@@ -381,6 +410,7 @@ function toggleAddFields() {
     img.style.display     = 'none';
     kepsek.style.display  = 'none';
     urutan.style.display  = 'none';
+    jabatan.style.display = 'none';
 
     if (val === 'visi-misi') {
         vm.style.display = 'block';
@@ -392,10 +422,10 @@ function toggleAddFields() {
         kepsek.style.display  = 'block';
         imgLabel.textContent  = 'Foto Kepala Sekolah';
     } else if (val === 'struktur-organisasi') {
-        konten.style.display = 'block';
-        img.style.display    = 'block';
-        imgLabel.textContent = 'Foto Anggota Struktur';
-        urutan.style.display = 'block';
+        jabatan.style.display = 'block';
+        img.style.display     = 'block';
+        imgLabel.textContent  = 'Foto Anggota Struktur';
+        urutan.style.display  = 'block';
     }
 }
 

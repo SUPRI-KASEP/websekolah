@@ -32,6 +32,14 @@ class HomeController extends Controller
         $prestasis = Prestasi::where('status', true)->orderBy('id', 'desc')->limit(4)->get();
         $eskuls = Eskul::where('status', true)->orderBy('id', 'asc')->limit(6)->get();
 
+        // Get struktur organisasi data (limited to 4 items for preview)
+        // Using nama_menu = 'struktur-organisasi' to match admin data
+        $strukturs = profil::where('nama_menu', 'struktur-organisasi')
+            ->where('status', true)
+            ->orderBy('urutan', 'asc')
+            ->limit(4)
+            ->get();
+
         return view('home', compact(
             'sambutan', 
             'visimisi', 
@@ -42,7 +50,8 @@ class HomeController extends Controller
             'lamaBeroperasi',
             'fasilitas',
             'prestasis',
-            'eskuls'
+            'eskuls',
+            'strukturs'
         ));
     }
 }

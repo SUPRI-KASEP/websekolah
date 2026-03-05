@@ -1366,15 +1366,208 @@ img { display: block; max-width: 100%; height: auto; }
     </div>
 </section>
 
+<section class="section-light struktur-preview">
+    <div class="container">
+        <div class="section-header-center scroll-fade">
+            <span class="eyebrow-tag">Tim Kerja</span>
+            <h2 class="heading-display">Struktur Organisasi</h2>
+            <div class="content-divider divider-center"></div>
+            <p class="body-text text-center" style="max-width:560px;margin:0 auto;">Kenali tim kepemimpinan dan staf kami yang berdedikasi untuk membangun sekolah terbaik</p>
+        </div>
+        
+        <div class="struktur-grid">
+            @forelse($strukturs as $index => $item)
+            <div class="struktur-card scroll-scale delay-{{ $index + 1 }}">
+                <div class="struktur-photo">
+                    @if($item->gambar)
+                        <img src="{{ asset('assets/' . $item->gambar) }}" alt="{{ $item->jabatan }}">
+                    @else
+                        <div class="struktur-photo-placeholder">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;border-radius:50%;">
+                                <circle cx="50" cy="50" r="50" fill="#e2e8f0"/>
+                                <circle cx="50" cy="38" r="18" fill="#94a3b8"/>
+                                <ellipse cx="50" cy="85" rx="30" ry="20" fill="#94a3b8"/>
+                            </svg>
+                        </div>
+                    @endif
+                </div>
+                <div class="struktur-info">
+                    <h4 class="struktur-jabatan">{!! nl2br(e($item->jabatan)) !!}</h4>
+                    @if($item->nama)
+                        <p class="struktur-nama">{!! nl2br(e($item->nama)) !!}</p>
+                    @endif
+                </div>
+            </div>
+            @empty
+            <div class="struktur-empty" style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                <div class="empty-icon" style="font-size: 48px; margin-bottom: 16px;">👥</div>
+                <p style="color: var(--text-muted);">Belum ada data struktur organisasi.</p>
+            </div>
+            @endforelse
+        </div>
+        
+        @if($strukturs->count() > 0)
+        <div class="text-center mt-5 scroll-fade">
+            <a href="{{ route('profil.struktur') }}" class="btn btn-primary-dark">Lihat Selengkapnya</a>
+        </div>
+        @endif
+    </div>
+</section>
+
+<style>
+.struktur-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 48px;
+}
+
+.struktur-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 20px;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    position: relative;
+}
+
+.struktur-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+.struktur-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent);
+}
+
+.struktur-card:hover::before {
+    transform: scaleX(1);
+}
+
+.struktur-photo {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--accent);
+    padding: 3px;
+    background: var(--off-white);
+    transition: all 0.4s ease;
+}
+
+.struktur-card:hover .struktur-photo {
+    transform: scale(1.1);
+    border-color: var(--accent-dark);
+}
+
+.struktur-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.struktur-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.struktur-info {
+    position: relative;
+    z-index: 1;
+}
+
+.struktur-jabatan {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+    word-wrap: break-word;
+    transition: color 0.3s ease;
+}
+
+.struktur-card:hover .struktur-jabatan {
+    color: var(--accent-dark);
+}
+
+.struktur-nama {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin: 0;
+    word-wrap: break-word;
+}
+
+@media (max-width: 1024px) {
+    .struktur-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .struktur-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .struktur-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .struktur-card {
+        padding: 24px 14px;
+    }
+    
+    .struktur-photo {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 14px;
+    }
+    
+    .struktur-jabatan {
+        font-size: 0.85rem;
+    }
+    
+    .struktur-nama {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .struktur-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
 <section class="cta-section">
     <div class="cta-glow"></div>
     <div class="container text-center">
-        <span class="eyebrow-tag eyebrow-light scroll-fade">Bergabung Bersama Kami</span>
-        <h2 class="heading-display heading-light scroll-fade delay-1" style="margin-top:12px;">Siap Wujudkan Masa Depan Cerah?</h2>
-        <p class="cta-sub scroll-fade delay-2">Daftarkan diri Anda dan jadilah bagian dari komunitas sekolah kami yang berprestasi</p>
-        <div class="hero-buttons scroll-fade delay-3">
-            <a href="#" class="btn btn-accent">Hubungi Kami</a>
-            <a href="#" class="btn btn-ghost">Daftar Online</a>
+
+        <span class="eyebrow-tag eyebrow-light">Bergabung Bersama Kami</span>
+        <h2 class="heading-display heading-light" style="margin-top:12px;">Siap Wujudkan Masa Depan Cerah?</h2>
+        <p class="cta-sub">Daftarkan diri Anda dan jadilah bagian dari komunitas sekolah kami yang berprestasi</p>
+        <div class="hero-buttons">
+            <a href="" class="btn btn-accent">Hubungi Kami</a>
+            <a href="{{ route('pesan.index') }}" class="btn btn-ghost">Daftar Online</a>
         </div>
     </div>
 </section>
