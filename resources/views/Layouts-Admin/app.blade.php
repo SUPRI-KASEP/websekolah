@@ -19,7 +19,7 @@
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             display: flex;
-            min-height: 100vh;
+            min-height: 100vh;4
             background-color: #f4f6f9;
         }
 
@@ -715,14 +715,14 @@
         <!-- Logo -->
         <div class="logo">
             <i class="fas fa-school"></i>
-            <div class="logo-text">SMA <span>Negeri 1</span></div>
+            <div class="logo-text">CEO<span>EMBEGE</span></div>
         </div>
 
         <!-- Profile -->
         <div class="profile">
             <div class="avatar">AD</div>
             <div class="profile-info">
-                <h4>Admin Sekolah</h4>
+                <h4>KEAMANAN ISRAEL</h4>
                 <p><span class="online-dot"></span> Online</p>
             </div>
         </div>
