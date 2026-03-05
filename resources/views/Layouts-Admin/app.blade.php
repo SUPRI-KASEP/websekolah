@@ -715,7 +715,7 @@
         <!-- Logo -->
         <div class="logo">
             <i class="fas fa-school"></i>
-            <div class="logo-text">SMA <span>Negeri 1</span></div>
+            <div class="logo-text">SMK <span>YPC</span></div>
         </div>
 
         <!-- Profile -->
@@ -731,10 +731,9 @@
         <ul class="nav-menu">
             <!-- Dashboard -->
             <li class="nav-item">
-                <a href="#" class="nav-link active">
+                <a href="{{ route('admin.dashboard') }}" class="nav-link active">
                     <i class="fas fa-tachometer-alt"></i>
                     <span class="menu-text">Dashboard</span>
-                    <span class="badge">3</span>
                 </a>
             </li>
 
@@ -822,14 +821,6 @@
             </div>
 
             <div class="nav-icons">
-                <button class="icon-btn" onclick="showNotification()">
-                    <i class="far fa-bell"></i>
-                    <span class="notification-badge">3</span>
-                </button>
-                <button class="icon-btn" href="{{ route('admin.pesan') }}">
-                    <i class="far fa-envelope"></i>
-                    <span class="notification-badge">5</span>
-                </button>
                 <button class="icon-btn" onclick="toggleTheme()">
                     <i class="far fa-moon"></i>
                 </button>
