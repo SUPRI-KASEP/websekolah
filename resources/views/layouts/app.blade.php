@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Website Sekolah')</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
@@ -30,22 +33,36 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .navbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             color: white;
             font-size: 20px;
             font-weight: bold;
+            text-decoration: none;
+        }
+
+        .navbar .logo .logo-img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .navbar .logo:hover {
+            color: #1abc9c;
         }
 
         /* HANYA UL UTAMA YANG FLEX */
-        .navbar > ul {
+        .navbar>ul {
             list-style: none;
             display: flex;
         }
 
-        .navbar > ul > li {
+        .navbar>ul>li {
             position: relative;
             margin-left: 20px;
         }
@@ -108,7 +125,7 @@
         /* ================= RESPONSIVE ================= */
         @media (max-width: 768px) {
 
-            .navbar > ul {
+            .navbar>ul {
                 flex-direction: column;
                 background: #34495e;
                 position: absolute;
@@ -119,11 +136,11 @@
                 padding: 10px 0;
             }
 
-            .navbar > ul.active {
+            .navbar>ul.active {
                 display: flex;
             }
 
-            .navbar > ul > li {
+            .navbar>ul>li {
                 margin: 0;
                 padding: 0 20px;
             }
@@ -176,7 +193,7 @@
             margin-bottom: 10px;
             color: #ffffff;
         }
-        
+
         .footer-column p {
             color: #bdc3c7;
         }
@@ -205,13 +222,43 @@
             border-top: 1px solid #7f8c8d;
             font-size: 14px;
         }
+
+        /* ================= SOCIAL ICONS ================= */
+        .social-icons {
+            margin-top: 15px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: #1abc9c;
+            color: white;
+            transform: translateY(-3px);
+        }
     </style>
 </head>
+
 <body>
 
     {{-- NAVBAR --}}
     <nav class="navbar">
-        <div class="logo">SMK YpC</div>
+        <a href="/" class="logo">
+            <img src="{{ asset('assets/tutu.png') }}" alt="Logo SMK YPC" class="logo-img">
+            <span>SMK YPC</span>
+        </a>
         <div class="menu-toggle" onclick="toggleMenu()">☰</div>
 
         <ul id="menu">
@@ -241,9 +288,16 @@
     {{-- FOOTER --}}
     <footer class="footer">
         <div class="footer-container">
-            
+
             <div class="footer-column">
-                <h3>SMK-SUPRA</h3>
+                <h3>SMK-YPC</h3>
+                <p>
+                    Selamat Datang di Portal Resmi SMK YPC Tasikmalaya
+                    SMK YPC Tasikmalaya merupakan institusi pendidikan kejuruan swasta terkemuka yang berlokasi di
+                    lingkungan Komplek Pesantren Cintawana, Singaparna, Kabupaten Tasikmalaya. Sebagai sekolah yang
+                    berkomitmen mencetak generasi GESIT (Religious, Enterprising, Smart, Innovative, Trustworthy), kami
+                    memadukan pendidikan karakter islami dengan keahlian teknologi industri terkini. <ul><li><a href="{{ route('login') }}">Login with another level</a></li></ul>
+                </p>
             </div>
 
             <div class="footer-column">
@@ -259,14 +313,18 @@
 
             <div class="footer-column">
                 <h3>Kontak</h3>
-                <p>Email: supra@gmail.com</p>
-                <p>Telp: 0812-3456-7890</p>
+                <p>Email: smkypc@gmail.com</p>
+                <p>Telp: 0857-9434-8691</p>
+                <div class="social-icons">
+                    <a href="https://facebook.com/SMK YPC Tasikmalaya" target="_blank"><i class="fab fa-facebook-f fa-lg"></i></a>
+                    <a href="https://instagram.com/smksypctasikmalaya" target="_blank"><i class="fab fa-instagram fa-lg"></i></a>
+                    <a href="https://youtube.com/@smkypctasikmalaya" target="_blank"><i class="fab fa-youtube fa-lg"></i></a>
+                </div>
             </div>
-
         </div>
 
         <div class="footer-bottom">
-            &copy; {{ date('Y') }} Supra. All rights reserved.
+            &copy; {{ date('Y') }} YPC. All rights reserved.
         </div>
     </footer>
 
@@ -284,4 +342,5 @@
     </script>
 
 </body>
+
 </html>

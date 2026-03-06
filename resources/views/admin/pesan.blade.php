@@ -50,9 +50,9 @@
                                 </td>
                                 <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editPesanModal{{ $item->id }}">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </button>
+                                    <a href="{{ route('admin.pesan.show', $item->id) }}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i> Detail
+                                    </a>
                                     <form action="{{ route('admin.pesan.destroy', $item->id) }}" method="POST"
                                         class="d-inline" onsubmit="return confirm('Hapus pesan ini?')">
                                         @csrf

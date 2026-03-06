@@ -368,6 +368,9 @@
                 transform: translateX(-100%);
                 position: fixed;
                 width: 280px !important;
+                left: 0;
+                top: 0;
+                z-index: 1001;
             }
             
             .sidebar.active {
@@ -401,11 +404,14 @@
                 right: 0;
                 bottom: 0;
                 background: rgba(0, 0, 0, 0.5);
-                z-index: 999;
+                z-index: 1000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
             }
             
             .sidebar-overlay.active {
                 display: block;
+                opacity: 1;
             }
         }
 
@@ -723,16 +729,21 @@
         <div class="profile">
             <div class="avatar">AD</div>
             <div class="profile-info">
-                <h4>KEAMANAN ISRAEL</h4>
+                <h4>ADMIN SITE</h4>
                 <p><span class="online-dot"></span> Online</p>
             </div>
         </div>
 
         <!-- Navigation Menu -->
         <ul class="nav-menu">
+            {{-- Helper function to check active state --}}
+            @php
+                $currentRoute = request()->route()->getName();
+            @endphp
+            
             <!-- Dashboard -->
             <li class="nav-item">
-                <a href="{{ route('admin.dashboard') }}" class="nav-link active">
+                <a href="{{ route('admin.dashboard') }}" class="nav-link {{ $currentRoute == 'admin.dashboard' ? 'active' : '' }}">
                     <i class="fas fa-tachometer-alt"></i>
                     <span class="menu-text">Dashboard</span>
                 </a>
@@ -740,7 +751,7 @@
 
             <!-- Profil -->
             <li class="nav-item">
-                <a href="{{ route('admin.profil') }}" class="nav-link">
+                <a href="{{ route('admin.profil') }}" class="nav-link {{ $currentRoute == 'admin.profil' ? 'active' : '' }}">
                     <i class="fas fa-school"></i>
                     <span class="menu-text">Profil</span>
                 </a>
@@ -748,7 +759,7 @@
 
             <!-- Eskul -->
             <li class="nav-item">
-                <a href="{{ route('admin.eskul') }}" class="nav-link">
+                <a href="{{ route('admin.eskul') }}" class="nav-link {{ $currentRoute == 'admin.eskul' ? 'active' : '' }}">
                     <i class="fas fa-futbol"></i>
                     <span class="menu-text">Eskul</span>
                 </a>
@@ -756,7 +767,7 @@
 
             <!-- Fasilitas -->
             <li class="nav-item">
-                <a href="{{ route('admin.fasilitas') }}" class="nav-link">
+                <a href="{{ route('admin.fasilitas') }}" class="nav-link {{ $currentRoute == 'admin.fasilitas' ? 'active' : '' }}">
                     <i class="fas fa-building"></i>
                     <span class="menu-text">Fasilitas</span>
                 </a>
@@ -764,7 +775,7 @@
 
             <!-- Prestasi -->
             <li class="nav-item">
-                <a href="{{ route('admin.prestasi') }}" class="nav-link">
+                <a href="{{ route('admin.prestasi') }}" class="nav-link {{ $currentRoute == 'admin.prestasi' ? 'active' : '' }}">
                     <i class="fas fa-trophy"></i>
                     <span class="menu-text">Prestasi</span>
                 </a>
@@ -772,7 +783,7 @@
 
             <!-- User -->
             <li class="nav-item">
-                <a href="{{ route('admin.user') }}" class="nav-link">
+                <a href="{{ route('admin.user') }}" class="nav-link {{ $currentRoute == 'admin.user' ? 'active' : '' }}">
                     <i class="fas fa-users"></i>
                     <span class="menu-text">User</span>
                 </a>
@@ -780,7 +791,7 @@
 
             <!-- Pesan -->
             <li class="nav-item">
-                <a href="{{ route('admin.pesan') }}" class="nav-link">
+                <a href="{{ route('admin.pesan') }}" class="nav-link {{ in_array($currentRoute, ['admin.pesan', 'admin.pesan.show']) ? 'active' : '' }}">
                     <i class="fas fa-envelope"></i>
                     <span class="menu-text">Pesan</span>
                 </a>
@@ -801,7 +812,7 @@
         <div class="sidebar-footer">
             <div class="footer-info">
                 <i class="fas fa-database"></i>
-                <span>v1.0.0 | 2024</span>
+                <span>Database SMK YPC | 2024</span>
             </div>
         </div>
     </div>
@@ -835,7 +846,7 @@
 
         {{-- FOOTER --}}
         <footer class="footer">
-                &copy; {{ date('Y') }} SMA Negeri 1. All rights reserved.
+                &copy; {{ date('Y') }} SMK YPC. All rights reserved.
         </footer>
     </div>
 
@@ -874,6 +885,15 @@
         }
 
         menuToggle.addEventListener('click', toggleSidebar);
+        
+        // Close sidebar when clicking overlay on mobile
+        sidebarOverlay.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
 
         // Check saved state
         if (localStorage.getItem('sidebarCollapsed') === 'true' && window.innerWidth > 768) {
@@ -896,6 +916,8 @@
         }
 
         window.addEventListener('resize', handleResponsive);
+        
+        // Run on page load
         handleResponsive();
 
         // Dropdown Menu
