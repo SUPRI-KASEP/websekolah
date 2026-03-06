@@ -1567,7 +1567,7 @@ img { display: block; max-width: 100%; height: auto; }
         <p class="cta-sub">Daftarkan diri Anda dan jadilah bagian dari komunitas sekolah kami yang berprestasi</p>
         <div class="hero-buttons">
             <a href="" class="btn btn-accent">Hubungi Kami</a>
-            <a href="{{ route('pesan.index') }}" class="btn btn-ghost">Daftar Online</a>
+            <a href="{{ route('pesan.index') }}" class="btn btn-ghost">Saran</a>
         </div>
     </div>
 </section>

@@ -243,7 +243,7 @@
         <div class="footer-container">
             
             <div class="footer-column">
-                <h3>SMK-SLB</h3>
+                <h3>SMK-SUPRA</h3>
             </div>
 
             <div class="footer-column">
@@ -259,14 +259,14 @@
 
             <div class="footer-column">
                 <h3>Kontak</h3>
-                <p>Email: sekolah@email.com</p>
+                <p>Email: supra@gmail.com</p>
                 <p>Telp: 0812-3456-7890</p>
             </div>
 
         </div>
 
         <div class="footer-bottom">
-            &copy; {{ date('Y') }} Nama Sekolah. All rights reserved.
+            &copy; {{ date('Y') }} Supra. All rights reserved.
         </div>
     </footer>
 
