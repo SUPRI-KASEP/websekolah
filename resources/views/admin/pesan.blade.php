@@ -120,7 +120,7 @@
                             </div>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center">Tidak ada pesan</td>
+                                <td colspan="6" class="text-center">Tidak ada pesan.</td>
                             </tr>
                         @endforelse
                     </tbody>
