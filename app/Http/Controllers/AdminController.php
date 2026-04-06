@@ -14,6 +14,7 @@ use App\Models\HistoryImage;
 use App\Models\Pesan;
 use App\Models\Jurusan;
 use App\Models\Guru;
+use App\Models\Alumni;
 class AdminController extends Controller
 {
     public function dashboard()
@@ -818,4 +819,114 @@ class AdminController extends Controller
         return redirect()->route('admin.guru')->with('success', 'Guru berhasil dihapus!');
     }
 
+    // ==================== ALUMNI MANAGEMENT ====================
+
+    public function alumniIndex(Request $request)
+    {
+        $query = Alumni::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_alumni', 'like', "%{$search}%")
+                  ->orWhere('angkatan', 'like', "%{$search}%")
+                  ->orWhere('pekerjaan_sekarang', 'like', "%{$search}%");
+            });
+        }
+
+        $alumnis = $query->latest()->paginate(10)->withQueryString();
+
+        return view('admin.alumni.index', compact('alumnis'));
+    }
+
+    public function alumniCreate()
+    {
+        return view('admin.alumni.create');
+    }
+
+    public function alumniStore(Request $request)
+    {
+        $request->validate([
+            'nama_alumni'       => 'required|string|max:255',
+            'angkatan'          => 'required|string|max:20',
+            'pekerjaan_sekarang' => 'nullable|string|max:255',
+            'foto'              => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+        ], [
+            'nama_alumni.required' => 'Nama alumni wajib diisi.',
+            'angkatan.required'    => 'Angkatan wajib diisi.',
+            'foto.image'           => 'Foto harus berupa gambar.',
+            'foto.max'             => 'Foto maksimal 4 MB.',
+        ]);
+
+        $data = $request->except(['foto']);
+
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('alumni', 'public');
+        }
+
+        Alumni::create($data);
+
+        return redirect()->route('admin.alumni.index')
+            ->with('success', 'Alumni berhasil ditambahkan!');
+    }
+
+    public function alumniShow($id)
+    {
+        $alumni = Alumni::findOrFail($id);
+        return view('admin.alumni.show', compact('alumni'));
+    }
+
+    public function alumniEdit($id)
+    {
+        $alumni = Alumni::findOrFail($id);
+        return view('admin.alumni.edit', compact('alumni'));
+    }
+
+    public function alumniUpdate(Request $request, $id)
+    {
+        $alumni = Alumni::findOrFail($id);
+
+        $request->validate([
+            'nama_alumni'       => 'required|string|max:255',
+            'angkatan'          => 'required|string|max:20',
+            'pekerjaan_sekarang' => 'nullable|string|max:255',
+            'foto'              => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+        ], [
+            'nama_alumni.required' => 'Nama alumni wajib diisi.',
+            'angkatan.required'    => 'Angkatan wajib diisi.',
+            'foto.image'           => 'Foto harus berupa gambar.',
+            'foto.max'             => 'Foto maksimal 4 MB.',
+        ]);
+
+        $data = $request->except(['foto', 'hapus_foto']);
+
+        if ($request->hasFile('foto')) {
+            if ($alumni->foto) Storage::disk('public')->delete($alumni->foto);
+            $data['foto'] = $request->file('foto')->store('alumni', 'public');
+        }
+
+        if ($request->boolean('hapus_foto') && $alumni->foto) {
+            Storage::disk('public')->delete($alumni->foto);
+            $data['foto'] = null;
+        }
+
+        $alumni->update($data);
+
+        return redirect()->route('admin.alumni.index')
+            ->with('success', 'Alumni berhasil diperbarui!');
+    }
+
+    public function alumniDestroy($id)
+    {
+        $alumni = Alumni::findOrFail($id);
+
+        if ($alumni->foto) Storage::disk('public')->delete($alumni->foto);
+
+        $alumni->delete();
+
+        return redirect()->route('admin.alumni.index')
+            ->with('success', 'Alumni berhasil dihapus!');
+    }
+
 }
+

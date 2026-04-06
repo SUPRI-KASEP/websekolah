@@ -8,6 +8,7 @@ use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\AlumniController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
@@ -62,8 +63,17 @@ Route::middleware(['auth.admin:admin'])->group(function () {
     // History Image Management Routes
     Route::delete('/admin/history-images/{id}', [AdminController::class, 'historyImageDestroy'])->name('admin.history-images.destroy');
 
-    // Jurusan Management Routes
+// Jurusan Management Routes
     Route::get('/admin/jurusan', [AdminController::class, 'jurusanIndex'])->name('admin.jurusan.index');
+
+    // Alumni Management Routes
+    Route::get('/admin/alumni', [AdminController::class, 'alumniIndex'])->name('admin.alumni.index');
+    Route::get('/admin/alumni/create', [AdminController::class, 'alumniCreate'])->name('admin.alumni.create');
+    Route::post('/admin/alumni', [AdminController::class, 'alumniStore'])->name('admin.alumni.store');
+    Route::get('/admin/alumni/{id}', [AdminController::class, 'alumniShow'])->name('admin.alumni.show');
+    Route::get('/admin/alumni/{id}/edit', [AdminController::class, 'alumniEdit'])->name('admin.alumni.edit');
+    Route::put('/admin/alumni/{id}', [AdminController::class, 'alumniUpdate'])->name('admin.alumni.update');
+    Route::delete('/admin/alumni/{id}', [AdminController::class, 'alumniDestroy'])->name('admin.alumni.destroy');
     Route::get('/admin/jurusan/create', [AdminController::class, 'jurusanCreate'])->name('admin.jurusan.create');
     Route::post('/admin/jurusan', [AdminController::class, 'jurusanStore'])->name('admin.jurusan.store');
     Route::get('/admin/jurusan/{id}', [AdminController::class, 'jurusanShow'])->name('admin.jurusan.show');
@@ -99,6 +109,7 @@ Route::get('/guru', [App\Http\Controllers\GuruController::class, 'index'])->name
 Route::get('/kontak', [App\Http\Controllers\KontakController::class, 'index'])->name('kontak.index');
 Route::post('/kontak', [App\Http\Controllers\KontakController::class, 'store'])->name('kontak.kirim');
 
+Route::get('/alumni', [AlumniController::class, 'index'])->name('alumni.index');
 Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');
 
 Route::get('/pesan', [App\Http\Controllers\PesanController::class, 'index'])->name('pesan.index');

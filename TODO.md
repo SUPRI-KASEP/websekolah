@@ -1,20 +1,16 @@
-# CRUD Guru Admin - Progress Tracker
+# Alumni CRUD Implementation Plan
 
-## Plan Breakdown:
-1. ✅ **Plan approved by user**
-2. ✅ **Create TODO.md**
-3. ✅ **Update AdminController.php** - Add guruIndex(), guruStore(), guruUpdate(), guruDestroy() methods
-4. ✅ **Update routes/web.php** - Add 4 guru CRUD routes
-5. ✅ **Update admin/guru.blade.php** - Full CRUD interface
-6. ✅ **Test CRUD** - Routes cleared/cached (run: php artisan route:clear && php artisan route:cache)
-4. **Update routes/web.php** - Add 4 guru CRUD routes in admin group
-5. **Update resources/views/admin/guru.blade.php** - Full CRUD interface (table + modals)
-6. **Test CRUD functionality**
-   - Clear route cache: `php artisan route:clear && php artisan route:cache`
-   - Visit /admin/guru
-   - Create, edit, delete test records
-   - Verify image upload/delete
-7. **Complete** - Use attempt_completion
+## Completed Steps (Jurusan)
+- [x] All jurusan steps complete
 
-**Next step: Edit AdminController.php**
+## New Steps (Alumni)
+- [x] 1. Fix app/Models/alumni.php (rename class to Alumni)
+- [x] 2. Create app/Http/Controllers/AlumniController.php (public index only)
+ - [x] 3. Add alumni CRUD methods to app/Http/Controllers/AdminController.php
+- [ ] 4. Add routes to routes/web.php
+- [ ] 5. Create public view: resources/views/alumni/index.blade.php
+- [ ] 6. Create admin views: resources/views/admin/alumni/index.blade.php, create.blade.php, edit.blade.php, show.blade.php
+- [ ] 7. Test (storage:link already exists)
 
+## Next Steps
+Visit /alumni (public) and /admin/alumni (admin CRUD)
