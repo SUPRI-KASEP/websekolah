@@ -383,15 +383,39 @@
         </div>
     </section>
 
-    {{-- Google Maps --}}
+    {{-- Google Maps tile + Leaflet marker merah --}}
     <section class="map-section">
-        <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.9!2d108.2!3d-7.3!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6f5b0000000001%3A0x1!2sSMK+YPC+Tasikmalaya!5e0!3m2!1sid!2sid!4v1"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
+        <div id="map-smkypc" style="width:100%;height:300px;"></div>
     </section>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        (function() {
+            var map = L.map('map-smkypc', { zoomControl: true, scrollWheelZoom: false })
+                       .setView([-7.3608, 108.1062], 17);
+
+            L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                subdomains: ['mt0','mt1','mt2','mt3'],
+                attribution: '&copy; Google Maps'
+            }).addTo(map);
+
+            var redIcon = L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+
+            L.marker([-7.3608, 108.1062], { icon: redIcon })
+             .addTo(map)
+             .bindPopup('<strong>SMK YPC Tasikmalaya</strong><br>Jl. Komplek Pesantren Cintawana,<br>Cikunten, Singaparna, Tasikmalaya')
+             .openPopup();
+        })();
+    </script>
 
     {{-- Content --}}
     <section class="kontak-content">
