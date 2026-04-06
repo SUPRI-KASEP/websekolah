@@ -789,6 +789,14 @@
                 </a>
             </li>
 
+            {{-- jurusan --}}
+            <li class="nav-item">
+                <a href="{{ route('admin.jurusan.index') }}" class="nav-link {{ $currentRoute == 'admin.jurusan' ? 'active' : '' }}">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span class="menu-text">Jurusan</span>
+                </a>
+            </li>
+
             <!-- Pesan -->
             <li class="nav-item">
                 <a href="{{ route('admin.pesan') }}" class="nav-link {{ in_array($currentRoute, ['admin.pesan', 'admin.pesan.show']) ? 'active' : '' }}">

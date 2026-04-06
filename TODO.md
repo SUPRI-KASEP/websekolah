@@ -1,17 +1,16 @@
-# TODO: Add Struktur Organisasi Preview to Home Page
+# Jurusan CRUD Implementation Plan
 
-## Task: 
-Add struktur organisasi preview section to home page that shows only a few members, with "Selengkapnya" link to full struktur page. Data should be taken from database, not dummy data.
+## Completed Steps
+- [x] 1. Fix app/Models/jurusan.php (rename class to Jurusan)
+- [x] 2. Update app/Http/Controllers/JurusanController.php (public index only, fix bugs)
+- [x] 3. Add jurusan CRUD methods to app/Http\Controllers/AdminController.php
+- [x] 4. Add routes to routes/web.php
+- [x] 5. Create public view: resources/views/jurusan/index.blade.php
+- [x] 6. Create admin views: resources/views/admin/jurusan/index.blade.php, create.blade.php, edit.blade.php, show.blade.php
+ - [x] 7. Test and followup (storage:link, migrate if needed)
+- [ ] 7. Test and followup (storage:link, migrate if needed)
 
-## Steps:
-
-1. [x] Update HomeController.php - Add query to fetch struktur organisasi data (limited to 4 items)
-2. [x] Update home.blade.php - Add struktur organisasi preview section with elegant design
-3. [x] Fix query to use 'struktur-organisasi' to match admin data
-
-## Files Edited:
-- app/Http/Controllers/HomeController.php
-- resources/views/home.blade.php
-
-## Status: COMPLETED ✅
+## Next Steps
+Run `php artisan storage:link` for file uploads.
+Visit /jurusan for public view, /admin/jurusan for admin CRUD.
 

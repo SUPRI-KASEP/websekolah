@@ -277,6 +277,7 @@
             <li><a href="{{ route('fasilitas.index') }}">Fasilitas</a></li>
             <li><a href="{{ route('prestasi.index') }}">Prestasi</a></li>
             <li><a href="{{ route('eskul.index') }}">Eskul</a></li>
+            <li><a href="{{ route('jurusan.index') }}">Jurusan</a></li>
         </ul>
     </nav>
 

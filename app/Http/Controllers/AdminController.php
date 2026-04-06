@@ -12,7 +12,7 @@ use App\Models\Prestasi;
 use App\Models\profil;
 use App\Models\HistoryImage;
 use App\Models\Pesan;
-
+use App\Models\Jurusan;
 class AdminController extends Controller
 {
     public function dashboard()
@@ -554,6 +554,35 @@ class AdminController extends Controller
         return view('admin.pesan', compact('pesans'));
     }
 
+    // ==================== JURUSAN MANAGEMENT ====================
+
+    public function jurusanIndex(Request $request)
+    {
+        $query = Jurusan::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_jurusan', 'like', "%{$search}%")
+                  ->orWhere('kode_jurusan', 'like', "%{$search}%")
+                  ->orWhere('ketua_jurusan', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $jurusans = $query->latest()->paginate(10)->withQueryString();
+
+        return view('admin.jurusan.index', compact('jurusans'));
+    }
+
+    public function jurusanCreate()
+    {
+        return view('admin.jurusan.create');
+    }
+
     public function pesanShow($id)
     {
         $pesan = Pesan::findOrFail($id);
@@ -586,4 +615,118 @@ class AdminController extends Controller
 
         return redirect()->route('admin.pesan')->with('success', 'Pesan berhasil dihapus!');
     }
+
+    public function jurusanStore(Request $request)
+    {
+        $request->validate([
+            'kode_jurusan'  => 'required|string|max:10|unique:jurusans,kode_jurusan',
+            'nama_jurusan'  => 'required|string|max:100',
+            'deskripsi'     => 'nullable|string',
+            'ketua_jurusan' => 'nullable|string|max:100',
+            'status'        => 'required|in:aktif,nonaktif',
+            'logo'          => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
+            'foto'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+        ], [
+            'kode_jurusan.required' => 'Kode jurusan wajib diisi.',
+            'kode_jurusan.unique'   => 'Kode jurusan sudah digunakan.',
+            'nama_jurusan.required' => 'Nama jurusan wajib diisi.',
+            'status.required'       => 'Status wajib dipilih.',
+            'logo.image'            => 'Logo harus berupa gambar.',
+            'logo.max'              => 'Logo maksimal 2 MB.',
+            'foto.image'            => 'Foto harus berupa gambar.',
+            'foto.max'              => 'Foto maksimal 4 MB.',
+        ]);
+
+        $data = $request->except(['logo', 'foto']);
+
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $request->file('logo')->store('jurusan/logo', 'public');
+        }
+
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('jurusan/foto', 'public');
+        }
+
+        Jurusan::create($data);
+
+        return redirect()->route('admin.jurusan.index')
+            ->with('success', 'Jurusan berhasil ditambahkan!');
+    }
+
+    public function jurusanShow($id)
+    {
+        $jurusan = Jurusan::findOrFail($id);
+        return view('admin.jurusan.show', compact('jurusan'));
+    }
+
+    public function jurusanEdit($id)
+    {
+        $jurusan = Jurusan::findOrFail($id);
+        return view('admin.jurusan.edit', compact('jurusan'));
+    }
+
+    public function jurusanUpdate(Request $request, $id)
+    {
+        $jurusan = Jurusan::findOrFail($id);
+
+        $request->validate([
+            'kode_jurusan'  => 'required|string|max:10|unique:jurusans,kode_jurusan,' . $id,
+            'nama_jurusan'  => 'required|string|max:100',
+            'deskripsi'     => 'nullable|string',
+            'ketua_jurusan' => 'nullable|string|max:100',
+            'status'        => 'required|in:aktif,nonaktif',
+            'logo'          => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
+            'foto'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+        ], [
+            'kode_jurusan.required' => 'Kode jurusan wajib diisi.',
+            'kode_jurusan.unique'   => 'Kode jurusan sudah digunakan.',
+            'nama_jurusan.required' => 'Nama jurusan wajib diisi.',
+            'status.required'       => 'Status wajib dipilih.',
+            'logo.image'            => 'Logo harus berupa gambar.',
+            'logo.max'              => 'Logo maksimal 2 MB.',
+            'foto.image'            => 'Foto harus berupa gambar.',
+            'foto.max'              => 'Foto maksimal 4 MB.',
+        ]);
+
+        $data = $request->except(['logo', 'foto', 'hapus_logo', 'hapus_foto']);
+
+        if ($request->hasFile('logo')) {
+            if ($jurusan->logo) Storage::disk('public')->delete($jurusan->logo);
+            $data['logo'] = $request->file('logo')->store('jurusan/logo', 'public');
+        }
+
+        if ($request->hasFile('foto')) {
+            if ($jurusan->foto) Storage::disk('public')->delete($jurusan->foto);
+            $data['foto'] = $request->file('foto')->store('jurusan/foto', 'public');
+        }
+
+        if ($request->boolean('hapus_logo') && $jurusan->logo) {
+            Storage::disk('public')->delete($jurusan->logo);
+            $data['logo'] = null;
+        }
+
+        if ($request->boolean('hapus_foto') && $jurusan->foto) {
+            Storage::disk('public')->delete($jurusan->foto);
+            $data['foto'] = null;
+        }
+
+        $jurusan->update($data);
+
+        return redirect()->route('admin.jurusan.index')
+            ->with('success', 'Jurusan berhasil diperbarui!');
+    }
+
+    public function jurusanDestroy($id)
+    {
+        $jurusan = Jurusan::findOrFail($id);
+
+        if ($jurusan->logo) Storage::disk('public')->delete($jurusan->logo);
+        if ($jurusan->foto) Storage::disk('public')->delete($jurusan->foto);
+
+        $jurusan->delete();
+
+        return redirect()->route('admin.jurusan.index')
+            ->with('success', 'Jurusan berhasil dihapus!');
+    }
+
 }

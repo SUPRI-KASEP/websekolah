@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EskulController;
 use App\Http\Controllers\FasilitasController;
+
+use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\ProfilController;
 use Illuminate\Support\Facades\Route;
@@ -54,9 +56,22 @@ Route::middleware(['auth.admin:admin'])->group(function () {
     Route::get('/admin/pesan/{id}', [AdminController::class, 'pesanShow'])->name('admin.pesan.show');
     Route::put('/admin/pesan/{id}', [AdminController::class, 'pesanUpdate'])->name('admin.pesan.update');
     Route::delete('/admin/pesan/{id}', [AdminController::class, 'pesanDestroy'])->name('admin.pesan.destroy');
+
+    
     
     // History Image Management Routes
     Route::delete('/admin/history-images/{id}', [AdminController::class, 'historyImageDestroy'])->name('admin.history-images.destroy');
+
+    // Jurusan Management Routes
+    Route::get('/admin/jurusan', [AdminController::class, 'jurusanIndex'])->name('admin.jurusan.index');
+    Route::get('/admin/jurusan/create', [AdminController::class, 'jurusanCreate'])->name('admin.jurusan.create');
+    Route::post('/admin/jurusan', [AdminController::class, 'jurusanStore'])->name('admin.jurusan.store');
+    Route::get('/admin/jurusan/{id}', [AdminController::class, 'jurusanShow'])->name('admin.jurusan.show');
+    Route::get('/admin/jurusan/{id}/edit', [AdminController::class, 'jurusanEdit'])->name('admin.jurusan.edit');
+    Route::put('/admin/jurusan/{id}', [AdminController::class, 'jurusanUpdate'])->name('admin.jurusan.update');
+    Route::delete('/admin/jurusan/{id}', [AdminController::class, 'jurusanDestroy'])->name('admin.jurusan.destroy');
+
+
 });
 
 Route::get('/sambutan', [ProfilController::class, 'sambutan'])->name('profil.sambutan');
@@ -73,7 +88,12 @@ Route::get('/fasilitas', [FasilitasController::class, 'index'])->name('fasilitas
 
 Route::get('/eskul', [EskulController::class, 'index'])->name('eskul.index');
 
+Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index');
+
 Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');
 
 Route::get('/pesan', [App\Http\Controllers\PesanController::class, 'index'])->name('pesan.index');
 Route::post('/pesan', [App\Http\Controllers\PesanController::class, 'store'])->name('pesan.store');
+
+
+
