@@ -269,7 +269,9 @@
                 <ul class="dropdown-menu">
                     <li><a href="{{ route('profil.menu', 'sambutan') }}">Sambutan Kepala Sekolah</a></li>
                     <li><a href="{{ route('profil.menu', 'visi-misi') }}">Visi & Misi</a></li>
+                    <li><a href="{{ route('guru.index') }}">Staf</a></li>
                     <li><a href="{{ route('profil.menu', 'struktur-organisasi') }}">Struktur Organisasi</a></li>
+                    <li><a href="{{ route('kontak.index') }}">Kontak</a></li>
                     <li><a href="{{ route('profil.menu', 'sejarah') }}">Sejarah</a></li>
                 </ul>
             </li>

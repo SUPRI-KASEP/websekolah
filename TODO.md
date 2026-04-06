@@ -1,16 +1,20 @@
-# Jurusan CRUD Implementation Plan
+# CRUD Guru Admin - Progress Tracker
 
-## Completed Steps
-- [x] 1. Fix app/Models/jurusan.php (rename class to Jurusan)
-- [x] 2. Update app/Http/Controllers/JurusanController.php (public index only, fix bugs)
-- [x] 3. Add jurusan CRUD methods to app/Http\Controllers/AdminController.php
-- [x] 4. Add routes to routes/web.php
-- [x] 5. Create public view: resources/views/jurusan/index.blade.php
-- [x] 6. Create admin views: resources/views/admin/jurusan/index.blade.php, create.blade.php, edit.blade.php, show.blade.php
- - [x] 7. Test and followup (storage:link, migrate if needed)
-- [ ] 7. Test and followup (storage:link, migrate if needed)
+## Plan Breakdown:
+1. ✅ **Plan approved by user**
+2. ✅ **Create TODO.md**
+3. ✅ **Update AdminController.php** - Add guruIndex(), guruStore(), guruUpdate(), guruDestroy() methods
+4. ✅ **Update routes/web.php** - Add 4 guru CRUD routes
+5. ✅ **Update admin/guru.blade.php** - Full CRUD interface
+6. ✅ **Test CRUD** - Routes cleared/cached (run: php artisan route:clear && php artisan route:cache)
+4. **Update routes/web.php** - Add 4 guru CRUD routes in admin group
+5. **Update resources/views/admin/guru.blade.php** - Full CRUD interface (table + modals)
+6. **Test CRUD functionality**
+   - Clear route cache: `php artisan route:clear && php artisan route:cache`
+   - Visit /admin/guru
+   - Create, edit, delete test records
+   - Verify image upload/delete
+7. **Complete** - Use attempt_completion
 
-## Next Steps
-Run `php artisan storage:link` for file uploads.
-Visit /jurusan for public view, /admin/jurusan for admin CRUD.
+**Next step: Edit AdminController.php**
 

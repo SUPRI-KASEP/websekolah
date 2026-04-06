@@ -13,6 +13,7 @@ use App\Models\profil;
 use App\Models\HistoryImage;
 use App\Models\Pesan;
 use App\Models\Jurusan;
+use App\Models\Guru;
 class AdminController extends Controller
 {
     public function dashboard()
@@ -727,6 +728,94 @@ class AdminController extends Controller
 
         return redirect()->route('admin.jurusan.index')
             ->with('success', 'Jurusan berhasil dihapus!');
+    }
+
+    // ==================== GURU MANAGEMENT ====================
+
+    public function guruIndex()
+    {
+        $gurus = Guru::all();
+        return view('admin.guru', compact('gurus'));
+    }
+
+    public function guruStore(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'matpel' => 'required|string|max:255',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'no_hp' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'profil_singkat' => 'nullable',
+        ]);
+
+        $data = [
+            'nama' => $request->nama,
+            'matpel' => $request->matpel,
+            'no_hp' => $request->no_hp,
+            'email' => $request->email,
+            'profil_singkat' => $request->profil_singkat,
+        ];
+
+        if ($request->hasFile('foto')) {
+            $image = $request->file('foto');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets'), $imageName);
+            $data['foto'] = $imageName;
+        }
+
+        Guru::create($data);
+
+        return redirect()->route('admin.guru')->with('success', 'Guru berhasil ditambahkan!');
+    }
+
+    public function guruUpdate(Request $request, $id)
+    {
+        $guru = Guru::findOrFail($id);
+
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'matpel' => 'required|string|max:255',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'no_hp' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'profil_singkat' => 'nullable',
+        ]);
+
+        $data = [
+            'nama' => $request->nama,
+            'matpel' => $request->matpel,
+            'no_hp' => $request->no_hp,
+            'email' => $request->email,
+            'profil_singkat' => $request->profil_singkat,
+        ];
+
+        if ($request->hasFile('foto')) {
+            if ($guru->foto && file_exists(public_path('assets/' . $guru->foto))) {
+                unlink(public_path('assets/' . $guru->foto));
+            }
+            $image = $request->file('foto');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets'), $imageName);
+            $data['foto'] = $imageName;
+        }
+
+        $guru->update($data);
+
+        return redirect()->route('admin.guru')->with('success', 'Guru berhasil diperbarui!');
+    }
+
+    public function guruDestroy($id)
+    {
+        $guru = Guru::findOrFail($id);
+
+        if ($guru->foto && file_exists(public_path('assets/' . $guru->foto))) {
+            unlink(public_path('assets/' . $guru->foto));
+        }
+
+        $guru->delete();
+
+        return redirect()->route('admin.guru')->with('success', 'Guru berhasil dihapus!');
     }
 
 }

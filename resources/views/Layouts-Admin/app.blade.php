@@ -797,6 +797,13 @@
                 </a>
             </li>
 
+            {{-- guru --}}
+            <li class="nav-item">
+                <a href="{{ route('admin.guru') }}" class="nav-link {{ $currentRoute == 'admin.guru' ? 'active' : '' }}">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span class="menu-text">Guru</span>
+                </a>
+
             <!-- Pesan -->
             <li class="nav-item">
                 <a href="{{ route('admin.pesan') }}" class="nav-link {{ in_array($currentRoute, ['admin.pesan', 'admin.pesan.show']) ? 'active' : '' }}">

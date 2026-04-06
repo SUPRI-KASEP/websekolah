@@ -71,6 +71,11 @@ Route::middleware(['auth.admin:admin'])->group(function () {
     Route::put('/admin/jurusan/{id}', [AdminController::class, 'jurusanUpdate'])->name('admin.jurusan.update');
     Route::delete('/admin/jurusan/{id}', [AdminController::class, 'jurusanDestroy'])->name('admin.jurusan.destroy');
 
+    // Guru Management Routes
+    Route::get('/admin/guru', [AdminController::class, 'guruIndex'])->name('admin.guru');
+    Route::post('/admin/guru', [AdminController::class, 'guruStore'])->name('admin.guru.store');
+    Route::put('/admin/guru/{id}', [AdminController::class, 'guruUpdate'])->name('admin.guru.update');
+    Route::delete('/admin/guru/{id}', [AdminController::class, 'guruDestroy'])->name('admin.guru.destroy');
 
 });
 
@@ -89,6 +94,10 @@ Route::get('/fasilitas', [FasilitasController::class, 'index'])->name('fasilitas
 Route::get('/eskul', [EskulController::class, 'index'])->name('eskul.index');
 
 Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index');
+
+Route::get('/guru', [App\Http\Controllers\GuruController::class, 'index'])->name('guru.index');
+Route::get('/kontak', [App\Http\Controllers\KontakController::class, 'index'])->name('kontak.index');
+Route::post('/kontak', [App\Http\Controllers\KontakController::class, 'store'])->name('kontak.kirim');
 
 Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');
 
