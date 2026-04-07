@@ -281,6 +281,7 @@
             <li><a href="{{ route('eskul.index') }}">Eskul</a></li>
             <li><a href="{{ route('jurusan.index') }}">Jurusan</a></li>
             <li><a href="{{ route('alumni.index') }}">Alumni</a></li>
+            <li><a href="{{ route('mitra.index') }}">Mitra</a></li>
         </ul>
     </nav>
 
