@@ -15,6 +15,7 @@ use App\Models\Pesan;
 use App\Models\Jurusan;
 use App\Models\Guru;
 use App\Models\Alumni;
+use App\Models\Mitra;
 class AdminController extends Controller
 {
     public function dashboard()
@@ -926,6 +927,110 @@ class AdminController extends Controller
 
         return redirect()->route('admin.alumni.index')
             ->with('success', 'Alumni berhasil dihapus!');
+    }
+
+    // ==================== MITRA MANAGEMENT ====================
+
+    public function mitraIndex(Request $request)
+    {
+$query = Mitra::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama-mitra', 'like', "%{$search}%")
+                  ->orWhere('deskripsi', 'like', "%{$search}%");
+            });
+        }
+
+        $mitras = $query->latest()->paginate(10)->withQueryString();
+
+        return view('admin.mitra.index', compact('mitras'));
+    }
+
+    public function mitraCreate()
+    {
+        return view('admin.mitra.create');
+    }
+
+    public function mitraStore(Request $request)
+    {
+        $request->validate([
+            'nama_mitra' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:4096',
+        ], [
+            'nama_mitra.required' => 'Nama mitra wajib diisi.',
+            'deskripsi.required' => 'Deskripsi wajib diisi.',
+            'logo.image' => 'Logo harus gambar.',
+            'logo.max' => 'Logo maks 4MB.',
+        ]);
+
+        $data = $request->except(['logo']);
+
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $request->file('logo')->store('mitra', 'public');
+        }
+
+Mitra::create($data);
+
+        return redirect()->route('admin.mitra.index')
+            ->with('success', 'Mitra berhasil ditambahkan!');
+    }
+
+    public function mitraShow($id)
+    {
+        $mitra = Mitra::findOrFail($id);
+        return view('admin.mitra.show', compact('mitra'));
+    }
+
+    public function mitraEdit($id)
+    {
+        $mitra = Mitra::findOrFail($id);
+        return view('admin.mitra.edit', compact('mitra'));
+    }
+
+    public function mitraUpdate(Request $request, $id)
+    {
+        $mitra = Mitra::findOrFail($id);
+
+        $request->validate([
+            'nama_mitra' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:4096',
+        ], [
+            'nama_mitra.required' => 'Nama mitra wajib diisi.',
+            'deskripsi.required' => 'Deskripsi wajib diisi.',
+        ]);
+
+        $data = $request->except(['logo', 'hapus_logo']);
+
+        if ($request->hasFile('logo')) {
+            if ($mitra->logo) Storage::disk('public')->delete($mitra->logo);
+            $data['logo'] = $request->file('logo')->store('mitra', 'public');
+        }
+
+        if ($request->boolean('hapus_logo') && $mitra->logo) {
+            Storage::disk('public')->delete($mitra->logo);
+            $data['logo'] = null;
+        }
+
+        $mitra->update($data);
+
+        return redirect()->route('admin.mitra.index')
+            ->with('success', 'Mitra berhasil diperbarui!');
+    }
+
+    public function mitraDestroy($id)
+    {
+        $mitra = Mitra::findOrFail($id);
+
+        if ($mitra->logo) Storage::disk('public')->delete($mitra->logo);
+
+        $mitra->delete();
+
+        return redirect()->route('admin.mitra.index')
+            ->with('success', 'Mitra berhasil dihapus!');
     }
 
 }

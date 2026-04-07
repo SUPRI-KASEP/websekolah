@@ -9,6 +9,7 @@ use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\AlumniController;
+use App\Http\Controllers\MitraController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
@@ -87,6 +88,15 @@ Route::middleware(['auth.admin:admin'])->group(function () {
     Route::put('/admin/guru/{id}', [AdminController::class, 'guruUpdate'])->name('admin.guru.update');
     Route::delete('/admin/guru/{id}', [AdminController::class, 'guruDestroy'])->name('admin.guru.destroy');
 
+    // Mitra Management Routes
+    Route::get('/admin/mitra', [AdminController::class, 'mitraIndex'])->name('admin.mitra.index');
+    Route::get('/admin/mitra/create', [AdminController::class, 'mitraCreate'])->name('admin.mitra.create');
+    Route::post('/admin/mitra', [AdminController::class, 'mitraStore'])->name('admin.mitra.store');
+    Route::get('/admin/mitra/{id}', [AdminController::class, 'mitraShow'])->name('admin.mitra.show');
+    Route::get('/admin/mitra/{id}/edit', [AdminController::class, 'mitraEdit'])->name('admin.mitra.edit');
+    Route::put('/admin/mitra/{id}', [AdminController::class, 'mitraUpdate'])->name('admin.mitra.update');
+    Route::delete('/admin/mitra/{id}', [AdminController::class, 'mitraDestroy'])->name('admin.mitra.destroy');
+
 });
 
 Route::get('/sambutan', [ProfilController::class, 'sambutan'])->name('profil.sambutan');
@@ -110,6 +120,7 @@ Route::get('/kontak', [App\Http\Controllers\KontakController::class, 'index'])->
 Route::post('/kontak', [App\Http\Controllers\KontakController::class, 'store'])->name('kontak.kirim');
 
 Route::get('/alumni', [AlumniController::class, 'index'])->name('alumni.index');
+Route::get('/mitra', [MitraController::class, 'index'])->name('mitra.index');
 Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');
 
 Route::get('/pesan', [App\Http\Controllers\PesanController::class, 'index'])->name('pesan.index');

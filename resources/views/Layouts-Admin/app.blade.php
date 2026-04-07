@@ -812,6 +812,13 @@
                     <span class="menu-text">Alumni</span>
                 </a>
             </li>
+            {{-- mitra --}}
+            <li class="nav-item">
+                <a href="{{ route('admin.mitra.index') }}" class="nav-link {{ $currentRoute == 'admin.mitra.index' ? 'active' : '' }}">
+                    <i class="fas fa-handshake"></i>
+                    <span class="menu-text">Mitra</span>
+                </a>
+            </li>
             <!-- Pesan -->
             <li class="nav-item">
                 <a href="{{ route('admin.pesan') }}" class="nav-link {{ in_array($currentRoute, ['admin.pesan', 'admin.pesan.show']) ? 'active' : '' }}">
