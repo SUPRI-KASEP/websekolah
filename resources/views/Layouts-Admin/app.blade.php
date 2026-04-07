@@ -803,7 +803,15 @@
                     <i class="fas fa-chalkboard-teacher"></i>
                     <span class="menu-text">Guru</span>
                 </a>
+            </li>
 
+            {{-- alumni --}}
+            <li class="nav-item">
+                <a href="{{ route('admin.alumni.index') }}" class="nav-link {{ $currentRoute == 'admin.alumni' ? 'active' : '' }}">
+                    <i class="fas fa-user-graduate"></i>
+                    <span class="menu-text">Alumni</span>
+                </a>
+            </li>
             <!-- Pesan -->
             <li class="nav-item">
                 <a href="{{ route('admin.pesan') }}" class="nav-link {{ in_array($currentRoute, ['admin.pesan', 'admin.pesan.show']) ? 'active' : '' }}">
