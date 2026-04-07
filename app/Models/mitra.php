@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Mitra extends Model
 {
@@ -17,25 +18,21 @@ class Mitra extends Model
         'deskripsi',
     ];
 
-    protected $casts = [
-        'deskripsi' => 'array', // if rich text, else string
-    ];
-
-    // Accessors for hyphenated field
-    public function getNamaMitraAttribute()
-    {
-        return $this->getOriginal('nama-mitra');
-    }
-
-    public function setNamaMitraAttribute($value)
-    {
-        $this->setAttribute('nama-mitra', $value);
-    }
-
-    // Logo URL for storage/public/mitra/
+    /**
+     * Get logo URL for display
+     */
     public function getLogoUrlAttribute()
     {
-        return $this->logo ? asset('storage/mitra/' . $this->logo) : null;
+        return $this->logo ? asset('assets/' . $this->logo) : null;
+    }
+
+    /**
+     * Scope for search
+     */
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('nama_mitra', 'like', "%{$search}%")
+                     ->orWhere('deskripsi', 'like', "%{$search}%");
     }
 }
 

@@ -933,13 +933,12 @@ class AdminController extends Controller
 
     public function mitraIndex(Request $request)
     {
-$query = Mitra::query();
+        $query = Mitra::query();
 
         if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('nama-mitra', 'like', "%{$search}%")
-                  ->orWhere('deskripsi', 'like', "%{$search}%");
+            $query->where(function ($q) use ($request) {
+                $q->where('nama_mitra', 'like', "%{$request->search}%")
+                  ->orWhere('deskripsi', 'like', "%{$request->search}%");
             });
         }
 
@@ -969,7 +968,10 @@ $query = Mitra::query();
         $data = $request->except(['logo']);
 
         if ($request->hasFile('logo')) {
-            $data['logo'] = $request->file('logo')->store('mitra', 'public');
+            $image     = $request->file('logo');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets'), $imageName);
+            $data['logo'] = $imageName;
         }
 
 Mitra::create($data);
@@ -1006,12 +1008,17 @@ Mitra::create($data);
         $data = $request->except(['logo', 'hapus_logo']);
 
         if ($request->hasFile('logo')) {
-            if ($mitra->logo) Storage::disk('public')->delete($mitra->logo);
-            $data['logo'] = $request->file('logo')->store('mitra', 'public');
+            if ($mitra->logo && file_exists(public_path('assets/' . $mitra->logo))) {
+                unlink(public_path('assets/' . $mitra->logo));
+            }
+            $image     = $request->file('logo');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets'), $imageName);
+            $data['logo'] = $imageName;
         }
 
-        if ($request->boolean('hapus_logo') && $mitra->logo) {
-            Storage::disk('public')->delete($mitra->logo);
+        if ($request->boolean('hapus_logo') && $mitra->logo && file_exists(public_path('assets/' . $mitra->logo))) {
+            unlink(public_path('assets/' . $mitra->logo));
             $data['logo'] = null;
         }
 

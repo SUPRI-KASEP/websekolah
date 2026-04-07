@@ -58,8 +58,8 @@
                 <tr>
                     <td>{{ $mitras->firstItem() + $index }}</td>
                     <td>
-                        @if($mitra->logo)
-                        <img src="{{ Storage::url('mitra/' . $mitra->logo) }}" class="rounded" style="width: 40px; height: 40px; object-fit: cover;" alt="{{ $mitra->nama_mitra }}">
+@if($mitra->logo_url)
+                        <img src="{{ $mitra->logo_url }}" class="rounded" style="width: 40px; height: 40px; object-fit: cover;" alt="{{ $mitra->nama_mitra }}">
                         @else
                         <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                             <i class="fas fa-handshake text-muted"></i>
