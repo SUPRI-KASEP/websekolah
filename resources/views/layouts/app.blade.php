@@ -280,6 +280,7 @@
             <li><a href="{{ route('prestasi.index') }}">Prestasi</a></li>
             <li><a href="{{ route('eskul.index') }}">Eskul</a></li>
             <li><a href="{{ route('jurusan.index') }}">Jurusan</a></li>
+            <li><a href="{{ route('guru.index') }}">Guru</a></li>
             <li><a href="{{ route('alumni.index') }}">Alumni</a></li>
             <li><a href="{{ route('mitra.index') }}">Mitra</a></li>
         </ul>
