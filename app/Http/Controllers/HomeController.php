@@ -40,6 +40,8 @@ class HomeController extends Controller
             ->limit(4)
             ->get();
 
+        $gurus = \App\Models\Guru::orderBy('nama')->limit(20)->get();
+
         return view('home', compact(
             'sambutan', 
             'visimisi', 
@@ -51,7 +53,8 @@ class HomeController extends Controller
             'fasilitas',
             'prestasis',
             'eskuls',
-            'strukturs'
+            'strukturs',
+            'gurus'
         ));
     }
 }

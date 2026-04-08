@@ -2,12 +2,16 @@
 @section('title', 'Admin')
 @section('content')
 
-    @php
+@php
         $profilCount = \App\Models\profil::count();
         $eskulCount = \App\Models\Eskul::count();
         $fasilitasCount = \App\Models\Fasilitas::count();
         $prestasiCount = \App\Models\Prestasi::count();
         $pesanCount = \App\Models\Pesan::count();
+        $guruCount = \App\Models\Guru::count();
+        $mitraCount = \App\Models\Mitra::count();
+        $alumniCount = \App\Models\Alumni::count();
+        $jurusanCount = \App\Models\jurusan::count();
 
         $pesans = \App\Models\Pesan::orderBy('created_at', 'desc')->limit(5)->get();
 
@@ -16,6 +20,10 @@
             ['name' => 'Eskul',     'count' => $eskulCount,    'icon' => '🏋'],
             ['name' => 'Fasilitas', 'count' => $fasilitasCount,'icon' => '🏠'],
             ['name' => 'Prestasi',  'count' => $prestasiCount, 'icon' => '🏆'],
+            ['name' => 'Guru',      'count' => $guruCount,     'icon' => '👨‍🏫'],
+            ['name' => 'Mitra',     'count' => $mitraCount,    'icon' => '🤝'],
+            ['name' => 'Alumni',    'count' => $alumniCount,   'icon' => '👨‍🎓'],
+            ['name' => 'Jurusan',   'count' => $jurusanCount,  'icon' => '📚'],
             ['name' => 'Pesan',     'count' => $pesanCount,    'icon' => '💬'],
         ];
     @endphp
@@ -58,7 +66,11 @@
                                     ['name' => 'Eskul',     'count' => $eskulCount,     'color' => '#36A2EB'],
                                     ['name' => 'Fasilitas', 'count' => $fasilitasCount, 'color' => '#FFCE56'],
                                     ['name' => 'Prestasi',  'count' => $prestasiCount,  'color' => '#4BC0C0'],
+                                    ['name' => 'Guru',      'count' => $guruCount,      'color' => '#FF9F40'],
+                                    ['name' => 'Mitra',     'count' => $mitraCount,     'color' => '#4BC0C0'],
+                                    ['name' => 'Alumni',    'count' => $alumniCount,    'color' => '#FF6384'],
                                     ['name' => 'Pesan',     'count' => $pesanCount,     'color' => '#9966FF'],
+                                    ['name' => 'Jurusan',   'count' => $jurusanCount,   'color' => '#36A2EB'],
                                 ];
                                 $total = array_sum(array_column($menuData, 'count'));
                                 $startAngle = 0;
@@ -95,7 +107,10 @@
                             <div class="legend-item">
                                 <span class="legend-color" style="background-color: {{ $seg['color'] }};"></span>
                                 <span class="legend-name">{{ $seg['name'] }}</span>
-                                <span class="legend-count">{{ $seg['count'] }}</span>
+                                <span class="legend-count">
+                                    {{ $seg['count'] }} 
+                                    <small class="text-muted">({{ $seg['percentage'] }}%)</small>
+                                </span>
                             </div>
                             @endforeach
                         </div>
@@ -196,11 +211,10 @@
         .stat-scroll-wrapper::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
 
         .stat-card {
-            display: flex;               /* single row, never wraps */
-            flex-wrap: nowrap;
+            display: flex;
+            flex-wrap: wrap;
             gap: 10px;
-            /* each card fixed width so they don't shrink into nothing */
-            min-width: max-content;
+            justify-content: flex-start;
         }
 
         .stat-item {
@@ -211,8 +225,23 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            min-width: 130px;           /* readable on small screens */
-            flex-shrink: 0;
+            flex: 1 1 calc(50% - 10px);
+            min-width: 130px;
+            max-width: calc(50% - 10px);
+        }
+
+        @media (min-width: 900px) {
+            .stat-item {
+                flex: 1 1 calc(33.333% - 10px);
+                max-width: calc(33.333% - 10px);
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .stat-item {
+                flex: 1 1 calc(25% - 10px);
+                max-width: calc(25% - 10px);
+            }
         }
 
         .stat-icon {
@@ -350,6 +379,11 @@
         .legend-count {
             font-size: 0.72rem; font-weight: 600; color: #666;
             background: #eee; padding: 2px 7px; border-radius: 10px;
+            white-space: nowrap;
+        }
+
+        .legend-count small {
+            font-weight: 400;
         }
 
         /* ─────────────────────────────────────────

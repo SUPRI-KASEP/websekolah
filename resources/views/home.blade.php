@@ -1414,6 +1414,355 @@ img { display: block; max-width: 100%; height: auto; }
     </div>
 </section>
 
+<!-- GURU CAROUSEL SECTION - NEW -->
+<section class="section-offwhite guru-preview">
+    <div class="container">
+        <div class="section-header-center scroll-fade">
+            <span class="eyebrow-tag">Dewan Guru</span>
+            <h2 class="heading-display">Para Guru Kami</h2>
+            <div class="content-divider divider-center"></div>
+            <p class="body-text text-center" style="max-width:560px;margin:0 auto 48px;">Tim pengajar berpengalaman dan berdedikasi yang siap membimbing putra-putri Anda menuju prestasi terbaik</p>
+        </div>
+        
+        <div class="guru-carousel-container scroll-fade">
+            <button class="carousel-prev" aria-label="Previous">‹</button>
+            <div class="guru-carousel-track" id="guruCarousel">
+                @forelse($gurus->take(20) as $index => $guru)
+                <div class="guru-card scroll-scale delay-{{ ($index % 5) + 1 }}">
+                    <div class="guru-photo">
+                        @if($guru->foto)
+                            <img src="{{ asset('assets/' . $guru->foto) }}" alt="{{ $guru->nama }}" loading="lazy">
+                        @else
+                            <div class="guru-photo-placeholder">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="50" cy="50" r="50" fill="#e2e8f0"/>
+                                    <circle cx="50" cy="35" r="15" fill="#94a3b8"/>
+                                    <ellipse cx="50" cy="80" rx="25" ry="15" fill="#94a3b8"/>
+                                </svg>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="guru-info">
+                        <h4 class="guru-name">{{ $guru->nama }}</h4>
+                        <p class="guru-matpel">{{ $guru->matpel ?? 'Guru' }}</p>
+                        @if($guru->profil_singkat)
+                            <p class="guru-bio">{{ Str::limit(strip_tags($guru->profil_singkat), 80) }}</p>
+                        @endif
+                        @if($guru->email)
+                            <a href="mailto:{{ $guru->email }}" class="guru-email">✉️ {{ Str::limit($guru->email, 25) }}</a>
+                        @endif
+                    </div>
+                </div>
+                @empty
+                <div class="guru-empty" style="grid-column:1/-1;text-align:center;padding:60px;background:var(--off-white);border-radius:var(--radius);border:2px dashed var(--border);">
+                    <div class="empty-icon" style="font-size:56px;margin-bottom:20px;">👨‍🏫</div>
+                    <h4 style="color:var(--ink);">Belum ada data guru</h4>
+                    <p style="color:var(--text-muted);">Data guru akan ditampilkan di sini</p>
+                </div>
+                @endforelse
+            </div>
+            <button class="carousel-next" aria-label="Next">›</button>
+            <div class="carousel-dots" id="guruDots"></div>
+        </div>
+        
+        @if($gurus->count() > 0)
+        <div class="text-center mt-5 scroll-fade">
+            <a href="{{ route('guru.index') }}" class="btn btn-primary-dark">Lihat Semua Guru</a>
+        </div>
+        @endif
+    </div>
+</section>
+
+<style>
+/* GURU CAROUSEL STYLES */
+.guru-preview { padding: 80px 0; }
+.guru-carousel-container {
+    position: relative;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: var(--radius);
+}
+.guru-carousel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    gap: 20px;
+    padding: 20px 60px;
+    scroll-snap-type: x mandatory;
+}
+.guru-card {
+    flex: 0 0 20%; /* 5 cards per slide */
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 20px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+}
+.guru-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+.guru-card:hover {
+    transform: translateY(-12px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent);
+}
+.guru-card:hover::before { transform: scaleX(1); }
+
+.guru-photo {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid var(--accent-soft);
+    background: var(--off-white);
+    transition: all 0.4s ease;
+    flex-shrink: 0;
+}
+.guru-card:hover .guru-photo {
+    transform: scale(1.15);
+    border-color: var(--accent);
+    box-shadow: 0 8px 25px rgba(232,168,124,0.25);
+}
+.guru-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.guru-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+}
+.guru-photo-placeholder svg {
+    width: 70%;
+    height: 70%;
+}
+
+.guru-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.guru-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+    line-height: 1.3;
+    word-wrap: break-word;
+}
+.guru-matpel {
+    font-size: 0.88rem;
+    color: var(--accent-dark);
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.guru-bio {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 12px;
+    flex-grow: 1;
+    word-wrap: break-word;
+}
+.guru-email {
+    display: inline-block;
+    font-size: 0.8rem;
+    color: var(--accent-dark);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.guru-email:hover {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+.carousel-prev, .carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--white);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    z-index: 10;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.carousel-prev { left: 10px; }
+.carousel-next { right: 10px; }
+.carousel-prev:hover, .carousel-next:hover {
+    background: var(--accent);
+    color: var(--white);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 8px 25px rgba(232,168,124,0.4);
+}
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+}
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--border);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.dot.active {
+    background: var(--accent);
+    transform: scale(1.3);
+}
+
+/* RESPONSIVE CAROUSEL */
+@media (max-width: 1024px) {
+    .guru-card { flex: 0 0 25%; } /* 4 per slide */
+}
+@media (max-width: 768px) {
+    .guru-card { flex: 0 0 33.33%; } /* 3 per slide */
+    .guru-carousel-track { padding: 20px 50px; gap: 16px; }
+}
+@media (max-width: 480px) {
+    .guru-card { 
+        flex: 0 0 80%; 
+        max-width: 320px;
+        margin: 0 auto;
+    }
+    .guru-carousel-track { padding: 20px 80px; gap: 20px; }
+    .guru-photo { width: 80px; height: 80px; }
+    .guru-card { padding: 24px 16px; min-height: 280px; }
+    .carousel-prev, .carousel-next { width: 44px; height: 44px; font-size: 18px; }
+}
+
+/* Scroll snap for touch devices */
+@supports (scroll-snap-type: x mandatory) {
+    .guru-carousel-track {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    .guru-carousel-track::-webkit-scrollbar { display: none; }
+}
+</style>
+
+<script>
+/* GURU CAROUSEL JS */
+document.addEventListener('DOMContentLoaded', function() {
+    const track = document.getElementById('guruCarousel');
+    const prevBtn = document.querySelector('.carousel-prev');
+    const nextBtn = document.querySelector('.carousel-next');
+    const dotsContainer = document.getElementById('guruDots');
+    
+    if (!track) return;
+    
+    const cards = track.children;
+    const cardWidth = cards[0]?.offsetWidth + 20; // + gap
+    const maxIndex = Math.ceil(cards.length / 5) - 1;
+    let currentIndex = 0;
+    let autoPlayInterval;
+    
+    function updateCarousel() {
+        const translateX = -currentIndex * (cardWidth * 5);
+        track.style.transform = `translateX(${translateX}px)`;
+        
+        // Update dots
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i <= maxIndex; i++) {
+            const dot = document.createElement('button');
+            dot.className = `dot ${i === currentIndex ? 'active' : ''}`;
+            dot.setAttribute('data-slide', i);
+            dot.ariaLabel = `Go to slide ${i + 1}`;
+            dot.onclick = () => goToSlide(i);
+            dotsContainer.appendChild(dot);
+        }
+    }
+    
+    function goToSlide(index) {
+        currentIndex = Math.max(0, Math.min(index, maxIndex));
+        updateCarousel();
+    }
+    
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) > maxIndex ? 0 : currentIndex + 1;
+        updateCarousel();
+    }
+    
+    function prevSlide() {
+        currentIndex = currentIndex === 0 ? maxIndex : currentIndex - 1;
+        updateCarousel();
+    }
+    
+    // Event listeners
+    nextBtn.onclick = nextSlide;
+    prevBtn.onclick = prevSlide;
+    
+    // Touch/swipe support
+    let startX = 0;
+    track.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+    track.addEventListener('touchend', e => {
+        const endX = e.changedTouches[0].clientX;
+        if (startX - endX > 50) nextSlide();
+        if (endX - startX > 50) prevSlide();
+    });
+    
+    // Keyboard support
+    track.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft') prevSlide();
+        if (e.key === 'ArrowRight') nextSlide();
+    });
+    
+    // Autoplay
+    function startAutoPlay() {
+        autoPlayInterval = setInterval(nextSlide, 5000);
+    }
+    function stopAutoPlay() {
+        clearInterval(autoPlayInterval);
+    }
+    
+    // Pause on hover
+    track.addEventListener('mouseenter', stopAutoPlay);
+    track.addEventListener('mouseleave', startAutoPlay);
+    
+    // Start
+    updateCarousel();
+    startAutoPlay();
+    
+    // Resize handler
+    window.addEventListener('resize', updateCarousel);
+});
+</script>
+
+<!-- END GURU CAROUSEL -->
+
 <style>
 .struktur-grid {
     display: grid;

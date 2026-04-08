@@ -1,26 +1,34 @@
-# Mitra CRUD Implementation TODO
+# TODO List for Web Sekolah Project
 
-## Status: In Progress
+## Current Tasks
 
-- [✅] 1. Fix Mitra model (app/Models/mitra.php) - PascalCase class, table mapping, casts/accessors
-- [✅] 1. Fix Mitra model (app/Models/mitra.php) - PascalCase class, table mapping, casts/accessors
-- [✅] 2. Create MitraController.php (public index)
-- [✅] 3. Add Mitra CRUD methods to AdminController.php (index/create/store/show/edit/update/destroy)
-- [✅] 4. Add routes to routes/web.php (public + admin CRUD)
-- [✅] 5. Update admin sidebar nav in Layouts-Admin/app.blade.php
-- [✅] 6. Create public view: resources/views/mitra/index.blade.php (grid display)
-- [✅] 7. Create admin views:
-  - [✅] resources/views/admin/mitra/index.blade.php (table w/search)
-  - [✅] resources/views/admin/mitra/create.blade.php
-  - [✅] resources/views/admin/mitra/edit.blade.php
-  - [✅] resources/views/admin/mitra/show.blade.php
-- [✅] 8. Test functionality
-  - [✅] Run `php artisan migrate` (if needed)
-  - [✅] `php artisan storage:link`
-  - [ ] Add sample data
-  - [✅] Test public /mitra and admin /admin/mitra CRUD
+### ✅ Completed
+- [x] Home page layout & sections (hero, profil, visi-misi, sejarah, fasilitas, prestasi, eskul, struktur)
+- [x] HomeController data passing for all sections
+- [x] Responsive design & animations
 
-**Next Step:** Complete!
+### 🔄 In Progress - Guru Carousel (Home Page)
+1. [ ] **Create TODO.md** (Current step - ✅)
+2. [✅] **Insert guru carousel section** in `resources/views/home.blade.php` after struktur section
+3. [✅] **Add CSS/JS** for carousel (5/slide desktop, responsive)
+4. [✅] **Test responsive** & animations
+5. [✅] **Update TODO progress** & complete
 
-**Completed Steps:** All core implementation ✅
+### ✅ COMPLETED - Guru Carousel (Home Page)
 
+### ⏳ Pending Priority
+```
+TODO-HOME-GURU-CAROUSEL.md    (Current - after guru section)
+TODO-MITRA-CRUD-REBUILD.md
+TODO-ALUMNI-FIX.md           
+KONTAK-TODO.md
+PUBLIC-GURU-TODO.md
+GURU-DETAIL-TODO.md
+```
+
+### ⏳ Future Tasks
+- [ ] Route optimizations
+- [ ] Admin dashboard enhancements
+- [ ] Performance optimizations
+- [ ] SEO improvements
+- [ ] PWA features
