@@ -1473,6 +1473,157 @@ img { display: block; max-width: 100%; height: auto; }
     </div>
 </section>
 
+<!-- ALUMNI PREVIEW SECTION -->
+<section class="section-offwhite alumni-preview">
+    <div class="container">
+        <div class="section-header-center scroll-fade">
+            <span class="eyebrow-tag">Jejak Keberhasilan</span>
+            <h2 class="heading-display">Alumni Berprestasi</h2>
+            <div class="content-divider divider-center"></div>
+            <p class="body-text text-center" style="max-width:560px;margin:0 auto 48px;">
+                Lulusan unggulan yang sukses berkarier di berbagai bidang
+            </p>
+        </div>
+
+        <!-- Stats Header -->
+        <div class="alumni-stats scroll-fade" style="background:var(--white);border-radius:var(--radius);padding:24px 32px;margin-bottom:32px;box-shadow:var(--shadow-sm);border:1px solid var(--border);">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:20px;text-align:center;">
+                <div>
+                    <span class="stat-num" style="color:var(--accent);">{{ $alumnis->count() }}</span>
+                    <span class="stat-lbl" style="display:block;margin-top:4px;">Alumni Terbaru</span>
+                </div>
+                <div>
+                    <span class="stat-num">{{ $alumnis->unique('angkatan')->count() }}</span>
+                    <span class="stat-lbl" style="display:block;margin-top:4px;">Angkatan</span>
+                </div>
+                <div>
+                    <span class="stat-num">{{ $alumnis->whereNotNull('pekerjaan_sekarang')->count() }}</span>
+                    <span class="stat-lbl" style="display:block;margin-top:4px;">Bekerja</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="alumni-grid">
+            @forelse($alumnis as $index => $alumni)
+            <div class="alumni-card scroll-scale delay-{{ ($index % 6) + 1 }}">
+                <!-- Accent top line -->
+                <div style="height:4px;background:linear-gradient(90deg,var(--accent-dark),var(--accent));"></div>
+                
+                <!-- Photo -->
+                <div class="alumni-photo">
+                    @if($alumni->foto)
+                        <img src="{{ Storage::url($alumni->foto) }}" 
+                             alt="{{ $alumni->nama_alumni }}"
+                             style="width:100%;height:100%;object-fit:cover;border-radius:12px;"
+{{ collect(explode(' ', $alumni->nama_alumni))->map(fn($w) => strtoupper(substr($w,0,1)))->take(2)->join('') }}
+                    @else
+                        <div class="alumni-placeholder">
+                            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" style="width:48px;height:48px;">
+                                <circle cx="40" cy="30" r="16" fill="#e2e8f0"/>
+                                <ellipse cx="40" cy="65" rx="25" ry="12" fill="#e2e8f0"/>
+                            </svg>
+                            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">
+                                {{ collect(explode(' ', $alumni->nama_alumni))->map(fn($w) => strtoupper(substr($w,0,1)))->take(2)->join('') }}
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Content -->
+                <div style="padding:20px 16px 16px;flex:1;display:flex;flex-direction:column;gap:8px;">
+                    <h4 style="font-size:1rem;font-weight:700;color:var(--ink);margin:0;line-height:1.3;word-wrap:break-word;">
+                        {{ $alumni->nama_alumni }}
+                    </h4>
+                    
+                    <span style="display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--accent-dark);font-size:0.8rem;font-weight:600;padding:4px 12px;border-radius:20px;align-self:flex-start;">
+                        <svg style="width:12px;height:12px;fill:currentColor;" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        Angkatan {{ $alumni->angkatan }}
+                    </span>
+                    
+                    @if($alumni->pekerjaan_sekarang)
+                    <div style="display:flex;align-items:flex-start;gap:8px;margin-top:4px;">
+                        <svg style="width:14px;height:14px;fill:var(--accent);margin-top:2px;flex-shrink:0;" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 5.94 2.98 5.72 4.23l-.41 2.04C4.35 7.87 4 8.83 4 9.87V11c0 .55.45 1 1 1h2v3c0 .55.45 1 1 1s1-.45 1-1v-3h4v3c0 .55.45 1 1 1s1-.45 1-1v-3h2c.55 0 1-.45 1-1v-1.83c0-1.04-.35-2-1-2.55zM12 13h-2v-2h2v2z"/></svg>
+                        <span style="font-size:0.88rem;color:var(--accent-dark);font-weight:600;line-height:1.4;">
+                            {{ $alumni->pekerjaan_sekarang }}
+                        </span>
+                    </div>
+                    @endif
+                </div>
+            </div>
+            @empty
+            <div class="alumni-empty" style="grid-column:1/-1;text-align:center;padding:60px;background:var(--off-white);border-radius:var(--radius);border:2px dashed var(--border);">
+                <div style="font-size:56px;margin-bottom:20px;">👨‍🎓</div>
+                <h4 style="color:var(--ink);">Belum ada data alumni</h4>
+                <p style="color:var(--text-muted);margin-top:8px;">Alumni pertama akan ditampilkan di sini</p>
+            </div>
+            @endforelse
+        </div>
+
+        <div class="text-center mt-5 scroll-fade">
+            <a href="{{ route('alumni.index') }}" class="btn btn-primary-dark">Lihat Semua Alumni</a>
+        </div>
+    </div>
+</section>
+
+<style>
+/* ALUMNI PREVIEW STYLES */
+.alumni-preview { padding: 80px 0; }
+.alumni-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 20px;
+    margin-top: 48px;
+}
+.alumni-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+}
+.alumni-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent);
+}
+.alumni-photo {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--off-white);
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+}
+.alumni-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+}
+.alumni-empty {
+    box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 900px) {
+    .alumni-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+}
+@media (max-width: 480px) {
+    .alumni-grid { 
+        grid-template-columns: 1fr; 
+        gap: 16px;
+        max-width: 360px;
+        margin: 0 auto;
+    }
+    .alumni-photo { height: 140px; padding: 12px; }
+}
+</style>
+
 <style>
 /* GURU CAROUSEL STYLES */
 .guru-preview { padding: 80px 0; }

@@ -8,6 +8,7 @@ use App\Models\profil;
 use App\Models\Fasilitas;
 use App\Models\Prestasi;
 use App\Models\Eskul;
+use App\Models\Alumni;
 
 class HomeController extends Controller
 {
@@ -40,7 +41,9 @@ class HomeController extends Controller
             ->limit(4)
             ->get();
 
-        $gurus = \App\Models\Guru::orderBy('nama')->limit(20)->get();
+$gurus = \App\Models\Guru::orderBy('nama')->limit(20)->get();
+
+        $alumnis = Alumni::latest()->limit(8)->get();
 
         return view('home', compact(
             'sambutan', 
@@ -54,7 +57,8 @@ class HomeController extends Controller
             'prestasis',
             'eskuls',
             'strukturs',
-            'gurus'
+            'gurus',
+            'alumnis'
         ));
     }
 }

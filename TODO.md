@@ -1,34 +1,23 @@
-# TODO List for Web Sekolah Project
+# TODO: Add Alumni Preview to Homepage
 
-## Current Tasks
+## Plan Implementation Steps
 
-### ✅ Completed
-- [x] Home page layout & sections (hero, profil, visi-misi, sejarah, fasilitas, prestasi, eskul, struktur)
-- [x] HomeController data passing for all sections
-- [x] Responsive design & animations
+### 1. [x] Update HomeController.php
+- Add `use App\Models\Alumni;`
+- In `index()`: `$alumnis = Alumni::latest()->limit(8)->get();`
+- Add `'alumnis'` to `compact()`
 
-### 🔄 In Progress - Guru Carousel (Home Page)
-1. [ ] **Create TODO.md** (Current step - ✅)
-2. [✅] **Insert guru carousel section** in `resources/views/home.blade.php` after struktur section
-3. [✅] **Add CSS/JS** for carousel (5/slide desktop, responsive)
-4. [✅] **Test responsive** & animations
-5. [✅] **Update TODO progress** & complete
+### 2. [x] Update home.blade.php
+- Add alumni preview section after guru carousel section
+- Include: stats header, 3-col responsive grid, hover cards
+- Matching CSS animations and design system
+- Link button to `route('alumni.index')`
 
-### ✅ COMPLETED - Guru Carousel (Home Page)
+### 3. [x] Test Implementation
+- Run `php artisan serve`
+- Visit homepage `/`
+- Verify: alumni section displays, responsive, no PHP errors
+- Check: photos load with fallbacks, stats compute correctly
 
-### ⏳ Pending Priority
-```
-TODO-HOME-GURU-CAROUSEL.md    (Current - after guru section)
-TODO-MITRA-CRUD-REBUILD.md
-TODO-ALUMNI-FIX.md           
-KONTAK-TODO.md
-PUBLIC-GURU-TODO.md
-GURU-DETAIL-TODO.md
-```
-
-### ⏳ Future Tasks
-- [ ] Route optimizations
-- [ ] Admin dashboard enhancements
-- [ ] Performance optimizations
-- [ ] SEO improvements
-- [ ] PWA features
+### 4. [ ] Completion
+- Use `attempt_completion` once verified working
